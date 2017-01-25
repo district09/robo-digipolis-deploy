@@ -1,0 +1,16 @@
+language: php
+php:
+  - 7.1
+  - 7.0
+  - 5.6
+  - 5.5
+install:
+  - composer self-update
+  - composer install --dev
+script:
+  - vendor/bin/robo test:coverage-codeclimate
+#addons:
+#  code_climate:
+#    repo_token: e091e028f8091a949f82929ebdc4de18ba54e140c28c17d443b8857525a731ac
+#after_success:
+#  - vendor/bin/test-reporter
