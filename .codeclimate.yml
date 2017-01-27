@@ -12,6 +12,10 @@ engines:
         enabled: false
       Naming/ShortMethodName:
         enabled: false
+      Naming/BooleanGetMethodName:
+        enabled: false
+      CleanCode/BooleanArgumentFlag:
+        enabled: false
   duplication:
     enabled: true
     config:
