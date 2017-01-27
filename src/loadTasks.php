@@ -2,6 +2,7 @@
 
 namespace DigipolisGent\Robo\Task\Deploy;
 
+use DigipolisGent\Robo\Task\Deploy\Ssh\Auth\AbstractAuth;
 use Symfony\Component\Finder\Finder;
 
 trait loadTasks
@@ -22,5 +23,18 @@ trait loadTasks
     protected function taskSymlinkFolderFileContents($source, $destination, Finder $finder = null)
     {
         return $this->task(SymlinkFolderFileContents::class, $source, $destination, $finder);
+    }
+
+    /**
+     * @param string $host
+     *   The host.
+     * @param AbstractAuth $auth
+     *   Authentication data.
+     *
+     * @return \DigipolisGent\Robo\Task\Deploy\Scp
+     */
+    protected function taskScp($host, AbstractAuth $auth)
+    {
+        return $this->task(Scp::class, $host, $auth);
     }
 }
