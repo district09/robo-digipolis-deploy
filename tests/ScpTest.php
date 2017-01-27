@@ -246,5 +246,4 @@ class ScpTest extends \PHPUnit_Framework_TestCase implements ContainerAwareInter
             $result->getMessage()
         );
     }
-
 }
