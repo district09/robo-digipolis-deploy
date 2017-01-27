@@ -19,7 +19,7 @@ class ScpFactoryMock implements ScpFactoryInterface
     public static function create($host, AbstractAuth $auth, $port = 22, $timeout = 10)
     {
         if ($host !== static::$host || $auth !== static::$auth || $port !== static::$port || $timeout !== static::$timeout) {
-          throw new \Exception('Factory called with invalid arguments');
+            throw new \Exception('Factory called with invalid arguments');
         }
         return static::$mock;
     }

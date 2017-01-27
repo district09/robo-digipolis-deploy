@@ -55,7 +55,7 @@ class SymlinkFolderFileContentsTest extends \PHPUnit_Framework_TestCase implemen
             'folder/subfolder',
         ];
         foreach ($dirs as $dir) {
-          $this->assertTrue(is_dir(realpath($destination . '/' . $dir)));
+            $this->assertTrue(is_dir(realpath($destination . '/' . $dir)));
         }
         $symlinks = [
             'folder/file',
