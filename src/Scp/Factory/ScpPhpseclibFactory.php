@@ -17,8 +17,8 @@ class ScpPhpseclibFactory implements ScpFactoryInterface
         if (!$ssh->isConnected()) {
             throw new \RuntimeException(sprintf(
                 "ssh: unable to establish connection to %s on port %s",
-                $this->host,
-                $this->port
+                $host,
+                $port
             ));
         }
         return new ScpPhpseclibAdapter(new SCP($ssh));
