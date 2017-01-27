@@ -1,6 +1,6 @@
 <?php
 
-namespace DigipolisGent\Robo\Task\Deploy\Test;
+namespace DigipolisGent\Test\Robo\Task\Deploy;
 
 use League\Container\ContainerAwareInterface;
 use League\Container\ContainerAwareTrait;
