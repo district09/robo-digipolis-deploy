@@ -38,5 +38,4 @@ class ScpPhpseclibAdapter implements ScpAdapterInterface
         }
         return $this->scp->put($remoteFile, $data, $seclibMode, $callback);
     }
-
 }
