@@ -178,7 +178,8 @@ class Scp extends BaseTask
     /**
      * {@inheritdoc}
      */
-    public function progressIndicatorSteps() {
+    public function progressIndicatorSteps()
+    {
         return count($this->commandStack);
     }
 
@@ -214,11 +215,11 @@ class Scp extends BaseTask
     public function scpFactory($class)
     {
         if (!is_subclass_of($class, ScpFactoryInterface::class)) {
-          throw new InvalidArgumentException(sprintf(
-              'SCP Factory %s does not implement %s.',
-              $class,
-              ScpFactoryInterface::class
-          ));
+            throw new InvalidArgumentException(sprintf(
+                'SCP Factory %s does not implement %s.',
+                $class,
+                ScpFactoryInterface::class
+            ));
         }
         $this->scpFactory = $class;
 
