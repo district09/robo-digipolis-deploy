@@ -37,4 +37,30 @@ trait loadTasks
     {
         return $this->task(Scp::class, $host, $auth);
     }
+
+    /**
+     * @param string $host
+     *   The host.
+     * @param AbstractAuth $auth
+     *   Authentication data.
+     *
+     * @return \DigipolisGent\Robo\Task\Deploy\Ssh
+     */
+    protected function taskSsh($host, AbstractAuth $auth)
+    {
+        return $this->task(Ssh::class, $host, $auth);
+    }
+
+    /**
+     * @param string $host
+     *   The host.
+     * @param AbstractAuth $auth
+     *   Authentication data.
+     *
+     * @return \DigipolisGent\Robo\Task\Deploy\PushPackage
+     */
+    protected function taskPushPackage($host, AbstractAuth $auth)
+    {
+        return $this->task(PushPackage::class, $host, $auth);
+    }
 }
