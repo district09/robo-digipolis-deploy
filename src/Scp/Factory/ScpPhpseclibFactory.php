@@ -10,6 +10,9 @@ use phpseclib\Net\SSH2;
 class ScpPhpseclibFactory implements ScpFactoryInterface
 {
 
+    /**
+     * {@inheritdoc}
+     */
     public static function create($host, AbstractAuth $auth, $port = 22, $timeout = 10)
     {
         $ssh = new SSH2($host, $port, $timeout);

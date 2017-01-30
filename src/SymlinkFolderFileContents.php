@@ -93,7 +93,7 @@ class SymlinkFolderFileContents extends BaseTask implements BuilderAwareInterfac
         while ($folder = array_shift($pathParts)) {
             $path .= '/' . $folder;
             if (!file_exists($path)) {
-                $stack->mkdir($folder);
+                $stack->mkdir($path);
             }
         }
         return $this;
