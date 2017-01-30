@@ -16,6 +16,8 @@ engines:
         enabled: false
       CleanCode/BooleanArgumentFlag:
         enabled: false
+      Design/TooManyPublicMethods:
+        enabled: false
   duplication:
     enabled: true
     config:
