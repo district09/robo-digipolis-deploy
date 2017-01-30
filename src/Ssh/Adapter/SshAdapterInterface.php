@@ -23,11 +23,14 @@ interface SshAdapterInterface
     /**
      * Channel constants
      *
-     * RFC4254 refers not to client and server channels but rather to sender and recipient channels.  we don't refer
-     * to them in that way because RFC4254 toggles the meaning. the client sends a SSH_MSG_CHANNEL_OPEN message with
-     * a sender channel and the server sends a SSH_MSG_CHANNEL_OPEN_CONFIRMATION in response, with a sender and a
-     * recepient channel.  at first glance, you might conclude that SSH_MSG_CHANNEL_OPEN_CONFIRMATION's sender channel
-     * would be the same thing as SSH_MSG_CHANNEL_OPEN's sender channel, but it's not, per this snipet:
+     * RFC4254 refers not to client and server channels but rather to sender and
+     * recipient channels. We don't refer to them in that way because RFC4254
+     * toggles the meaning. the client sends a SSH_MSG_CHANNEL_OPEN message with
+     * a sender channel and the server sends a SSH_MSG_CHANNEL_OPEN_CONFIRMATION
+     * in response, with a sender and a recepient channel.  at first glance, you
+     * might conclude that SSH_MSG_CHANNEL_OPEN_CONFIRMATION's sender channel
+     * would be the same thing as SSH_MSG_CHANNEL_OPEN's sender channel, but
+     * it's not, per this snipet:
      *     The 'recipient channel' is the channel number given in the original
      *     open request, and 'sender channel' is the channel number allocated by
      *     the other side.
@@ -83,7 +86,7 @@ interface SshAdapterInterface
     /**
      * Default Constructor.
      *
-     * $host can either be a string, representing the host, or a stream resource.
+     * $host can either be a string, representing the host or a stream resource.
      *
      * @param mixed $host
      * @param int $port
@@ -114,24 +117,19 @@ interface SshAdapterInterface
     public function connect();
 
     /**
-     * Login
+     * Login.
      *
-     * The $password parameter can be a plaintext password, a \phpseclib\Crypt\RSA object or an array
-     *
-     * @param string $username
-     * @param mixed $password
-     * @param mixed $...
-     * @return bool
-     * @see self::_login()
-     * @access public
+     * @param AbstractAuth $auth
+     *   Credentials
      */
     public function login(AbstractAuth $auth);
 
     /**
      * Set Timeout
      *
-     * $ssh->exec('ping 127.0.0.1'); on a Linux host will never return and will run indefinitely.  setTimeout() makes it so it'll timeout.
-     * Setting $timeout to false or 0 will mean there is no timeout.
+     * $ssh->exec('ping 127.0.0.1'); on a Linux host will never return and will
+     * run indefinitely.  setTimeout() makes it so it'll timeout. Setting
+     * $timeout to false or 0 will mean there is no timeout.
      *
      * @param mixed $timeout
      * @access public
@@ -148,8 +146,10 @@ interface SshAdapterInterface
     /**
      * Execute Command
      *
-     * If $callback is set to false then \phpseclib\Net\SSH2::_get_channel_packet(self::CHANNEL_EXEC) will need to be called manually.
-     * In all likelihood, this is not a feature you want to be taking advantage of.
+     * If $callback is set to false then
+     * \phpseclib\Net\SSH2::_get_channel_packet(self::CHANNEL_EXEC) will need to
+     * be called manually. In all likelihood, this is not a feature you want to
+     * be taking advantage of.
      *
      * @param string $command
      * @param Callback $callback
@@ -161,8 +161,8 @@ interface SshAdapterInterface
     /**
      * Returns the output of an interactive shell
      *
-     * Returns when there's a match for $expect, which can take the form of a string literal or,
-     * if $mode == self::READ_REGEX, a regular expression.
+     * Returns when there's a match for $expect, which can take the form of a
+     * string literal or, if $mode == self::READ_REGEX, a regular expression.
      *
      * @see self::write()
      * @param string $expect
@@ -185,11 +185,14 @@ interface SshAdapterInterface
     /**
      * Start a subsystem.
      *
-     * Right now only one subsystem at a time is supported. To support multiple subsystem's stopSubsystem() could accept
-     * a string that contained the name of the subsystem, but at that point, only one subsystem of each type could be opened.
-     * To support multiple subsystem's of the same name maybe it'd be best if startSubsystem() generated a new channel id and
-     * returns that and then that that was passed into stopSubsystem() but that'll be saved for a future date and implemented
-     * if there's sufficient demand for such a feature.
+     * Right now only one subsystem at a time is supported. To support multiple
+     * subsystem's stopSubsystem() could accept a string that contained the name
+     * of the subsystem, but at that point, only one subsystem of each type
+     * could be opened. To support multiple subsystem's of the same name maybe
+     * it'd be best if startSubsystem() generated a new channel id and returns
+     * that and then that that was passed into stopSubsystem() but that'll be
+     * saved for a future date and implemented if there's sufficient demand for
+     * such a feature.
      *
      * @see self::stopSubsystem()
      * @param string $subsystem
@@ -210,7 +213,8 @@ interface SshAdapterInterface
     /**
      * Closes a channel
      *
-     * If read() timed out you might want to just close the channel and have it auto-restart on the next read() call
+     * If read() timed out you might want to just close the channel and have it
+     * auto-restart on the next read() call
      *
      * @access public
      */
@@ -219,7 +223,8 @@ interface SshAdapterInterface
     /**
      * Is timeout?
      *
-     * Did exec() or read() return because they timed out or because they encountered the end?
+     * Did exec() or read() return because they timed out or because they
+     * encountered the end?
      *
      * @access public
      */
@@ -303,7 +308,9 @@ interface SshAdapterInterface
     /**
      * Returns a log of the packets that have been sent and received.
      *
-     * Returns a string if NET_SSH2_LOGGING == self::LOG_COMPLEX, an array if NET_SSH2_LOGGING == self::LOG_SIMPLE and false if !defined('NET_SSH2_LOGGING')
+     * Returns a string if NET_SSH2_LOGGING == self::LOG_COMPLEX, an array if
+     * NET_SSH2_LOGGING == self::LOG_SIMPLE and false if
+     * !defined('NET_SSH2_LOGGING')
      *
      * @access public
      * @return array|false|string
@@ -343,7 +350,8 @@ interface SshAdapterInterface
     public function getKexAlgorithms();
 
     /**
-     * Return a list of the host key (public key) algorithms the server supports.
+     * Return a list of the host key (public key) algorithms the server
+     * supports.
      *
      * @return array
      * @access public
@@ -351,7 +359,8 @@ interface SshAdapterInterface
     public function getServerHostKeyAlgorithms();
 
     /**
-     * Return a list of the (symmetric key) encryption algorithms the server supports, when receiving stuff from the client.
+     * Return a list of the (symmetric key) encryption algorithms the server
+     * supports, when receiving stuff from the client.
      *
      * @return array
      * @access public
@@ -359,7 +368,8 @@ interface SshAdapterInterface
     public function getEncryptionAlgorithmsClient2Server();
 
     /**
-     * Return a list of the (symmetric key) encryption algorithms the server supports, when sending stuff to the client.
+     * Return a list of the (symmetric key) encryption algorithms the server
+     * supports, when sending stuff to the client.
      *
      * @return array
      * @access public
@@ -367,7 +377,8 @@ interface SshAdapterInterface
     public function getEncryptionAlgorithmsServer2Client();
 
     /**
-     * Return a list of the MAC algorithms the server supports, when receiving stuff from the client.
+     * Return a list of the MAC algorithms the server supports, when receiving
+     * stuff from the client.
      *
      * @return array
      * @access public
@@ -375,7 +386,8 @@ interface SshAdapterInterface
     public function getMACAlgorithmsClient2Server();
 
     /**
-     * Return a list of the MAC algorithms the server supports, when sending stuff to the client.
+     * Return a list of the MAC algorithms the server supports, when sending
+     * stuff to the client.
      *
      * @return array
      * @access public
@@ -383,7 +395,8 @@ interface SshAdapterInterface
     public function getMACAlgorithmsServer2Client();
 
     /**
-     * Return a list of the compression algorithms the server supports, when receiving stuff from the client.
+     * Return a list of the compression algorithms the server supports, when
+     * receiving stuff from the client.
      *
      * @return array
      * @access public
@@ -391,7 +404,8 @@ interface SshAdapterInterface
     public function getCompressionAlgorithmsClient2Server();
 
     /**
-     * Return a list of the compression algorithms the server supports, when sending stuff to the client.
+     * Return a list of the compression algorithms the server supports, when
+     * sending stuff to the client.
      *
      * @return array
      * @access public
@@ -399,7 +413,8 @@ interface SshAdapterInterface
     public function getCompressionAlgorithmsServer2Client();
 
     /**
-     * Return a list of the languages the server supports, when sending stuff to the client.
+     * Return a list of the languages the server supports, when sending stuff to
+     * the client.
      *
      * @return array
      * @access public
@@ -407,7 +422,8 @@ interface SshAdapterInterface
     public function getLanguagesServer2Client();
 
     /**
-     * Return a list of the languages the server supports, when receiving stuff from the client.
+     * Return a list of the languages the server supports, when receiving stuff
+     * from the client.
      *
      * @return array
      * @access public
@@ -417,8 +433,8 @@ interface SshAdapterInterface
     /**
      * Returns the banner message.
      *
-     * Quoting from the RFC, "in some jurisdictions, sending a warning message before
-     * authentication may be relevant for getting legal protection."
+     * Quoting from the RFC, "in some jurisdictions, sending a warning message
+     * before authentication may be relevant for getting legal protection."
      *
      * @return string
      * @access public
@@ -428,8 +444,9 @@ interface SshAdapterInterface
     /**
      * Returns the server public host key.
      *
-     * Caching this the first time you connect to a server and checking the result on subsequent connections
-     * is recommended.  Returns false if the server signature is not signed correctly with the public host key.
+     * Caching this the first time you connect to a server and checking the
+     * result on subsequent connections is recommended.  Returns false if the
+     * server signature is not signed correctly with the public host key.
      *
      * @return mixed
      * @access public
