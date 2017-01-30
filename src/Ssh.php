@@ -8,7 +8,6 @@ use DigipolisGent\Robo\Task\Deploy\Ssh\Factory\SshFactoryInterface;
 use Robo\Result;
 use Robo\Task\BaseTask;
 
-
 class Ssh extends BaseTask
 {
     use \Robo\Common\CommandReceiver;
@@ -204,7 +203,7 @@ class Ssh extends BaseTask
         $ssh->login($this->auth);
         $errorMessage = '';
         if ($this->remoteDir && !$ssh->exec('cd ' . $this->remoteDir)) {
-          return Result::error($this, 'Could not change to remote directory ' . $this->remoteDir);
+            return Result::error($this, 'Could not change to remote directory ' . $this->remoteDir);
         }
         foreach ($this->commandStack as $command) {
             $result = call_user_func_array([$ssh, $command['method']], $command['arguments']);
