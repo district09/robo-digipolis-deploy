@@ -201,7 +201,7 @@ class Scp extends BaseTask
     /**
      * Set the ScpFactory.
      *
-     * @param sting|\DigipolisGent\Robo\Task\Deploy\Scp\Factory\ScpFactoryInterface $class
+     * @param string|\DigipolisGent\Robo\Task\Deploy\Scp\Factory\ScpFactoryInterface $class
      *   A factory instance or the fully qualified classname of the scp factory.
      *   The given class (whether it's a classname or instance) must implement
      *   \DigipolisGent\Robo\Task\Deploy\Scp\Factory\ScpFactoryInterface.
