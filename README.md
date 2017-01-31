@@ -10,7 +10,7 @@ $auth = new \DigipolisGent\Robo\Task\Deploy\Ssh\Auth\KeyFile('user', '/home/myus
 $result = $this->taskPushPackage('192.168.1.1', $auth)
     ->port(8022)
     ->timeout(15)
-    ->destinationFolder('/folder/on/server)
+    ->destinationFolder('/folder/on/server')
     ->package('/path/to/local/package.tar.gz')
     ->run();
 ```
@@ -89,7 +89,7 @@ class RoboFile extends \Robo\Tasks
             ->port(8022)
             ->timeout(15)
             ->remoteDirectory('/path/to/remote/dir')
-            ->exec('vendor/bin/robo symlink config web/config')
+            ->exec('vendor/bin/robo symlink ' . $source . ' ' . $dest)
             ->run();
     }
 }
