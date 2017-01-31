@@ -89,7 +89,7 @@ class RoboFile extends \Robo\Tasks
             ->port(8022)
             ->timeout(15)
             ->remoteDirectory('/path/to/remote/dir')
-            ->exec('vendor/bin/robo symlink config web/config')
+            ->exec('vendor/bin/robo symlink ' . $source . ' ' . $destination)
             ->run();
     }
 }
