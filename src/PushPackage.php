@@ -18,7 +18,7 @@ class PushPackage extends BaseTask implements BuilderAwareInterface
     use \Robo\TaskAccessor;
 
     /**
-     * The server to scp to/from.
+     * The server to scp to.
      *
      * @var string
      */
@@ -75,7 +75,7 @@ class PushPackage extends BaseTask implements BuilderAwareInterface
     protected $sshFactory = SshPhpseclibFactory::class;
 
     /**
-     * Creates a new Scp task.
+     * Creates a new PushPackage task.
      *
      * @param string $host
      *   The host.
@@ -151,7 +151,7 @@ class PushPackage extends BaseTask implements BuilderAwareInterface
     /**
      * Set the ScpFactory.
      *
-     * @param sting|ScpFactoryInterface $class
+     * @param string|ScpFactoryInterface $class
      *   A factory instance or the fully qualified classname of the scp factory.
      *   The given class (whether it's a classname or instance) must implement
      *   \DigipolisGent\Robo\Task\Deploy\Scp\Factory\ScpFactoryInterface.
@@ -179,7 +179,7 @@ class PushPackage extends BaseTask implements BuilderAwareInterface
     /**
      * Set the SshFactory.
      *
-     * @param sting|\DigipolisGent\Robo\Task\Deploy\Ssh\Factory\SshFactoryInterface $class
+     * @param string|\DigipolisGent\Robo\Task\Deploy\Ssh\Factory\SshFactoryInterface $class
      *   A factory instance or the fully qualified classname of the scp factory.
      *   The given class (whether it's a classname or instance) must implement
      *   \DigipolisGent\Robo\Task\Deploy\Ssh\Factory\SshFactoryInterface.

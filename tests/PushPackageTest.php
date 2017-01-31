@@ -124,7 +124,6 @@ class PushPackageTest extends \PHPUnit_Framework_TestCase implements ContainerAw
             ->with($destinationFolder, $localFile)
             ->willReturn(true);
 
-
         // Run the task.
         $result = $this
             ->taskPushPackage($host, $auth)

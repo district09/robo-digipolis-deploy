@@ -169,7 +169,7 @@ class Ssh extends BaseTask
     /**
      * Set the SshFactory.
      *
-     * @param sting|\DigipolisGent\Robo\Task\Deploy\Ssh\Factory\SshFactoryInterface $class
+     * @param string|\DigipolisGent\Robo\Task\Deploy\Ssh\Factory\SshFactoryInterface $class
      *   A factory instance or the fully qualified classname of the scp factory.
      *   The given class (whether it's a classname or instance) must implement
      *   \DigipolisGent\Robo\Task\Deploy\Ssh\Factory\SshFactoryInterface.
