@@ -16,6 +16,7 @@ $result = $this->taskPushPackage('192.168.1.1', $auth)
 ```
 
 ### Scp
+
 ```php
 $auth = new \DigipolisGent\Robo\Task\Deploy\Ssh\Auth\KeyFile('user', '/home/myuser/.ssh/id_dsa');
 $result = $this->taskScp('192.168.1.1', $auth)
@@ -29,6 +30,7 @@ $result = $this->taskScp('192.168.1.1', $auth)
 ```
 
 ### Ssh
+
 ```php
 $auth = new \DigipolisGent\Robo\Task\Deploy\Ssh\Auth\KeyFile('user', '/home/myuser/.ssh/id_dsa');
 $result = $this->taskSsh('192.168.1.1', $auth)
@@ -41,16 +43,19 @@ $result = $this->taskSsh('192.168.1.1', $auth)
 ```
 
 ### SymlinkFolderFileContents
+
 ```php
 $result = $this
     ->taskSymlinkFolderFileContents('/path/to/source', '/path/to/destination')
     ->run();
 ```
 
-As this command will most likely be used to symlink config files on a server during deployment,
-this task should be used in a command that runs on the server. For example:
+As this command will most likely be used to symlink config files on a server
+during deployment, this task should be used in a command that runs on the
+server. For example:
 
 RoboFile.php on the server (let's say 192.168.1.1 in folder /path/to/remote/dir):
+
 ```php
 <?php
 
@@ -72,6 +77,7 @@ class RoboFile extends \Robo\Tasks
 ```
 
 RoboFile.php on the build server / your local machine:
+
 ```php
 <?php
 
