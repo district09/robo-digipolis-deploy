@@ -63,4 +63,19 @@ trait loadTasks
     {
         return $this->task(PushPackage::class, $host, $auth);
     }
+
+    /**
+     * Creates a DatabaseBackup task.
+     *
+     * @param string|array $storageConfig
+     *   Config for the FilesystemProvider. A path to a PHP file or an array.
+     * @param string|array $dbConfig
+     *   Config for the DatabaseProvider. A path to a PHP file or an array.
+     *
+     * @return \DigipolisGent\Robo\Task\Deploy\DatabaseBackup
+     */
+    protected function taskDatabaseBackup($storageConfig, $dbConfig)
+    {
+        return $this->task(DatabaseBackup::class, $storageConfig, $dbConfig);
+    }
 }
