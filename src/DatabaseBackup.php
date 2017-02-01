@@ -84,7 +84,7 @@ class DatabaseBackup extends BaseTask
     public function backupManagerFactory($class)
     {
         if (!is_subclass_of($class, BackupManagerFactoryInterface::class)) {
-            throw new InvalidArgumentException(sprintf(
+            throw new \InvalidArgumentException(sprintf(
                 'Backup Manager Factory %s does not implement %s.',
                 $class,
                 BackupManagerFactoryInterface::class
