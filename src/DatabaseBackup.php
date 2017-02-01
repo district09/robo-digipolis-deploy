@@ -157,9 +157,8 @@ class DatabaseBackup extends BaseTask
                 $this->destination(getcwd());
             }
             $manager->makeBackup()->run($this->database, $this->destinations, $this->compression);
-        }
-        catch (\Exception $e) {
-          return Result::fromException($this, $e);
+        } catch (\Exception $e) {
+            return Result::fromException($this, $e);
         }
         return Result::success($this);
     }

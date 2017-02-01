@@ -2,7 +2,8 @@
 
 namespace DigipolisGent\Robo\Task\Deploy\BackupManager\Adapter;
 
-interface RestoreProcedureAdapterInterface {
+interface RestoreProcedureAdapterInterface
+{
 
     /**
      * Run the restore procedure.

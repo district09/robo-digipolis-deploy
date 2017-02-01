@@ -12,6 +12,7 @@ class BackupProcedureAdapter implements BackupProcedureAdapterInterface
     {
         $this->procedure = $procedure;
     }
+
     /**
      * {@inheritdoc}
      */
@@ -19,5 +20,4 @@ class BackupProcedureAdapter implements BackupProcedureAdapterInterface
     {
         return $this->procedure->run($database, $destinations, $compression);
     }
-
 }

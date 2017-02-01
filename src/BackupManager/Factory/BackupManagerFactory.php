@@ -20,43 +20,47 @@ use BackupManager\Manager;
 use DigipolisGent\Robo\Task\Deploy\BackupManager\Compressors\TarCompressor;
 use DigipolisGent\Robo\Task\Deploy\BackupManager\Databases\MysqlDatabase;
 
+/**
+ * @todo: split up in factories for filesystem & database.
+ */
 class BackupManagerFactory implements BackupManagerFactoryInterface
 {
-  /**
-   * {@inheritdoc}
-   */
-  public static function create($storageConfig, $dbConfig)
-  {
-      $storageConfigObj = is_array($storageConfig)
-          ? new Config($storageConfig)
-          : Config::fromPhpFile($storageConfig);
 
-      $dbConfigObj = is_array($dbConfig)
-          ? new Config($dbConfig)
-          : Config::fromPhpFile($dbConfig);
+    /**
+     * {@inheritdoc}
+     */
+    public static function create($storageConfig, $dbConfig)
+    {
+        $storageConfigObj = is_array($storageConfig)
+            ? new Config($storageConfig)
+            : Config::fromPhpFile($storageConfig);
 
-      $filesystemProvider = new FilesystemProvider($storageConfigObj);
+        $dbConfigObj = is_array($dbConfig)
+            ? new Config($dbConfig)
+            : Config::fromPhpFile($dbConfig);
 
-      // Add all default filesystems.
-      $filesystemProvider->add(new Awss3Filesystem());
-      $filesystemProvider->add(new GcsFilesystem());
-      $filesystemProvider->add(new DropboxFilesystem());
-      $filesystemProvider->add(new FtpFilesystem());
-      $filesystemProvider->add(new LocalFilesystem());
-      $filesystemProvider->add(new RackspaceFilesystem());
-      $filesystemProvider->add(new SftpFilesystem());
+        $filesystemProvider = new FilesystemProvider($storageConfigObj);
 
-      // Add all default databases.
-      $databaseProvider = new DatabaseProvider($dbConfigObj);
-      $databaseProvider->add(new MysqlDatabase());
-      $databaseProvider->add(new PostgresqlDatabase());
+        // Add all default filesystems.
+        $filesystemProvider->add(new Awss3Filesystem());
+        $filesystemProvider->add(new GcsFilesystem());
+        $filesystemProvider->add(new DropboxFilesystem());
+        $filesystemProvider->add(new FtpFilesystem());
+        $filesystemProvider->add(new LocalFilesystem());
+        $filesystemProvider->add(new RackspaceFilesystem());
+        $filesystemProvider->add(new SftpFilesystem());
 
-      // Add all default compressors.
-      $compressorProvider = new CompressorProvider();
-      $compressorProvider->add(new TarCompressor());
-      $compressorProvider->add(new GzipCompressor());
-      $compressorProvider->add(new NullCompressor());
+        // Add all default databases.
+        $databaseProvider = new DatabaseProvider($dbConfigObj);
+        $databaseProvider->add(new MysqlDatabase());
+        $databaseProvider->add(new PostgresqlDatabase());
 
-      return new Manager($filesystemProvider, $databaseProvider, $compressorProvider);
-  }
+        // Add all default compressors.
+        $compressorProvider = new CompressorProvider();
+        $compressorProvider->add(new TarCompressor());
+        $compressorProvider->add(new GzipCompressor());
+        $compressorProvider->add(new NullCompressor());
+
+        return new Manager($filesystemProvider, $databaseProvider, $compressorProvider);
+    }
 }
