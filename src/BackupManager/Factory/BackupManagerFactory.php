@@ -4,9 +4,6 @@ namespace DigipolisGent\Robo\Task\Deploy\BackupManager\Factory;
 
 use BackupManager\Manager;
 
-/**
- * @todo: split up in factories for filesystem & database.
- */
 class BackupManagerFactory implements BackupManagerFactoryInterface
 {
 
