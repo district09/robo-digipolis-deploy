@@ -2,7 +2,8 @@
 
 namespace DigipolisGent\Robo\Task\Deploy\BackupManager\Adapter;
 
-interface BackupManagerAdapterInterface {
+interface BackupManagerAdapterInterface
+{
     /**
      * Create the backup.
      *
@@ -14,5 +15,4 @@ interface BackupManagerAdapterInterface {
      * @return ProcedureAdapter
      */
     public function makeRestore();
-
 }

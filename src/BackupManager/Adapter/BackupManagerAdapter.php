@@ -15,7 +15,7 @@ class BackupManagerAdapter implements BackupManagerAdapterInterface
 
     public function __construct(Manager $manager)
     {
-      $this->manager = $manager;
+        $this->manager = $manager;
     }
 
     /**
@@ -39,5 +39,4 @@ class BackupManagerAdapter implements BackupManagerAdapterInterface
     {
         return new RestoreProcedureAdapter($this->manager->makeRestore());
     }
-
 }

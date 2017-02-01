@@ -20,5 +20,4 @@ class RestoreProcedureAdapter implements RestoreProcedureAdapterInterface
     {
         return $this->procedure->run($sourceType, $sourcePath, $databaseName, $compression);
     }
-
 }

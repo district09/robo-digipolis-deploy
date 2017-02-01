@@ -2,7 +2,8 @@
 
 namespace DigipolisGent\Robo\Task\Deploy\BackupManager\Adapter;
 
-interface BackupProcedureAdapterInterface {
+interface BackupProcedureAdapterInterface
+{
 
     /**
      * Run the backup procedure.
