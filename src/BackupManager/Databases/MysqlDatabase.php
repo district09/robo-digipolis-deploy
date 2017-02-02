@@ -107,7 +107,10 @@ class MysqlDatabase extends Mysql
             return '';
         }
         $tables = [];
-        foreach ($this->config['tables'] as $table) {
+        // Tables specified in both tables and structureTables should only
+        // export their structure. @see getStructureTables().
+        $allTables = array_diff($this->config['tables'], $this->config['structureTables']);
+        foreach ($allTables as $table) {
             $tables[] = escapeshellarg($table);
         }
         return implode($tables);
@@ -167,7 +170,7 @@ class MysqlDatabase extends Mysql
      */
     protected function getStructureTables()
     {
-        if (!empty($this->config['tables']) || empty($this->config['structureTables'])) {
+        if (empty($this->config['structureTables'])) {
             return '';
         }
         $structureTables = [];
