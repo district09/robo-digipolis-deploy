@@ -3,6 +3,7 @@
 namespace DigipolisGent\Robo\Task\Deploy\BackupManager\Factory;
 
 use BackupManager\Manager;
+use DigipolisGent\Robo\Task\Deploy\BackupManager\Adapter\BackupManagerAdapter;
 
 class BackupManagerFactory implements BackupManagerFactoryInterface
 {
@@ -10,17 +11,17 @@ class BackupManagerFactory implements BackupManagerFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public static function create($storageConfig, $dbConfig)
+    public static function create($filesystemConfig, $dbConfig)
     {
         // Add all default filesystems.
-        $filesystemProvider = StorageFactory::create($storageConfig);
+        $filesystemProvider = FilesystemProviderFactory::create($filesystemConfig);
 
         // Add all default databases.
-        $databaseProvider = DatabaseFactory::create($dbConfig);
+        $databaseProvider = DatabaseProviderFactory::create($dbConfig);
 
         // Add all default compressors.
-        $compressorProvider = CompressorFactory::create();
+        $compressorProvider = CompressorProviderFactory::create();
 
-        return new Manager($filesystemProvider, $databaseProvider, $compressorProvider);
+        return new BackupManagerAdapter(Manager($filesystemProvider, $databaseProvider, $compressorProvider));
     }
 }

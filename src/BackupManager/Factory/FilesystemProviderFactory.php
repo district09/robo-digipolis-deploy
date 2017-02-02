@@ -12,19 +12,19 @@ use BackupManager\Filesystems\LocalFilesystem;
 use BackupManager\Filesystems\RackspaceFilesystem;
 use BackupManager\Filesystems\SftpFilesystem;
 
-class StorageFactory implements StorageFactoryInterface
+class FilesystemProviderFactory implements FilesystemProviderFactoryInterface
 {
 
     /**
      * {@inheritdoc}
      */
-    public static function create($storageConfig)
+    public static function create($filesystemConfig)
     {
-        $storageConfigObj = is_array($storageConfig)
-            ? new Config($storageConfig)
-            : Config::fromPhpFile($storageConfig);
+        $filesystemConfigObj = is_array($filesystemConfig)
+            ? new Config($filesystemConfig)
+            : Config::fromPhpFile($filesystemConfig);
 
-        $filesystemProvider = new FilesystemProvider($storageConfigObj);
+        $filesystemProvider = new FilesystemProvider($filesystemConfigObj);
 
         // Add all default filesystems.
         $filesystemProvider->add(new Awss3Filesystem());

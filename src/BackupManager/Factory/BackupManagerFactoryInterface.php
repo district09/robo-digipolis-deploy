@@ -7,7 +7,7 @@ interface BackupManagerFactoryInterface
     /**
      * Creates a BackupManagerAdapter.
      *
-     * @param string|array $storageConfig
+     * @param string|array $filesystemConfig
      *   Config for the FilesystemProvider. A path to a PHP file or an array.
      *
      * @param string|array $dbConfig
@@ -15,5 +15,5 @@ interface BackupManagerFactoryInterface
      *
      * @return \DigipolisGent\Robo\Task\Deploy\BackupManager\Adapter\BackupManagerAdapterInterface
      */
-    public static function create($storageConfig, $dbConfig);
+    public static function create($filesystemConfig, $dbConfig);
 }

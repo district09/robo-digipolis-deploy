@@ -2,15 +2,15 @@
 
 namespace DigipolisGent\Robo\Task\Deploy\BackupManager\Factory;
 
-interface StorageFactoryInterface
+interface FilesystemProviderFactoryInterface
 {
     /**
      * Creates a FilesystemProvider.
      *
-     * @param string|array $storageConfig
+     * @param string|array $filesystemConfig
      *   Config for the FilesystemProvider. A path to a PHP file or an array.
      *
      * @return \BackupManager\Filesystems\FilesystemProvider
      */
-    public static function create($storageConfig);
+    public static function create($filesystemConfig);
 }

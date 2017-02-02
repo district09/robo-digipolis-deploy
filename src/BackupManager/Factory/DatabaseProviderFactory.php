@@ -7,7 +7,7 @@ use BackupManager\Databases\DatabaseProvider;
 use BackupManager\Databases\PostgresqlDatabase;
 use DigipolisGent\Robo\Task\Deploy\BackupManager\Databases\MysqlDatabase;
 
-class DatabaseFactory implements DatabaseFactoryInterface
+class DatabaseProviderFactory implements DatabaseProviderFactoryInterface
 {
 
     /**

@@ -15,7 +15,7 @@ class DatabaseBackup extends BaseTask
      *
      * @var string|array
      */
-    protected $storageConfig;
+    protected $filesystemConfig;
 
     /**
      * Config for the databases.
@@ -55,16 +55,16 @@ class DatabaseBackup extends BaseTask
     /**
      * Creates a BackupManagerAdapter.
      *
-     * @param string|array $storageConfig
+     * @param string|array $filesystemConfig
      *   Config for the FilesystemProvider. A path to a PHP file or an array.
      * @param string|array $dbConfig
      *   Config for the DatabaseProvider. A path to a PHP file or an array.
      *
      * @return \DigipolisGent\Robo\Task\Deploy\BackupManager\Adapter\BackupManagerAdapterInterface
      */
-    public function __construct($storageConfig, $dbConfig)
+    public function __construct($filesystemConfig, $dbConfig)
     {
-        $this->storageConfig = $storageConfig;
+        $this->filesystemConfig = $filesystemConfig;
         $this->dbConfig = $dbConfig;
     }
 
@@ -151,7 +151,7 @@ class DatabaseBackup extends BaseTask
          * The backup manager
          * @var \DigipolisGent\Robo\Task\Deploy\BackupManager\Adapter\BackupManagerAdapterInterface
          */
-        $manager = call_user_func([$this->backupManagerFactory, 'create'], $this->storageConfig, $this->dbConfig);
+        $manager = call_user_func([$this->backupManagerFactory, 'create'], $this->filesystemConfig, $this->dbConfig);
         try {
             if (empty($this->destinations)) {
                 $this->destination(getcwd());

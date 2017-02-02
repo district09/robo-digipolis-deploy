@@ -6,15 +6,15 @@ use DigipolisGent\Robo\Task\Deploy\BackupManager\Factory\BackupManagerFactoryInt
 
 class BackupManagerFactoryMock implements BackupManagerFactoryInterface
 {
-    protected static $storageConfig;
+    protected static $filesystemConfig;
     protected static $dbConfig;
     protected static $mock;
     /**
      * {@inheritdoc}
      */
-    public static function create($storageConfig, $dbConfig)
+    public static function create($filesystemConfig, $dbConfig)
     {
-        if ($storageConfig != static::$storageConfig || $dbConfig != static::$dbConfig) {
+        if ($filesystemConfig != static::$filesystemConfig || $dbConfig != static::$dbConfig) {
             throw new \Exception('Factory called with invalid arguments');
         }
         return static::$mock;
@@ -25,9 +25,9 @@ class BackupManagerFactoryMock implements BackupManagerFactoryInterface
         static::$mock = $mock;
     }
 
-    static function setStorageConfig($storageConfig)
+    static function setFilesystemConfig($filesystemConfig)
     {
-        static::$storageConfig = $storageConfig;
+        static::$filesystemConfig = $filesystemConfig;
     }
 
     static function setDbConfig($dbConfig)
