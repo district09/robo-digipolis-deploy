@@ -149,6 +149,52 @@ $result = $this->taskDatabaseBackup($filesystemConfig, $dbConfig)
 
 ```
 
+### DatabaseRestore
+
+```php
+$filesystemConfig = [
+    'local' => [
+        'type' => 'Local',
+        'root' => '/home/myuser/backups',
+    ],
+];
+
+$dbConfig = [
+    'development' => [
+        'type' => 'mysql',
+        'host' => 'localhost',
+        'port' => '3306',
+        'user' => 'root',
+        'pass' => 'password',
+        'database' => 'test',
+        'singleTransaction' => true,
+        'ignoreTables' => [],
+    ],
+    'production' => [
+        'type' => 'mysql',
+        'host' => 'localhost',
+        'port' => '3306',
+        'user' => 'root',
+        'pass' => 'password',
+        'database' => 'test',
+        'ignoreTables' => [],
+        'structureTables' => [],
+        'tables' => [],
+        'dataOnly' => false,
+        'orderedDump' => false,
+        'singleTransaction' => true,
+        'extra' => '--opt',
+    ],
+];
+// Restore a backup of the development database located at /home/myuser/backups/dev.sql.tar.gz.
+$result = $this->taskDatabaseRestore($filesystemConfig, $dbConfig)
+    ->database('development')
+    ->source('dev.sql.tar.gz')
+    ->compression('tar')
+    ->run();
+
+```
+
 #### File system configuration options
 
 More information on the configuration options for the file systems can be found
@@ -200,50 +246,4 @@ $dbConfig = [
 
     ],
 ];
-```
-
-### DatabaseRestore
-
-```php
-$filesystemConfig = [
-    'local' => [
-        'type' => 'Local',
-        'root' => '/home/myuser/backups',
-    ],
-];
-
-$dbConfig = [
-    'development' => [
-        'type' => 'mysql',
-        'host' => 'localhost',
-        'port' => '3306',
-        'user' => 'root',
-        'pass' => 'password',
-        'database' => 'test',
-        'singleTransaction' => true,
-        'ignoreTables' => [],
-    ],
-    'production' => [
-        'type' => 'mysql',
-        'host' => 'localhost',
-        'port' => '3306',
-        'user' => 'root',
-        'pass' => 'password',
-        'database' => 'test',
-        'ignoreTables' => [],
-        'structureTables' => [],
-        'tables' => [],
-        'dataOnly' => false,
-        'orderedDump' => false,
-        'singleTransaction' => true,
-        'extra' => '--opt',
-    ],
-];
-// Restore a backup of the development database located at /home/myuser/backups/dev.sql.tar.gz.
-$result = $this->taskDatabaseRestore($filesystemConfig, $dbConfig)
-    ->database('development')
-    ->source('dev.sql.tar.gz')
-    ->compression('tar')
-    ->run();
-
 ```
