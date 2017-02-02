@@ -152,12 +152,12 @@ $result = $this->taskDatabaseBackup($filesystemConfig, $dbConfig)
 #### File system configuration options
 
 More information on the configuration options for the file systems can be found
-at https://github.com/backup-manager/backup-manager.
+at <https://github.com/backup-manager/backup-manager>.
 
 #### Database configuration options
 
 More information on the configuration options for the databases can be found
-at https://github.com/backup-manager/backup-manager. However, we provide our
+at <https://github.com/backup-manager/backup-manager>. However, we provide our
 own MySql database handler. The configuration options are explained below:
 
 ```php
