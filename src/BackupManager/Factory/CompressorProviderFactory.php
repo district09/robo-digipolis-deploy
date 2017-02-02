@@ -7,7 +7,7 @@ use BackupManager\Compressors\GzipCompressor;
 use BackupManager\Compressors\NullCompressor;
 use DigipolisGent\Robo\Task\Deploy\BackupManager\Compressors\TarCompressor;
 
-class CompressorFactory implements CompressorFactoryInterface
+class CompressorProviderFactory implements CompressorProviderFactoryInterface
 {
 
     /**

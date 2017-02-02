@@ -2,7 +2,7 @@
 
 namespace DigipolisGent\Robo\Task\Deploy\BackupManager\Factory;
 
-interface CompressorFactoryInterface
+interface CompressorProviderFactoryInterface
 {
     /**
      * Creates a CompressorProvider.

@@ -2,7 +2,7 @@
 
 namespace DigipolisGent\Robo\Task\Deploy\BackupManager\Factory;
 
-interface DatabaseFactoryInterface
+interface DatabaseProviderFactoryInterface
 {
     /**
      * Creates a DatabaseProvider.

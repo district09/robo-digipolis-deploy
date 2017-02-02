@@ -23,7 +23,7 @@ class DatabaseBackupTest extends \PHPUnit_Framework_TestCase implements Containe
     use \Robo\Task\Base\loadTasks;
     use \Robo\Common\ConfigAwareTrait;
 
-    protected $storageConfig;
+    protected $filesystemConfig;
     protected $dbConfig;
 
     /**
@@ -62,7 +62,7 @@ class DatabaseBackupTest extends \PHPUnit_Framework_TestCase implements Containe
             ],
         ];
 
-        $this->storageConfig = [
+        $this->filesystemConfig = [
             'local' => [
                 'type' => 'Local',
                 'root' => realpath(__DIR__ . '/../testfiles'),
@@ -78,7 +78,7 @@ class DatabaseBackupTest extends \PHPUnit_Framework_TestCase implements Containe
             ->getMock();
 
         // Mock the factory.
-        BackupManagerFactoryMock::setStorageConfig($this->storageConfig);
+        BackupManagerFactoryMock::setFilesystemConfig($this->filesystemConfig);
         BackupManagerFactoryMock::setDbConfig($this->dbConfig);
         BackupManagerFactoryMock::setMock($adapter);
         return $adapter;
@@ -116,7 +116,7 @@ class DatabaseBackupTest extends \PHPUnit_Framework_TestCase implements Containe
             ->method('makeBackup')
             ->willReturn($procedure);
 
-        $result = $this->taskDatabaseBackup($this->storageConfig, $this->dbConfig)
+        $result = $this->taskDatabaseBackup($this->filesystemConfig, $this->dbConfig)
             ->database('development')
             ->destination('')
             ->compression('tar')
@@ -145,7 +145,7 @@ class DatabaseBackupTest extends \PHPUnit_Framework_TestCase implements Containe
             ->method('makeBackup')
             ->willReturn($procedure);
 
-        $result = $this->taskDatabaseBackup($this->storageConfig, $this->dbConfig)
+        $result = $this->taskDatabaseBackup($this->filesystemConfig, $this->dbConfig)
             ->database('development')
             ->destination('')
             ->compression('tar')

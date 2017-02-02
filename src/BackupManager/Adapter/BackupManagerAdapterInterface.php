@@ -7,12 +7,14 @@ interface BackupManagerAdapterInterface
     /**
      * Create the backup.
      *
-     * @return ProcedureAdapter
+     * @return \DigipolisGent\Robo\Task\Deploy\BackupManager\Adapter\BackupProcedureAdapterInterface
      */
     public function makeBackup();
 
     /**
-     * @return ProcedureAdapter
+     * Restore a backup.
+     *
+     * @return \DigipolisGent\Robo\Task\Deploy\BackupManager\Adapter\RestoreProcedureAdapterInterface
      */
     public function makeRestore();
 }
