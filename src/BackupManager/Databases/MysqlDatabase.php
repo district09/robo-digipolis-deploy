@@ -56,24 +56,16 @@ class MysqlDatabase extends Mysql
             $command .= ' && mysqldump {{credentials}} {{structureTables}} --no-data {{options}}';
         }
         $command .= ') > {{file}}';
-        return str_replace(
+        return strtr(
+            $command,
             [
-                '{{credentials}}',
-                '{{tables}}',
-                '{{options}}',
-                '{{ignore}}',
-                '{{structureTables}}',
-                '{{file}}',
-            ],
-            [
-                $credentials,
-                $tables,
-                $options,
-                $ignore,
-                $structureTables,
-                $file,
-            ],
-            $command
+                '{{credentials}}' => $credentials,
+                '{{tables}}' => $tables,
+                '{{options}}' => $options,
+                '{{ignore}}' => $ignore,
+                '{{structureTables}}' => $structureTables,
+                '{{file}}' => $file,
+            ]
         );
     }
 
