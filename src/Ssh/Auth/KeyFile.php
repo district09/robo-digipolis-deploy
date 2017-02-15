@@ -42,8 +42,9 @@ class KeyFile extends AbstractAuth
         }
         if (!$connection->login($this->user, $rsa)) {
             throw new \RuntimeException(sprintf(
-                "fail: unable to authenticate user '%s' using key file",
-                $this->user
+                "Failed: unable to authenticate user '%s' using key file '%s'.",
+                $this->user,
+                $this->privateKeyFile
             ));
         }
     }
