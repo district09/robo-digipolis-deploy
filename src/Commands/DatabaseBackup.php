@@ -25,15 +25,7 @@ trait DatabaseBackup
       'drupal' => false,
     ])
     {
-        $filesystemConfig = $opts['file-system-config']
-            ?
-            : $this->defaultFileSystemConfig();
-        $dbConfig = $opts['database-config']
-            ?
-            : $this->defaultDbConfig($opts['drupal']);
-        $this->taskDatabaseBackup($filesystemConfig, $dbConfig)
-            ->compression($opts['comporession'])
-            ->database($database)
+        $this->createDbTask('taskDatabaseBackup', $database, $opts)
             ->destination($opts['destination'], $opts['destination-type'])
             ->run();
     }

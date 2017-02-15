@@ -25,15 +25,7 @@ trait DatabaseRestore
       'drupal' => false,
     ])
     {
-        $filesystemConfig = $opts['file-system-config']
-            ?
-            : $this->defaultFileSystemConfig();
-        $dbConfig = $opts['database-config']
-            ?
-            : $this->defaultDbConfig($opts['drupal']);
-        $this->taskDatabaseRestore($filesystemConfig, $dbConfig)
-            ->compression($opts['comporession'])
-            ->database($database)
+        $this->createDbTask('taskDatabaseRestore', $database, $opts)
             ->source($opts['source'], $opts['source-type'])
             ->run();
     }
