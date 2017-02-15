@@ -27,6 +27,9 @@ engines:
     enabled: true
   markdownlint:
     enabled: true
+    checks:
+      MD024:
+        enabled: false
 ratings:
   paths:
   - "**.php"

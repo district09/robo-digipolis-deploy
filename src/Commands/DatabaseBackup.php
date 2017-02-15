@@ -2,7 +2,8 @@
 
 namespace DigipolisGent\Robo\Task\Deploy\Commands;
 
-trait DatabaseBackup {
+trait DatabaseBackup
+{
 
     use \DigipolisGent\Robo\Task\Deploy\Traits\DatabaseBackupTrait;
     use \DigipolisGent\Robo\Task\Deploy\Common\DatabaseCommand;
@@ -22,7 +23,8 @@ trait DatabaseBackup {
       'destination|d' => 'project.tar.gz',
       'destination-type|dtype' => 'local',
       'drupal' => false,
-    ]) {
+    ])
+    {
         $filesystemConfig = $opts['file-system-config']
             ?
             : $this->defaultFileSystemConfig();
