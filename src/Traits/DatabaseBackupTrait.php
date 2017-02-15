@@ -4,7 +4,8 @@ namespace DigipolisGent\Robo\Task\Deploy\Traits;
 
 use DigipolisGent\Robo\Task\Deploy\DatabaseBackup;
 
-trait DatabaseBackupTrait {
+trait DatabaseBackupTrait
+{
 
     /**
      * Creates a DatabaseBackup task.

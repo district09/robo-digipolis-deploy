@@ -22,8 +22,7 @@ trait DatabaseBackup {
       'destination|d' => 'project.tar.gz',
       'destination-type|dtype' => 'local',
       'drupal' => false,
-    ])
-    {
+    ]) {
         $filesystemConfig = $opts['file-system-config']
             ?
             : $this->defaultFileSystemConfig();

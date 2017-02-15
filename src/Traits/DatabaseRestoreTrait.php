@@ -4,7 +4,8 @@ namespace DigipolisGent\Robo\Task\Deploy\Traits;
 
 use DigipolisGent\Robo\Task\Deploy\DatabaseRestore;
 
-trait DatabaseRestoreTrait {
+trait DatabaseRestoreTrait
+{
 
     /**
      * Creates a DatabaseRestore task.

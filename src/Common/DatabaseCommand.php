@@ -2,7 +2,8 @@
 
 namespace DigipolisGent\Robo\Task\Deploy\Common;
 
-trait DatabaseCommand {
+trait DatabaseCommand
+{
 
     protected function defaultFileSystemConfig()
     {
@@ -14,7 +15,8 @@ trait DatabaseCommand {
         ];
     }
 
-    protected function defaultDbConfig($drupal = false) {
+    protected function defaultDbConfig($drupal = false)
+    {
       $dbConfig = [
           'default' => [
               'type' => 'mysql',
