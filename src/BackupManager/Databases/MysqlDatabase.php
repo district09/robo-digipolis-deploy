@@ -6,7 +6,7 @@ use BackupManager\Databases\MysqlDatabase as Mysql;
 
 class MysqlDatabase extends Mysql
 {
-
+    protected $tablesList = [];
     /**
      * Config for this database.
      *
@@ -174,12 +174,14 @@ class MysqlDatabase extends Mysql
 
     protected function expandTableNames()
     {
-        $dsn = 'mysql:host=' . $this->config['host']
-            . ';port=' . $this->config['port']
-            . ';dbname=' . $this->config['database'];
-        $db = new \PDO($dsn, $this->config['user'], $this->config['pass']);
-        $sql = $db->query('SHOW TABLES');
-        $tableList = $sql->fetchAll(\PDO::FETCH_COLUMN);
+        if (empty($this->tablesList)) {
+            $dsn = 'mysql:host=' . $this->config['host']
+                . ';port=' . $this->config['port']
+                . ';dbname=' . $this->config['database'];
+            $db = new \PDO($dsn, $this->config['user'], $this->config['pass']);
+            $sql = $db->query('SHOW TABLES');
+            $this->tableList = $sql->fetchAll(\PDO::FETCH_COLUMN);
+        }
         foreach (['ignoreTables', 'structureTables', 'tables'] as $tableOption) {
             // Table name expansion based on `*` wildcard.
             $expandedTables = array();
@@ -189,11 +191,16 @@ class MysqlDatabase extends Mysql
                     $pattern = '/^' . str_replace('*', '.*', $table) . '$/i';
                     // Merge those existing tables which match the pattern with the rest of
                     // the expanded table names.
-                    $expandedTables += preg_grep($pattern, $tableList);
+                    $expandedTables += preg_grep($pattern, $this->tableList);
                 }
             }
             $this->config[$tableOption] = array_unique(array_intersect($expandedTables, $tableList));
             sort($this->config[$tableOption]);
         }
+    }
+
+    public function setTablesList($tablesList)
+    {
+      $this->tablesList = $tablesList;
     }
 }
