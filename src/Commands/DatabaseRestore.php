@@ -2,7 +2,8 @@
 
 namespace DigipolisGent\Robo\Task\Deploy\Commands;
 
-trait DatabaseRestore {
+trait DatabaseRestore
+{
 
     use \DigipolisGent\Robo\Task\Deploy\Traits\DatabaseRestoreTrait;
     use \DigipolisGent\Robo\Task\Deploy\Common\DatabaseCommand;
@@ -22,7 +23,8 @@ trait DatabaseRestore {
       'source|s' => 'project.tar.gz',
       'source-type|stype' => 'local',
       'drupal' => false,
-    ]) {
+    ])
+    {
         $filesystemConfig = $opts['file-system-config']
             ?
             : $this->defaultFileSystemConfig();
