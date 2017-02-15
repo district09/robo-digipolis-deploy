@@ -2,17 +2,17 @@
 
 namespace DigipolisGent\Robo\Task\Deploy\Commands;
 
-trait DatabaseBackup {
+trait DatabaseRestore {
 
-    use \DigipolisGent\Robo\Task\Deploy\Traits\DatabaseBackupTrait;
+    use \DigipolisGent\Robo\Task\Deploy\Traits\DatabaseRestoreTrait;
     use \DigipolisGent\Robo\Task\Deploy\Common\DatabaseCommand;
 
-    public function digipolisDatabaseBackup($database = 'default', $opts = [
+    public function digipolisDatabaseRestore($database = 'default', $opts = [
       'file-system-config|fsconf' => null,
       'database-config|dbconf' => null,
       'compression|c' => 'tar',
-      'destination|d' => 'project.tar.gz',
-      'destination-type|dtype' => 'local',
+      'source|s' => 'project.tar.gz',
+      'source-type|stype' => 'local',
       'drupal' => false,
     ])
     {
@@ -22,10 +22,10 @@ trait DatabaseBackup {
         $dbConfig = $opts['database-config']
             ?
             : $this->defaultDbConfig($opts['drupal']);
-        $this->taskDatabaseBackup($filesystemConfig, $dbConfig)
+        $this->taskDatabaseRestore($filesystemConfig, $dbConfig)
             ->compression($opts['comporession'])
             ->database($database)
-            ->destination($opts['destination'], $opts['destination-type'])
+            ->source($opts['source'], $opts['source-type'])
             ->run();
     }
 }
