@@ -2,6 +2,7 @@
 
 namespace DigipolisGent\Robo\Task\Deploy\Traits;
 
+use DigipolisGent\Robo\Task\Deploy\SymlinkFolderFileContents;
 use Symfony\Component\Finder\Finder;
 
 trait SymlinkFolderFileContentsTrait
