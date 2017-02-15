@@ -13,6 +13,11 @@ class MysqlDatabaseTest extends \PHPUnit_Framework_TestCase
     {
         $unique = md5(uniqid());
         $database = new MysqlDatabase();
+        $database->setTablesList([
+            'users',
+            'cache',
+            'watchdog',
+        ]);
         $database->setConfig(
             [
                 'type' => 'mysql',
@@ -49,6 +54,11 @@ class MysqlDatabaseTest extends \PHPUnit_Framework_TestCase
     {
         $unique = md5(uniqid());
         $database = new MysqlDatabase();
+        $database->setTablesList([
+            'users',
+            'cache',
+            'watchdog',
+        ]);
         $database->setConfig(
             [
                 'type' => 'mysql',
@@ -85,6 +95,11 @@ class MysqlDatabaseTest extends \PHPUnit_Framework_TestCase
     {
         $unique = md5(uniqid());
         $database = new MysqlDatabase();
+        $database->setTablesList([
+            'users',
+            'cache',
+            'watchdog',
+        ]);
         $database->setConfig(
             [
                 'type' => 'mysql',
@@ -124,6 +139,11 @@ class MysqlDatabaseTest extends \PHPUnit_Framework_TestCase
     {
         $unique = md5(uniqid());
         $database = new MysqlDatabase();
+        $database->setTablesList([
+            'users',
+            'cache',
+            'watchdog',
+        ]);
         $database->setConfig(
             [
                 'type' => 'mysql',
@@ -161,6 +181,11 @@ class MysqlDatabaseTest extends \PHPUnit_Framework_TestCase
     {
         $unique = md5(uniqid());
         $database = new MysqlDatabase();
+        $database->setTablesList([
+            'users',
+            'cache',
+            'watchdog',
+        ]);
         $database->setConfig(
             [
                 'type' => 'mysql',
@@ -201,6 +226,11 @@ class MysqlDatabaseTest extends \PHPUnit_Framework_TestCase
     {
         $unique = md5(uniqid());
         $database = new MysqlDatabase();
+        $database->setTablesList([
+            'users',
+            'cache',
+            'watchdog',
+        ]);
         $database->setConfig(
             [
                 'type' => 'mysql',
