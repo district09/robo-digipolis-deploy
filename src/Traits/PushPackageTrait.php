@@ -5,7 +5,8 @@ namespace DigipolisGent\Robo\Task\Deploy\Traits;
 use DigipolisGent\Robo\Task\Deploy\PushPackage;
 use DigipolisGent\Robo\Task\Deploy\Ssh\Auth\AbstractAuth;
 
-trait PushPackageTrait {
+trait PushPackageTrait
+{
 
     /**
      * @param string $host

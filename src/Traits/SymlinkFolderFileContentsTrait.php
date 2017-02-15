@@ -4,7 +4,8 @@ namespace DigipolisGent\Robo\Task\Deploy\Traits;
 
 use Symfony\Component\Finder\Finder;
 
-trait SymlinkFolderFileContentsTrait {
+trait SymlinkFolderFileContentsTrait
+{
 
     /**
      * Creates a SymlinkFolderFileContents task.

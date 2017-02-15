@@ -34,9 +34,8 @@ trait PushPackage
             'port' => 22,
             'timeout' => 10,
         ]
-    )
-    {
-      $auth = $opts['key-file']
+    ) {
+        $auth = $opts['key-file']
             ? new KeyFile($user, $opts['key-file'], $opts['password'])
             : new Password($user, $opts['password']);
         $this->taskPushPackage($host, $auth)

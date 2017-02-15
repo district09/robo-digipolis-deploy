@@ -5,7 +5,8 @@ namespace DigipolisGent\Robo\Task\Deploy\Traits;
 use DigipolisGent\Robo\Task\Deploy\Scp;
 use DigipolisGent\Robo\Task\Deploy\Ssh\Auth\AbstractAuth;
 
-trait ScpTrait {
+trait ScpTrait
+{
 
     /**
      * @param string $host

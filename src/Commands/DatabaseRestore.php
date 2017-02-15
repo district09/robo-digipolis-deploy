@@ -22,8 +22,7 @@ trait DatabaseRestore {
       'source|s' => 'project.tar.gz',
       'source-type|stype' => 'local',
       'drupal' => false,
-    ])
-    {
+    ]) {
         $filesystemConfig = $opts['file-system-config']
             ?
             : $this->defaultFileSystemConfig();
