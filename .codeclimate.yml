@@ -23,10 +23,14 @@ engines:
     config:
       languages:
         php:
+          mass_threshold: 50
   fixme:
     enabled: true
   markdownlint:
     enabled: true
+    checks:
+      MD024:
+        enabled: false
 ratings:
   paths:
   - "**.php"
