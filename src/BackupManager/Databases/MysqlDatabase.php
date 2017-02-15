@@ -6,7 +6,7 @@ use BackupManager\Databases\MysqlDatabase as Mysql;
 
 class MysqlDatabase extends Mysql
 {
-
+    protected $tableList = [];
     /**
      * Config for this database.
      *
@@ -44,7 +44,7 @@ class MysqlDatabase extends Mysql
             'singleTransaction' => true,
             'extra' => '',
         ];
-
+        $this->expandTableNames();
         $command = '(mysqldump {{credentials}} {{tables}} {{options}} {{ignore}}';
         $credentials = $this->getCredentials();
         $tables = $this->getTables();
@@ -170,5 +170,39 @@ class MysqlDatabase extends Mysql
             $structureTables[] = escapeshellarg($table);
         }
         return implode(' ', $structureTables);
+    }
+
+    protected function expandTableNames()
+    {
+        if (empty($this->tableList)) {
+            $dsn = 'mysql:host=' . $this->config['host']
+                . ';port=' . $this->config['port']
+                . ';dbname=' . $this->config['database'];
+            $db = new \PDO($dsn, $this->config['user'], $this->config['pass']);
+            $sql = $db->query('SHOW TABLES');
+            $this->tableList = $sql->fetchAll(\PDO::FETCH_COLUMN);
+        }
+        foreach (['ignoreTables', 'structureTables', 'tables'] as $tableOption) {
+            // Table name expansion based on `*` wildcard.
+            $expandedTables = array();
+            foreach ($this->config[$tableOption] as $table) {
+                // Only deal with table names containing a wildcard.
+                if (strpos($table, '*') === false) {
+                    $expandedTables[] = $table;
+                    continue;
+                }
+                $pattern = '/^' . str_replace('*', '.*', $table) . '$/i';
+                // Merge those existing tables which match the pattern with the rest of
+                // the expanded table names.
+                $expandedTables += preg_grep($pattern, $this->tableList);
+            }
+            $this->config[$tableOption] = array_unique(array_intersect($expandedTables, $this->tableList));
+            sort($this->config[$tableOption]);
+        }
+    }
+
+    public function setTableList($tableList)
+    {
+        $this->tableList = $tableList;
     }
 }
