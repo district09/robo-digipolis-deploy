@@ -7,6 +7,14 @@ trait DatabaseBackup {
     use \DigipolisGent\Robo\Task\Deploy\Traits\DatabaseBackupTrait;
     use \DigipolisGent\Robo\Task\Deploy\Common\DatabaseCommand;
 
+    /**
+     * Command digipolis:database-backup.
+     *
+     * @param string $database
+     *   The database command argument.
+     * @param array $opts
+     *   The command options.
+     */
     public function digipolisDatabaseBackup($database = 'default', $opts = [
       'file-system-config|fsconf' => null,
       'database-config|dbconf' => null,

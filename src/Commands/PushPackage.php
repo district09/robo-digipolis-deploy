@@ -9,6 +9,20 @@ trait PushPackage
 {
     use \DigipolisGent\Robo\Task\Deploy\Traits\PushPackageTrait;
 
+    /**
+     * Command digipolis:push-package.
+     *
+     * @param string $user
+     *   The user command argument.
+     * @param string $host
+     *   The host command argument.
+     * @param string $package
+     *   The package command argument.
+     * @param string $destination
+     *   The destination command argument.
+     * @param array $opts
+     *   The command options.
+     */
     public function digipolisPushPackage(
         $user,
         $host,
