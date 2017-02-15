@@ -276,8 +276,8 @@ argument would have to be 'production'. Defaults to 'default'.
 ##### --file-system-config, -fsconf
 
 Path to a PHP file containing filesystem config as documented at
-<https://github.com/backup-manager/backup-manager>. Defaults to the current
-working directory of the local filesystem.
+<https://github.com/backup-manager/backup-manager>. Defaults to the root
+directory of the local filesystem.
 
 ##### --database-config, -dbconf
 
@@ -294,7 +294,8 @@ The compression to use for this backup. Defaults to `tar`.
 
 ##### --destination, -d
 
-The destination file for this backup. Defaults to `project.tar.gz`.
+The destination file for this backup. Defaults to `project.tar.gz` in the
+current working directory.
 
 ##### --destination-type, -dtype
 
@@ -321,8 +322,8 @@ argument would have to be 'production'. Defaults to 'default'.
 ##### --file-system-config, -fsconf
 
 Path to a PHP file containing filesystem config as documented at
-<https://github.com/backup-manager/backup-manager>. Defaults to the current
-working directory of the local filesystem.
+<https://github.com/backup-manager/backup-manager>. Defaults to the root
+directory of the local filesystem.
 
 ##### --database-config, -dbconf
 
@@ -339,7 +340,8 @@ The compression of the given backup. Defaults to `tar`.
 
 ##### --source, -s
 
-The source file to restore. Defaults to `project.tar.gz`.
+The source file to restore. Defaults to `project.tar.gz` in the current working
+directory.
 
 ##### --source-type, -stype
 
