@@ -185,7 +185,7 @@ class MysqlDatabase extends Mysql
             $expandedTables = array();
             foreach ($this->config[$tableOption] as $table) {
                 // Only deal with table names containing a wildcard.
-                if (strpos($table, '*') !== FALSE) {
+                if (strpos($table, '*') !== false) {
                     $pattern = '/^' . str_replace('*', '.*', $table) . '$/i';
                     // Merge those existing tables which match the pattern with the rest of
                     // the expanded table names.
