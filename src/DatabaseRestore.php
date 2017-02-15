@@ -2,7 +2,6 @@
 
 namespace DigipolisGent\Robo\Task\Deploy;
 
-use BackupManager\Filesystems\Destination;
 use DigipolisGent\Robo\Task\Deploy\BackupManager\Factory\BackupManagerFactory;
 use DigipolisGent\Robo\Task\Deploy\BackupManager\Factory\BackupManagerFactoryInterface;
 use Robo\Result;

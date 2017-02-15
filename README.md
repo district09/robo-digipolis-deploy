@@ -247,3 +247,148 @@ $dbConfig = [
     ],
 ];
 ```
+
+## Commands in this package
+
+This package provides default commands wich you can use in your `RoboFile.php`
+like so:
+
+```php
+class RoboFile extends \Robo\Tasks
+{
+    use \DigipolisGent\Robo\Task\Deploy\Commands\loadCommands;
+}
+```
+
+### digipolis:database-backup
+
+`vendor/bin/robo digipolis:database-backup [DATABASE] [OPTIONS]`
+
+#### Arguments
+
+##### DATABASE
+
+The database config key. See above for more details. In de given example, this
+argument would have to be 'production'. Defaults to 'default'.
+
+#### Options
+
+##### --file-system-config, -fsconf
+
+Path to a PHP file containing filesystem config as documented at
+<https://github.com/backup-manager/backup-manager>. Defaults to the root
+directory of the local filesystem.
+
+##### --database-config, -dbconf
+
+Path to a PHP file containing database config as documented at
+<https://github.com/backup-manager/backup-manager>. Defaults to a database with
+the name of the current working directory as database name, on `localhost` port
+`3306`, user `root` and an empty password. If the `--drupal` option is given and
+this option is skipped, the database config will be parsed from Drupal's
+`settings.php`.
+
+##### --compression, -c
+
+The compression to use for this backup. Defaults to `tar`.
+
+##### --destination, -d
+
+The destination file for this backup. Defaults to `project.tar.gz` in the
+current working directory.
+
+##### --destination-type, -dtype
+
+The destination type (e.g. `local`, `dropbox`, `ftp`). Defaults to `local`.
+
+##### --drupal
+
+Wether or not to parse the database config from Drupal's `settings.php`. See
+the documentation for `--database-config`.
+
+### digipolis:database-restore
+
+`vendor/bin/robo digipolis:database-restore [DATABASE] [OPTIONS]`
+
+#### Arguments
+
+##### DATABASE
+
+The database config key. See above for more details. In de given example, this
+argument would have to be 'production'. Defaults to 'default'.
+
+#### Options
+
+##### --file-system-config, -fsconf
+
+Path to a PHP file containing filesystem config as documented at
+<https://github.com/backup-manager/backup-manager>. Defaults to the root
+directory of the local filesystem.
+
+##### --database-config, -dbconf
+
+Path to a PHP file containing database config as documented at
+<https://github.com/backup-manager/backup-manager>. Defaults to a database with
+the name of the current working directory as database name, on `localhost` port
+`3306`, user `root` and an empty password. If the `--drupal` option is given and
+this option is skipped, the database config will be parsed from Drupal's
+`settings.php`.
+
+##### --compression, -c
+
+The compression of the given backup. Defaults to `tar`.
+
+##### --source, -s
+
+The source file to restore. Defaults to `project.tar.gz` in the current working
+directory.
+
+##### --source-type, -stype
+
+The source type (e.g. `local`, `dropbox`, `ftp`). Defaults to `local`.
+
+##### --drupal
+
+Wether or not to parse the database config from Drupal's `settings.php`. See
+the documentation for `--database-config`.
+
+### digipolis:push-package
+
+`vendor/bin/robo digipolis:push-package USER HOST PACKAGE [DESTINATION] [OPTIONS]`
+
+#### Arguments
+
+##### USER
+
+The user to connect to the host.
+
+##### HOST
+
+The host to connect to.
+
+##### PACKAGE
+
+The package (tar-file) to push.
+
+##### DESTINATION
+
+The destination folder on the server. Defaults to the home directory of the
+user.
+
+#### Options
+
+##### --password
+
+The password to connect to the host.
+
+##### --key-file
+
+The private key file to connect to the host.
+
+##### --port
+
+The port to connect on. Defaults to `22`.
+
+##### --timeout
+
+The timeout for the connection in seconds. Defaults to `10`.
