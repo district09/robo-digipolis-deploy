@@ -12,7 +12,7 @@ trait DatabaseCommand
         return [
             'local' => [
                 'type' => 'Local',
-                'root' => realpath(getcwd()),
+                'root' => '/',
             ],
         ];
     }
