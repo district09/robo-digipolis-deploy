@@ -13,7 +13,7 @@ class MysqlDatabaseTest extends \PHPUnit_Framework_TestCase
     {
         $unique = md5(uniqid());
         $database = new MysqlDatabase();
-        $database->setTablesList([
+        $database->setTableList([
             'users',
             'cache',
             'watchdog',
@@ -54,7 +54,7 @@ class MysqlDatabaseTest extends \PHPUnit_Framework_TestCase
     {
         $unique = md5(uniqid());
         $database = new MysqlDatabase();
-        $database->setTablesList([
+        $database->setTableList([
             'users',
             'cache',
             'watchdog',
@@ -95,7 +95,7 @@ class MysqlDatabaseTest extends \PHPUnit_Framework_TestCase
     {
         $unique = md5(uniqid());
         $database = new MysqlDatabase();
-        $database->setTablesList([
+        $database->setTableList([
             'users',
             'cache',
             'watchdog',
@@ -139,7 +139,7 @@ class MysqlDatabaseTest extends \PHPUnit_Framework_TestCase
     {
         $unique = md5(uniqid());
         $database = new MysqlDatabase();
-        $database->setTablesList([
+        $database->setTableList([
             'users',
             'cache',
             'watchdog',
@@ -181,7 +181,7 @@ class MysqlDatabaseTest extends \PHPUnit_Framework_TestCase
     {
         $unique = md5(uniqid());
         $database = new MysqlDatabase();
-        $database->setTablesList([
+        $database->setTableList([
             'users',
             'cache',
             'watchdog',
@@ -226,7 +226,7 @@ class MysqlDatabaseTest extends \PHPUnit_Framework_TestCase
     {
         $unique = md5(uniqid());
         $database = new MysqlDatabase();
-        $database->setTablesList([
+        $database->setTableList([
             'users',
             'cache',
             'watchdog',
