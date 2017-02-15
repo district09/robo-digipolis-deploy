@@ -194,13 +194,13 @@ class MysqlDatabase extends Mysql
                     $expandedTables += preg_grep($pattern, $this->tableList);
                 }
             }
-            $this->config[$tableOption] = array_unique(array_intersect($expandedTables, $tableList));
+            $this->config[$tableOption] = array_unique(array_intersect($expandedTables, $this->tableList));
             sort($this->config[$tableOption]);
         }
     }
 
     public function setTablesList($tablesList)
     {
-      $this->tablesList = $tablesList;
+        $this->tablesList = $tablesList;
     }
 }
