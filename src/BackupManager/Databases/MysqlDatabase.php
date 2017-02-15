@@ -199,8 +199,8 @@ class MysqlDatabase extends Mysql
         }
     }
 
-    public function setTablesList($tablesList)
+    public function setTableList($tableList)
     {
-        $this->tablesList = $tablesList;
+        $this->tablesList = $tableList;
     }
 }
