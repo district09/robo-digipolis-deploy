@@ -20,13 +20,16 @@ trait DatabaseRestore
       'file-system-config|fsconf' => null,
       'database-config|dbconf' => null,
       'compression|c' => 'tar',
-      'source|s' => 'project.tar.gz',
+      'source|s' => null,
       'source-type|stype' => 'local',
       'drupal' => false,
     ])
     {
+        $source = is_null($opts['source'])
+            ? realpath(getcwd()) . '/project.tar.gz'
+            : $opts['source'];
         $this->createDbTask('taskDatabaseRestore', $database, $opts)
-            ->source($opts['source'], $opts['source-type'])
+            ->source($source, $opts['source-type'])
             ->run();
     }
 }

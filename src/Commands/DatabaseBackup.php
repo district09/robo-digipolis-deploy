@@ -20,13 +20,16 @@ trait DatabaseBackup
       'file-system-config|fsconf' => null,
       'database-config|dbconf' => null,
       'compression|c' => 'tar',
-      'destination|d' => 'project.tar.gz',
+      'destination|d' => null,
       'destination-type|dtype' => 'local',
       'drupal' => false,
     ])
     {
+        $destination = is_null($opts['destination'])
+            ? realpath(getcwd()) . '/project.tar.gz'
+            : $opts['destination'];
         $this->createDbTask('taskDatabaseBackup', $database, $opts)
-            ->destination($opts['destination'], $opts['destination-type'])
+            ->destination($destination, $opts['destination-type'])
             ->run();
     }
 }
