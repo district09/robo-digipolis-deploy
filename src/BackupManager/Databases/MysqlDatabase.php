@@ -6,7 +6,7 @@ use BackupManager\Databases\MysqlDatabase as Mysql;
 
 class MysqlDatabase extends Mysql
 {
-    protected $tablesList = [];
+    protected $tableList = [];
     /**
      * Config for this database.
      *
@@ -174,7 +174,7 @@ class MysqlDatabase extends Mysql
 
     protected function expandTableNames()
     {
-        if (empty($this->tablesList)) {
+        if (empty($this->tableList)) {
             $dsn = 'mysql:host=' . $this->config['host']
                 . ';port=' . $this->config['port']
                 . ';dbname=' . $this->config['database'];
@@ -201,6 +201,6 @@ class MysqlDatabase extends Mysql
 
     public function setTableList($tableList)
     {
-        $this->tablesList = $tableList;
+        $this->tableList = $tableList;
     }
 }
