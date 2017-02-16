@@ -101,17 +101,23 @@ class PushPackageTest extends \PHPUnit_Framework_TestCase implements ContainerAw
         $sshAdapter
             ->expects($this->at(1))
             ->method('exec')
+            ->with('mkdir -p ' . $destinationFolder, null)
+            ->willReturn(true);
+
+        $sshAdapter
+            ->expects($this->at(3))
+            ->method('exec')
             ->with('cd ' . $destinationFolder, null)
             ->willReturn(true);
 
         $sshAdapter
-            ->expects($this->at(2))
+            ->expects($this->at(4))
             ->method('exec')
             ->with($untar, null)
             ->willReturn(true);
 
         $sshAdapter
-            ->expects($this->at(3))
+            ->expects($this->at(5))
             ->method('exec')
             ->with($remove, null)
             ->willReturn(true);

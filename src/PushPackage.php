@@ -212,6 +212,15 @@ class PushPackage extends BaseTask implements BuilderAwareInterface
         return $this->collectionBuilder()
             ->addTask(
                 $this
+                    ->taskSsh($this->host, $this->auth)
+                    ->port($this->port)
+                    ->timeout($this->timeout)
+                    ->sshFactory($this->sshFactory)
+                    // Make sure the destination dir exists.
+                    ->exec('mkdir -p ' . $this->destinationFolder)
+            )
+            ->addTask(
+                $this
                     // Upload the archive
                     ->taskScp($this->host, $this->auth)
                     ->scpFactory($this->scpFactory)
