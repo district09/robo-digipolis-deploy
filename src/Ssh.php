@@ -206,6 +206,17 @@ class Ssh extends BaseTask
             return Result::error($this, 'Could not change to remote directory ' . $this->remoteDir);
         }
         foreach ($this->commandStack as $command) {
+            $this->printTaskInfo(sprintf(
+                'Executing SSH method %s with arguments %s.',
+                $command['method'],
+                implode(',', array_map(
+                    function($v)
+                    {
+                        return print_r($v, true);
+                    },
+                    $command['arguments']
+                ))
+            ));
             $result = call_user_func_array([$ssh, $command['method']], $command['arguments']);
             if (!$result) {
                 $errorMessage .= sprintf(
