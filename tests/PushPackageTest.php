@@ -121,7 +121,7 @@ class PushPackageTest extends \PHPUnit_Framework_TestCase implements ContainerAw
         $adapter
             ->expects($this->once())
             ->method('put')
-            ->with($destinationFolder, $localFile)
+            ->with($destinationFolder . DIRECTORY_SEPARATOR . $localFile, $localFile)
             ->willReturn(true);
 
         // Run the task.
