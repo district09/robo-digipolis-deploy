@@ -217,7 +217,7 @@ class PushPackage extends BaseTask implements BuilderAwareInterface
                     ->scpFactory($this->scpFactory)
                     ->timeout($this->timeout)
                     ->port($this->port)
-                    ->put($this->destinationFolder, $this->package)
+                    ->put($this->destinationFolder . DIRECTORY_SEPARATOR . basename($this->package), $this->package)
             )
             ->addTask(
                 $this
