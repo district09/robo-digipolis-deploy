@@ -95,7 +95,6 @@ class PushPackageTest extends \PHPUnit_Framework_TestCase implements ContainerAw
         $localFile = 'path/to/local.tar.gz';
         $sshMap = array(
             array('mkdir -p ' . $destinationFolder, null, ''),
-            array('cd ' . $destinationFolder, null, ''),
             array($untar, null, ''),
         );
 
@@ -105,7 +104,7 @@ class PushPackageTest extends \PHPUnit_Framework_TestCase implements ContainerAw
             ->expects($this->at(0))
             ->method('login');
         $sshAdapter
-            ->expects($this->exactly(3))
+            ->expects($this->exactly(2))
             ->method('exec')
             ->will($this->returnValueMap($sshMap));
         $sshAdapter->expects($this->any())

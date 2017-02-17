@@ -232,7 +232,7 @@ class PushPackage extends BaseTask
         }
         $scp = call_user_func([$this->scpFactory, 'create'], $this->host, $this->auth, $this->port, $this->timeout);
         $this->printTaskInfo(sprintf(
-            'Uploadingfile %s on %s on port %s to directory %dir',
+            'Uploading file %s on %s on port %s to directory %s',
             $this->package,
             $this->host,
             $this->port,
@@ -245,7 +245,7 @@ class PushPackage extends BaseTask
         );
         if (!$uploadResult) {
             $errorMessage = sprintf(
-                'Could not %s file %s on %s on port %s to directory %dir',
+                'Could not %s file %s on %s on port %s to directory %s',
                 'upload',
                 $this->package,
                 $this->host,
@@ -263,7 +263,6 @@ class PushPackage extends BaseTask
             $this->host,
             $this->port
         ));
-        $ssh->exec($untar);
         $untarResult = $ssh->exec($untar);
         if ($untarResult !== false && $ssh->getExitStatus() !== 0) {
             $errorMessage = sprintf(
