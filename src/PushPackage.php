@@ -2,13 +2,14 @@
 
 namespace DigipolisGent\Robo\Task\Deploy;
 
+use DigipolisGent\Robo\Task\Deploy\Scp\Adapter\ScpAdapterInterface;
 use DigipolisGent\Robo\Task\Deploy\Scp\Factory\ScpFactoryInterface;
 use DigipolisGent\Robo\Task\Deploy\Scp\Factory\ScpPhpseclibFactory;
+use DigipolisGent\Robo\Task\Deploy\Ssh\Auth\AbstractAuth;
 use DigipolisGent\Robo\Task\Deploy\Ssh\Factory\SshFactoryInterface;
 use DigipolisGent\Robo\Task\Deploy\Ssh\Factory\SshPhpseclibFactory;
-use DigipolisGent\Robo\Task\Deploy\Ssh\Auth\AbstractAuth;
 use InvalidArgumentException;
-use Robo\Contract\BuilderAwareInterface;
+use Robo\Result;
 use Robo\Task\BaseTask;
 
 class PushPackage extends BaseTask
@@ -209,45 +210,53 @@ class PushPackage extends BaseTask
      */
     public function run()
     {
-        $mkdir = $this
-            ->taskSsh($this->host, $this->auth)
-            ->port($this->port)
-            ->timeout($this->timeout)
-            ->sshFactory($this->sshFactory)
-            // Make sure the destination dir exists.
-            ->exec('mkdir -p ' . $this->destinationFolder)
-            ->run();
-        if (!$mkdir->wasSuccessful()) {
-            return $mkdir;
-        }
 
-        $upload = $this
-            // Upload the archive
-            ->taskScp($this->host, $this->auth)
-            ->scpFactory($this->scpFactory)
-            ->timeout($this->timeout)
-            ->port($this->port)
-            ->put($this->destinationFolder . DIRECTORY_SEPARATOR . basename($this->package), $this->package)
-            ->run();
-
-        if (!$upload->wasSuccessful()) {
-            return $upload;
+        $ssh = call_user_func([$this->sshFactory, 'create'], $this->host, $this->port, $this->timeout);
+        $ssh->login($this->auth);
+        $mkdir = 'mkdir -p ' . $this->destinationFolder;
+        $mkdirResult = $ssh->exec($mkdir);
+        if ($mkdirResult !== false && $ssh->getExitStatus() !== 0) {
+            $errorMessage = sprintf(
+                'Could not execute %s on %s on port %s with message: %s',
+                $mkdir,
+                $this->host,
+                $this->port,
+                $ssh->getStdError()
+            );
+            return Result::error($this, $errorMessage);
         }
-
-        $untar = $this
-            ->taskSsh($this->host, $this->auth)
-            ->stopOnFail()
-            ->port($this->port)
-            ->timeout($this->timeout)
-            ->remoteDirectory($this->destinationFolder)
-            ->sshFactory($this->sshFactory)
-            // Extract the archive.
-            ->exec('tar -xzf ' . basename($this->package))
-            // Remove the archive.
-            ->exec('rm -rf ' . basename($this->package));
-        if (!$untar->wasSuccessful()) {
-            return $untar;
+        $scp = call_user_func([$this->scpFactory, 'create'], $this->host, $this->auth, $this->port, $this->timeout);
+        $uploadResult = $scp->put(
+            $this->destinationFolder . DIRECTORY_SEPARATOR . basename($this->package),
+            $this->package,
+            ScpAdapterInterface::SOURCE_LOCAL_FILE
+        );
+        if (!$uploadResult) {
+            $errorMessage = sprintf(
+                'Could not %s file %s on %s on port %s to directory %dir',
+                'upload',
+                $this->package,
+                $this->host,
+                $this->port,
+                $this->destinationFolder
+            );
+            return Result::error($this, $errorMessage);
         }
-        return \Robo\Result::success($this);
+        $untar = 'cd ' . $this->destinationFolder .
+            ' && tar -xzf ' . basename($this->package) .
+            ' && rm -rf ' . basename($this->package);
+        $ssh->exec($untar);
+        $untarResult = $ssh->exec($untar);
+        if ($untarResult !== false && $ssh->getExitStatus() !== 0) {
+            $errorMessage = sprintf(
+                'Could not execute %s on %s on port %s with message: %s',
+                $untar,
+                $this->host,
+                $this->port,
+                $ssh->getStdError()
+            );
+            return Result::error($this, $errorMessage);
+        }
+        return Result::success($this);
     }
 }
