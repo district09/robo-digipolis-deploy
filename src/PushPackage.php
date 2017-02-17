@@ -16,7 +16,6 @@ class PushPackage extends BaseTask
 {
     use loadTasks;
     use \Robo\Task\Remote\loadTasks;
-    use \Robo\TaskAccessor;
 
     /**
      * The server to scp to.
