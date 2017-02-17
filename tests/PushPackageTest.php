@@ -88,15 +88,15 @@ class PushPackageTest extends \PHPUnit_Framework_TestCase implements ContainerAw
         $auth = new None('user');
         $port = 8022;
         $timeout = 20;
-        $untar = 'tar -xzf local.tar.gz';
-        $remove = 'rm -rf local.tar.gz';
+        $untar = 'cd path/to/remote' .
+            ' && tar -xzf local.tar.gz' .
+            ' && rm -rf local.tar.gz';
         $destinationFolder = 'path/to/remote';
         $localFile = 'path/to/local.tar.gz';
         $sshMap = array(
             array('mkdir -p ' . $destinationFolder, null, ''),
             array('cd ' . $destinationFolder, null, ''),
             array($untar, null, ''),
-            array($remove, null, ''),
         );
 
         // Mock the ssh adapter.
@@ -105,7 +105,7 @@ class PushPackageTest extends \PHPUnit_Framework_TestCase implements ContainerAw
             ->expects($this->at(0))
             ->method('login');
         $sshAdapter
-            ->expects($this->exactly(4))
+            ->expects($this->exactly(3))
             ->method('exec')
             ->will($this->returnValueMap($sshMap));
         $sshAdapter->expects($this->any())
