@@ -202,8 +202,10 @@ class Ssh extends BaseTask
         $ssh = call_user_func([$this->sshFactory, 'create'], $this->host, $this->port, $this->timeout);
         $ssh->login($this->auth);
         $errorMessage = '';
-        if ($this->remoteDir && !$ssh->exec('cd ' . $this->remoteDir)) {
-            return Result::error($this, 'Could not change to remote directory ' . $this->remoteDir);
+        if ($this->remoteDir && $ssh->exec('cd ' . $this->remoteDir) !== false) {
+            if ($ssh->getExitStatus() !== 0) {
+                return Result::error($this, 'Could not change to remote directory ' . $this->remoteDir);
+            }
         }
         foreach ($this->commandStack as $command) {
             $this->printTaskInfo(sprintf(
@@ -217,8 +219,8 @@ class Ssh extends BaseTask
                     $command['arguments']
                 ))
             ));
-            call_user_func_array([$ssh, $command['method']], $command['arguments']);
-            if ($ssh->getExitStatus() !== 0) {
+            $result = call_user_func_array([$ssh, $command['method']], $command['arguments']);
+            if ($result !== false && $ssh->getExitStatus() !== 0) {
                 $errorMessage .= sprintf(
                     'Could not execute %s on %s on port %s with message: %s',
                     reset($command['arguments']),
