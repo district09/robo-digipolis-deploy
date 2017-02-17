@@ -88,10 +88,15 @@ class PushPackageTest extends \PHPUnit_Framework_TestCase implements ContainerAw
         $auth = new None('user');
         $port = 8022;
         $timeout = 20;
-        $untar = 'tar -xzf local.tar.gz';
-        $remove = 'rm -rf local.tar.gz';
+        $untar = 'cd path/to/remote' .
+            ' && tar -xzf local.tar.gz' .
+            ' && rm -rf local.tar.gz';
         $destinationFolder = 'path/to/remote';
         $localFile = 'path/to/local.tar.gz';
+        $sshMap = array(
+            array('mkdir -p ' . $destinationFolder, null, ''),
+            array($untar, null, ''),
+        );
 
         // Mock the ssh adapter.
         $sshAdapter = $this->mockSshAdapter($host, $port, $timeout);
@@ -99,29 +104,19 @@ class PushPackageTest extends \PHPUnit_Framework_TestCase implements ContainerAw
             ->expects($this->at(0))
             ->method('login');
         $sshAdapter
-            ->expects($this->at(1))
+            ->expects($this->exactly(2))
             ->method('exec')
-            ->with('cd ' . $destinationFolder, null)
-            ->willReturn(true);
-
-        $sshAdapter
-            ->expects($this->at(2))
-            ->method('exec')
-            ->with($untar, null)
-            ->willReturn(true);
-
-        $sshAdapter
-            ->expects($this->at(3))
-            ->method('exec')
-            ->with($remove, null)
-            ->willReturn(true);
+            ->will($this->returnValueMap($sshMap));
+        $sshAdapter->expects($this->any())
+            ->method('getExitStatus')
+            ->willReturn(0);
 
         // Mock the SCP adapter.
         $adapter = $this->mockScpAdapter($host, $auth, $port, $timeout);
         $adapter
             ->expects($this->once())
             ->method('put')
-            ->with($destinationFolder, $localFile)
+            ->with($destinationFolder . DIRECTORY_SEPARATOR . basename($localFile), $localFile)
             ->willReturn(true);
 
         // Run the task.

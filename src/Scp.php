@@ -234,6 +234,17 @@ class Scp extends BaseTask
         $scp = call_user_func([$this->scpFactory, 'create'], $this->host, $this->auth, $this->port, $this->timeout);
         $errorMessage = '';
         foreach ($this->commandStack as $command) {
+            $this->printTaskInfo(sprintf(
+                'Executing SCP method %s with arguments %s.',
+                $command['method'],
+                implode(',', array_map(
+                    function($v)
+                    {
+                        return print_r($v, true);
+                    },
+                    $command['arguments']
+                ))
+            ));
             $result = call_user_func_array([$scp, $command['method']], $command['arguments']);
             if (!$result) {
                 $errorMessage .= sprintf(
