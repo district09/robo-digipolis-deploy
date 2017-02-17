@@ -38,6 +38,9 @@ class SshTest extends \PHPUnit_Framework_TestCase implements ContainerAwareInter
         // Mock the scp adapter.
         $adapter = $this->getMockBuilder(SshAdapterInterface::class)
             ->getMock();
+        $adapter->expects($this->any())
+            ->method('getExitStatus')
+            ->willReturn(0);
 
         // Mock the factory.
         SshFactoryMock::setHost($host);
