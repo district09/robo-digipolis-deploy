@@ -217,8 +217,8 @@ class Ssh extends BaseTask
                     $command['arguments']
                 ))
             ));
-            $result = call_user_func_array([$ssh, $command['method']], $command['arguments']);
-            if (!$result) {
+            call_user_func_array([$ssh, $command['method']], $command['arguments']);
+            if ($ssh->getExitStatus() !== 0) {
                 $errorMessage .= sprintf(
                     'Could not execute %s on %s on port %s with message: %s',
                     reset($command['arguments']),
