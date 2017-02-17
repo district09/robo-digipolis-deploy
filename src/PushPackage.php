@@ -214,6 +214,12 @@ class PushPackage extends BaseTask
         $ssh = call_user_func([$this->sshFactory, 'create'], $this->host, $this->port, $this->timeout);
         $ssh->login($this->auth);
         $mkdir = 'mkdir -p ' . $this->destinationFolder;
+        $this->printTaskInfo(sprintf(
+            'Executing %s on %s on port %s',
+            $mkdir,
+            $this->host,
+            $this->port
+        ));
         $mkdirResult = $ssh->exec($mkdir);
         if ($mkdirResult !== false && $ssh->getExitStatus() !== 0) {
             $errorMessage = sprintf(
@@ -226,6 +232,13 @@ class PushPackage extends BaseTask
             return Result::error($this, $errorMessage);
         }
         $scp = call_user_func([$this->scpFactory, 'create'], $this->host, $this->auth, $this->port, $this->timeout);
+        $this->printTaskInfo(sprintf(
+            'Uploadingfile %s on %s on port %s to directory %dir',
+            $this->package,
+            $this->host,
+            $this->port,
+            $this->destinationFolder
+        ));
         $uploadResult = $scp->put(
             $this->destinationFolder . DIRECTORY_SEPARATOR . basename($this->package),
             $this->package,
@@ -245,6 +258,12 @@ class PushPackage extends BaseTask
         $untar = 'cd ' . $this->destinationFolder .
             ' && tar -xzf ' . basename($this->package) .
             ' && rm -rf ' . basename($this->package);
+        $this->printTaskInfo(sprintf(
+            'Executing %s on %s on port %s',
+            $untar,
+            $this->host,
+            $this->port
+        ));
         $ssh->exec($untar);
         $untarResult = $ssh->exec($untar);
         if ($untarResult !== false && $ssh->getExitStatus() !== 0) {
