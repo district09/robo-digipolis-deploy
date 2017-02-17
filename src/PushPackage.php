@@ -11,7 +11,7 @@ use InvalidArgumentException;
 use Robo\Contract\BuilderAwareInterface;
 use Robo\Task\BaseTask;
 
-class PushPackage extends BaseTask implements BuilderAwareInterface
+class PushPackage extends BaseTask
 {
     use loadTasks;
     use \Robo\Task\Remote\loadTasks;
@@ -209,37 +209,45 @@ class PushPackage extends BaseTask implements BuilderAwareInterface
      */
     public function run()
     {
-        return $this->collectionBuilder()
-            ->addTask(
-                $this
-                    ->taskSsh($this->host, $this->auth)
-                    ->port($this->port)
-                    ->timeout($this->timeout)
-                    ->sshFactory($this->sshFactory)
-                    // Make sure the destination dir exists.
-                    ->exec('mkdir -p ' . $this->destinationFolder)
-            )
-            ->addTask(
-                $this
-                    // Upload the archive
-                    ->taskScp($this->host, $this->auth)
-                    ->scpFactory($this->scpFactory)
-                    ->timeout($this->timeout)
-                    ->port($this->port)
-                    ->put($this->destinationFolder . DIRECTORY_SEPARATOR . basename($this->package), $this->package)
-            )
-            ->addTask(
-                $this
-                    ->taskSsh($this->host, $this->auth)
-                    ->port($this->port)
-                    ->timeout($this->timeout)
-                    ->remoteDirectory($this->destinationFolder)
-                    ->sshFactory($this->sshFactory)
-                    // Extract the archive.
-                    ->exec('tar -xzf ' . basename($this->package))
-                    // Remove the archive.
-                    ->exec('rm -rf ' . basename($this->package))
-            )
+        $mkdir = $this
+            ->taskSsh($this->host, $this->auth)
+            ->port($this->port)
+            ->timeout($this->timeout)
+            ->sshFactory($this->sshFactory)
+            // Make sure the destination dir exists.
+            ->exec('mkdir -p ' . $this->destinationFolder)
             ->run();
+        if (!$mkdir->wasSuccessful()) {
+            return $mkdir;
+        }
+
+        $upload = $this
+            // Upload the archive
+            ->taskScp($this->host, $this->auth)
+            ->scpFactory($this->scpFactory)
+            ->timeout($this->timeout)
+            ->port($this->port)
+            ->put($this->destinationFolder . DIRECTORY_SEPARATOR . basename($this->package), $this->package)
+            ->run();
+
+        if (!$upload->wasSuccessful()) {
+            return $upload;
+        }
+
+        $untar = $this
+            ->taskSsh($this->host, $this->auth)
+            ->stopOnFail()
+            ->port($this->port)
+            ->timeout($this->timeout)
+            ->remoteDirectory($this->destinationFolder)
+            ->sshFactory($this->sshFactory)
+            // Extract the archive.
+            ->exec('tar -xzf ' . basename($this->package))
+            // Remove the archive.
+            ->exec('rm -rf ' . basename($this->package));
+        if (!$untar->wasSuccessful()) {
+            return $untar;
+        }
+        return \Robo\Result::success($this);
     }
 }
