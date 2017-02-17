@@ -40,9 +40,6 @@ class PushPackageTest extends \PHPUnit_Framework_TestCase implements ContainerAw
         // Mock the scp adapter.
         $adapter = $this->getMockBuilder(SshAdapterInterface::class)
             ->getMock();
-        $adapter->expects($this->any())
-            ->method('getExitStatus')
-            ->willReturn(0);
 
         // Mock the factory.
         SshFactoryMock::setHost($host);
@@ -95,6 +92,12 @@ class PushPackageTest extends \PHPUnit_Framework_TestCase implements ContainerAw
         $remove = 'rm -rf local.tar.gz';
         $destinationFolder = 'path/to/remote';
         $localFile = 'path/to/local.tar.gz';
+        $sshMap = array(
+            array('mkdir -p ' . $destinationFolder, null, ''),
+            array('cd ' . $destinationFolder, null, ''),
+            array($untar, null, ''),
+            array($remove, null, ''),
+        );
 
         // Mock the ssh adapter.
         $sshAdapter = $this->mockSshAdapter($host, $port, $timeout);
@@ -102,28 +105,12 @@ class PushPackageTest extends \PHPUnit_Framework_TestCase implements ContainerAw
             ->expects($this->at(0))
             ->method('login');
         $sshAdapter
-            ->expects($this->at(1))
+            ->expects($this->exactly(4))
             ->method('exec')
-            ->with('mkdir -p ' . $destinationFolder, null)
-            ->willReturn(true);
-
-        $sshAdapter
-            ->expects($this->at(3))
-            ->method('exec')
-            ->with('cd ' . $destinationFolder, null)
-            ->willReturn(true);
-
-        $sshAdapter
-            ->expects($this->at(4))
-            ->method('exec')
-            ->with($untar, null)
-            ->willReturn(true);
-
-        $sshAdapter
-            ->expects($this->at(5))
-            ->method('exec')
-            ->with($remove, null)
-            ->willReturn(true);
+            ->will($this->returnValueMap($sshMap));
+        $sshAdapter->expects($this->any())
+            ->method('getExitStatus')
+            ->willReturn(0);
 
         // Mock the SCP adapter.
         $adapter = $this->mockScpAdapter($host, $auth, $port, $timeout);

@@ -38,9 +38,6 @@ class SshTest extends \PHPUnit_Framework_TestCase implements ContainerAwareInter
         // Mock the scp adapter.
         $adapter = $this->getMockBuilder(SshAdapterInterface::class)
             ->getMock();
-        $adapter->expects($this->any())
-            ->method('getExitStatus')
-            ->willReturn(0);
 
         // Mock the factory.
         SshFactoryMock::setHost($host);
@@ -76,6 +73,10 @@ class SshTest extends \PHPUnit_Framework_TestCase implements ContainerAwareInter
         $timeout = 20;
         $command = 'which composer';
         $dir = 'path/to/dir';
+        $map = array(
+            array('cd ' . $dir, null, ''),
+            array($command, null, ''),
+        );
 
         // Mock the ssh adapter.
         $adapter = $this->mockSshAdapter($host, $port, $timeout);
@@ -83,16 +84,12 @@ class SshTest extends \PHPUnit_Framework_TestCase implements ContainerAwareInter
             ->expects($this->at(0))
             ->method('login');
         $adapter
-            ->expects($this->at(1))
+            ->expects($this->exactly(2))
             ->method('exec')
-            ->with('cd ' . $dir, null)
-            ->willReturn(true);
-
-        $adapter
-            ->expects($this->at(2))
-            ->method('exec')
-            ->with($command, null)
-            ->willReturn(true);
+            ->will($this->returnValueMap($map));
+        $adapter->expects($this->exactly(2))
+            ->method('getExitStatus')
+            ->will($this->onConsecutiveCalls(0, 0));
 
         // Run the task.
         $result = $this
@@ -121,6 +118,10 @@ class SshTest extends \PHPUnit_Framework_TestCase implements ContainerAwareInter
         $timeout = 20;
         $command = 'which composer';
         $dir = 'path/to/dir';
+        $map = array(
+            array('cd ' . $dir, null, ''),
+            array($command, null, 1),
+        );
 
         // Mock the ssh adapter.
         $adapter = $this->mockSshAdapter($host, $port, $timeout);
@@ -128,16 +129,12 @@ class SshTest extends \PHPUnit_Framework_TestCase implements ContainerAwareInter
             ->expects($this->at(0))
             ->method('login');
         $adapter
-            ->expects($this->at(1))
+            ->expects($this->exactly(2))
             ->method('exec')
-            ->with('cd ' . $dir, null)
-            ->willReturn(true);
-
-        $adapter
-            ->expects($this->at(2))
-            ->method('exec')
-            ->with($command, null)
-            ->willReturn(false);
+            ->will($this->returnValueMap($map));
+         $adapter->expects($this->exactly(2))
+            ->method('getExitStatus')
+            ->will($this->onConsecutiveCalls(0, 1));
 
         $adapter
             ->expects($this->once())
@@ -180,6 +177,10 @@ class SshTest extends \PHPUnit_Framework_TestCase implements ContainerAwareInter
         $timeout = 20;
         $command = 'which composer';
         $dir = 'path/to/dir';
+        $map = array(
+            array('cd ' . $dir, null, ''),
+            array($command, null, 1),
+        );
 
         // Mock the ssh adapter.
         $adapter = $this->mockSshAdapter($host, $port, $timeout);
@@ -187,16 +188,12 @@ class SshTest extends \PHPUnit_Framework_TestCase implements ContainerAwareInter
             ->expects($this->at(0))
             ->method('login');
         $adapter
-            ->expects($this->at(1))
+            ->expects($this->exactly(2))
             ->method('exec')
-            ->with('cd ' . $dir, null)
-            ->willReturn(true);
-
-        $adapter
-            ->expects($this->at(2))
-            ->method('exec')
-            ->with($command, null)
-            ->willReturn(false);
+            ->will($this->returnValueMap($map));
+         $adapter->expects($this->exactly(2))
+            ->method('getExitStatus')
+            ->will($this->onConsecutiveCalls(0, 1));
 
         $adapter
             ->expects($this->once())
