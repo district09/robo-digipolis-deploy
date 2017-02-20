@@ -10,6 +10,6 @@ trait loadTasks
     use Traits\PushPackageTrait;
     use Traits\DatabaseBackupTrait;
     use Traits\DatabaseRestoreTrait;
-    use Traits\PartialCleanDirTrait;
+    use Traits\PartialCleanDirsTrait;
     use Traits\ClearOpCacheTrait;
 }
