@@ -2,7 +2,7 @@
 
 namespace DigipolisGent\Robo\Task\Deploy\Commands;
 
-use DigipolisGent\Robo\Task\Deploy\PartialCleanDirs;
+use DigipolisGent\Robo\Task\Deploy\PartialCleanDirs as PartialCleanDirsTask;
 
 trait PartialCleanDirs
 {
@@ -19,7 +19,7 @@ trait PartialCleanDirs
      * @param array $opts
      *   The command options.
      */
-    public function digipolisCleanDir($dirs, $opts = ['sort' => PartialCleanDirs::SORT_NAME])
+    public function digipolisCleanDir($dirs, $opts = ['sort' => PartialCleanDirsTask::SORT_NAME])
     {
         $dirsArg = array();
         foreach (array_map('trim', explode(',', $dirs)) as $dir) {

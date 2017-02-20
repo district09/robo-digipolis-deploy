@@ -2,7 +2,7 @@
 
 namespace DigipolisGent\Robo\Task\Deploy\Commands;
 
-use DigipolisGent\Robo\Task\Deploy\ClearOpCache;
+use DigipolisGent\Robo\Task\Deploy\ClearOpCache as ClearOpCacheTask;
 
 trait ClearOpCache
 {
@@ -18,7 +18,7 @@ trait ClearOpCache
      *   The command options.
      */
     public function digipolisClearOpCache(
-        $environment = ClearOpCache::ENV_FCGI,
+        $environment = ClearOpCacheTask::ENV_FCGI,
         $opts = [
             'host' => null,
         ]

@@ -10,7 +10,7 @@ use Robo\Robo;
 use Robo\TaskAccessor;
 use Symfony\Component\Console\Output\NullOutput;
 
-class PartialCleanDirTest extends \PHPUnit_Framework_TestCase implements ContainerAwareInterface, ConfigAwareInterface
+class PartialCleanDirsTest extends \PHPUnit_Framework_TestCase implements ContainerAwareInterface, ConfigAwareInterface
 {
 
     use \DigipolisGent\Robo\Task\Deploy\loadTasks;
@@ -74,28 +74,6 @@ class PartialCleanDirTest extends \PHPUnit_Framework_TestCase implements Contain
         $fs = $this->getMockBuilder(\Symfony\Component\Filesystem\Filesystem::class)
             ->getMock();
 
-        // Delete items in path/to/dir.
-        /*$fs->expects($this->any())
-            ->method('remove')
-            ->withConsecutive(array(
-                'dir5',
-                'dir6',
-                'dir7',
-                'dir8',
-                'dir9',
-                'dir10',
-                'dir11',
-                'dir4',
-                'dir5',
-                'dir6',
-                'dir7',
-                'dir8',
-                'dir9',
-                'dir10',
-                'dir11',
-                'dir11',
-            ));*/
-
         $fs->expects($this->at(0))
             ->method('remove')
             ->with('dir6');
@@ -146,7 +124,7 @@ class PartialCleanDirTest extends \PHPUnit_Framework_TestCase implements Contain
             ->method('remove')
             ->with('dir11');
 
-        $result = $this->taskPartialCleanDir($dirs, $finder, $fs)
+        $result = $this->taskPartialCleanDirs($dirs, $finder, $fs)
           ->run();
 
         $this->assertEquals('', $result->getMessage());
