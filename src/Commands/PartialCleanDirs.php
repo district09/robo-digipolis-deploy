@@ -23,12 +23,12 @@ trait PartialCleanDirs
     {
         $dirsArg = array();
         foreach (array_map('trim', explode(',', $dirs)) as $dir) {
-          $dirParts = explode(':', $dir);
-          if (count($dirParts) > 1) {
-            $dirsArg[$dirParts[0]] = $dirParts[1];
-            continue;
-          }
-          $dirsArg[] = $dirParts[0];
+            $dirParts = explode(':', $dir);
+            if (count($dirParts) > 1) {
+                $dirsArg[$dirParts[0]] = $dirParts[1];
+                continue;
+            }
+            $dirsArg[] = $dirParts[0];
         }
         $this->taskPartialCleanDirs($dirsArg)
             ->sortBy($opts['sort'])
