@@ -27,6 +27,9 @@
     "scripts": {
         "test": "robo --ansi test"
     },
+    "suggest": {
+        "gordalina/cachetool": "Required if the clear OPcache task is used."
+    },
     "license": "MIT",
     "authors": [
         {
