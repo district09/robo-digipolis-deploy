@@ -215,27 +215,27 @@ class PartialCleanDirs extends BaseTask
         switch ($this->sort) {
             case static::SORT_NAME:
                 $finder->sortByName();
-            break;
+                break;
 
             case static::SORT_TYPE:
                 $finder->sortByType();
-            break;
+                break;
 
             case static::SORT_ACCESS_TIME:
                 $finder->sortByAccessedTime();
-            break;
+                break;
 
             case static::SORT_MODIFIED_TIME:
                 $finder->sortByModifiedTime();
-            break;
+                break;
 
             case static::SORT_CHANGED_TIME:
                 $finder->sortByType();
-            break;
+                break;
 
             case $this->sort instanceof \Closure:
                 $finder->sort($this->sort);
-            break;
+                break;
         }
         foreach ($finder as $item) {
             if ($keep) {

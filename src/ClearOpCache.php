@@ -54,12 +54,12 @@ class ClearOpCache extends BaseTask implements CommandInterface
         switch ($this->environment) {
             case static::ENV_CLI:
                 $adapter = new \CacheTool\Adapter\Cli();
-            break;
+                break;
 
             case static::ENV_FCGI:
             default:
                 $adapter = new \CacheTool\Adapter\FastCGI($this->host);
-            break;
+                break;
         }
         $cachetool = \CacheTool\CacheTool::factory($adapter);
         $cachetool->opcache_reset();
