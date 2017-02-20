@@ -53,13 +53,13 @@ class ClearOpCache extends BaseTask implements CommandInterface
         $adapter = null;
         switch ($this->environment) {
             case static::ENV_CLI:
-              $adapter = new \CacheTool\Adapter\Cli();
-              break;
+                $adapter = new \CacheTool\Adapter\Cli();
+            break;
 
             case static::ENV_FCGI:
             default:
-              $adapter = new \CacheTool\Adapter\FastCGI($this->host);
-              break;
+                $adapter = new \CacheTool\Adapter\FastCGI($this->host);
+            break;
         }
         $cachetool = \CacheTool\CacheTool::factory($adapter);
         $cachetool->opcache_reset();
@@ -74,9 +74,8 @@ class ClearOpCache extends BaseTask implements CommandInterface
         $tool = $this->findExecutable('cachetool');
         $cmd = $tool . ' opcache:reset --' . $this->environment;
         if ($this->environment === static::ENV_FCGI && $this->host) {
-          $cmd .= '=' . $this->host;
+            $cmd .= '=' . $this->host;
         }
         return $cmd;
     }
-
 }
