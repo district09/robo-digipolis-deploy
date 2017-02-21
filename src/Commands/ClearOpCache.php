@@ -12,8 +12,8 @@ trait ClearOpCache
     /**
      * Command digipolis:database-backup.
      *
-     * @param string $database
-     *   The database command argument.
+     * @param string $environment
+     *   The environment.
      * @param array $opts
      *   The command options.
      */
