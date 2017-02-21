@@ -106,6 +106,48 @@ class SshTest extends \PHPUnit_Framework_TestCase implements ContainerAwareInter
         $this->assertEquals(0, $result->getExitCode());
     }
 
+    public function testPhysicalRemoteDir()
+    {
+        // Initialize variables.
+        $host = 'localhost';
+        $auth = new None('user');
+        $port = 8022;
+        $timeout = 20;
+        $command = 'which composer';
+        $dir = 'path/to/dir';
+        $map = array(
+            array('cd -P' . $dir, null, ''),
+            array($command, null, ''),
+        );
+
+        // Mock the ssh adapter.
+        $adapter = $this->mockSshAdapter($host, $port, $timeout);
+        $adapter
+            ->expects($this->at(0))
+            ->method('login');
+        $adapter
+            ->expects($this->exactly(2))
+            ->method('exec')
+            ->will($this->returnValueMap($map));
+        $adapter->expects($this->exactly(2))
+            ->method('getExitStatus')
+            ->will($this->onConsecutiveCalls(0, 0));
+
+        // Run the task.
+        $result = $this
+            ->taskSsh($host, $auth)
+            ->sshFactory(SshFactoryMock::class)
+            ->port($port)
+            ->timeout($timeout)
+            ->remoteDirectory($dir, true)
+            ->exec($command)
+            ->run();
+
+
+        $this->assertEquals('', $result->getMessage());
+        $this->assertEquals(0, $result->getExitCode());
+    }
+
     /**
      * Tests a failed 'get' run.
      */
