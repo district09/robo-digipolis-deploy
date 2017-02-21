@@ -69,6 +69,14 @@ class Ssh extends BaseTask
     protected $remoteDir;
 
     /**
+     * Whether or not to use the physical directory structure without following
+     * symbolic links.
+     *
+     * @var bool
+     */
+    protected $physicalRemoteDir = false;
+
+    /**
      * Creates a new Ssh task.
      *
      * @param string $host
@@ -133,12 +141,16 @@ class Ssh extends BaseTask
      *
      * @param string $directory
      *   The remote directory.
+     * @param bool $physical
+     *   Use the physical directory structure without following symbolic links
+     *   (-P argument for cd).
      *
      * @return $this
      */
-    public function remoteDirectory($directory)
+    public function remoteDirectory($directory, $physical = false)
     {
         $this->remoteDir = $directory;
+        $this->physicalRemoteDir = $physical;
 
         return $this;
     }
@@ -202,7 +214,8 @@ class Ssh extends BaseTask
         $ssh = call_user_func([$this->sshFactory, 'create'], $this->host, $this->port, $this->timeout);
         $ssh->login($this->auth);
         $errorMessage = '';
-        if ($this->remoteDir && $ssh->exec('cd ' . $this->remoteDir) !== false) {
+        $cd = 'cd ' . ($this->physicalRemoteDir ? '-P ': '') . $this->remoteDir;
+        if ($this->remoteDir && $ssh->exec($cd) !== false) {
             if ($ssh->getExitStatus() !== 0) {
                 return Result::error($this, 'Could not change to remote directory ' . $this->remoteDir);
             }
