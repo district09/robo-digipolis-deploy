@@ -25,6 +25,10 @@ trait DatabaseBackup
       'drupal' => false,
     ])
     {
+        if (is_callable([$this, 'readProperties']))
+        {
+            $this->readProperties();
+        }
         $destination = is_null($opts['destination'])
             ? realpath(getcwd()) . '/project.tar.gz'
             : $opts['destination'];

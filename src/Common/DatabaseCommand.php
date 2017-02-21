@@ -36,7 +36,7 @@ trait DatabaseCommand
 
     protected function parseDrupalDbConfig()
     {
-        $webDir = $this->getConfig()->get('digipolis.project.web', false);
+        $webDir = $this->getConfig()->get('digipolis.root.web', false);
         if (!$webDir) {
             return false;
         }
@@ -44,6 +44,8 @@ trait DatabaseCommand
         $finder = new \Symfony\Component\Finder\Finder();
         $finder->in($webDir . '/sites')->files()->name('settings.php');
         foreach ($finder as $settingsFile) {
+            $site_path = null;
+            $app_root = null;
             include_once $settingsFile->getRealpath();
             break;
         }
@@ -99,7 +101,7 @@ trait DatabaseCommand
             : $this->defaultDbConfig($opts['drupal']);
 
         return $this->{$task}($filesystemConfig, $dbConfig)
-            ->compression($opts['comporession'])
+            ->compression($opts['compression'])
             ->database($database);
     }
 }
