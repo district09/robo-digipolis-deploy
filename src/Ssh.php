@@ -130,7 +130,8 @@ class Ssh extends BaseTask
     {
         $this->commandStack[] = [
             'method' => 'exec',
-            'arguments' => [$this->receiveCommand($command), $callback]
+            'command' => $this->receiveCommand($command),
+            'callback' => $callback,
         ];
 
         return $this;
@@ -214,31 +215,25 @@ class Ssh extends BaseTask
         $ssh = call_user_func([$this->sshFactory, 'create'], $this->host, $this->port, $this->timeout);
         $ssh->login($this->auth);
         $errorMessage = '';
-        $cd = 'cd ' . ($this->physicalRemoteDir ? '-P ': '') . $this->remoteDir;
-        if ($this->remoteDir && $ssh->exec($cd) !== false) {
-            if ($ssh->getExitStatus() !== 0) {
-                return Result::error($this, 'Could not change to remote directory ' . $this->remoteDir);
-            }
+        $cd = '';
+        if ($this->remoteDir) {
+            $cd = 'cd ' . ($this->physicalRemoteDir ? '-P ': '') . $this->remoteDir . ' && ';
         }
         foreach ($this->commandStack as $command) {
             $this->printTaskInfo(sprintf(
-                'Executing SSH method %s with arguments %s.',
+                'Executing SSH method %s with arguments %s in folder %s.',
                 $command['method'],
-                implode(',', array_map(
-                    function($v)
-                    {
-                        return print_r($v, true);
-                    },
-                    $command['arguments']
-                ))
+                $command['command'],
+                $this->remoteDir
             ));
-            $result = call_user_func_array([$ssh, $command['method']], $command['arguments']);
+            $result = call_user_func_array([$ssh, $command['method']], [$cd . $command['command'], $command['callback']]);
             if ($result !== false && $ssh->getExitStatus() !== 0) {
                 $errorMessage .= sprintf(
-                    'Could not execute %s on %s on port %s with message: %s',
-                    reset($command['arguments']),
+                    'Could not execute %s on %s on port %s in folder %s with message: %s',
+                    $cd . $command['command'],
                     $this->host,
                     $this->port,
+                    $this->remoteDir,
                     $ssh->getStdError()
                 );
                 if ($this->stopOnFail) {
