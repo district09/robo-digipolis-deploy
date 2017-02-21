@@ -166,7 +166,10 @@ class PartialCleanDirs extends BaseTask
 
     /**
      * What to sort the folder items by. The last x items (as set by the dir()
-     * method) returned after the sort method will be kept.
+     * method) returned after the sort method will be kept. When using one of
+     * the PartialCleanDir::SORT_* constants, items will be sorted ascending. To
+     * overwrite this behavior you should provide your own sort function as the
+     * $sort parameter.
      *
      * @param string|\Closure $sort
      *   One of the PartialCleanDir::SORT_* constants or an anonymous function. The
