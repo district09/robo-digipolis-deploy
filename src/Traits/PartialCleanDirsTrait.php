@@ -3,6 +3,7 @@
 namespace DigipolisGent\Robo\Task\Deploy\Traits;
 
 use DigipolisGent\Robo\Task\Deploy\PartialCleanDirs;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
 trait PartialCleanDirsTrait
@@ -23,7 +24,7 @@ trait PartialCleanDirsTrait
      * @return \DigipolisGent\Robo\Task\Deploy\PartialCleanDirs
      *   The partial clean directory task.
      */
-    protected function taskPartialCleanDirs($dirs, Finder $finder = null, $fs = null)
+    protected function taskPartialCleanDirs($dirs, Finder $finder = null, Filesystem $fs = null)
     {
         return $this->task(PartialCleanDirs::class, $dirs, $finder, $fs);
     }
