@@ -85,7 +85,7 @@ class PartialCleanDirs extends BaseTask
      * @param null|\Symfony\Component\Filesystem\Filesystem $fs
      *   Filesystem component to manipulate files.
      */
-    public function __construct(array $dirs, $finder = null, $fs = null)
+    public function __construct(array $dirs, Finder $finder = null, Filesystem $fs = null)
     {
         $this->dirs($dirs);
         $this->finder = is_null($finder)
