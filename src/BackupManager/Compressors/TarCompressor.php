@@ -20,7 +20,11 @@ class TarCompressor extends Compressor
      */
     public function getCompressCommandLine($inputPath)
     {
-        return 'tar -zcf ' . escapeshellarg($inputPath);
+        return 'tar -zcf '
+            . escapeshellarg($this->getCompressedPath($inputPath))
+            . ' --directory=' . escapeshellarg(dirname($inputPath))
+            . ' ' . escapeshellarg(basename($inputPath))
+            . ' && rm -rf ' . escapeshellarg($inputPath);
     }
 
     /**
@@ -28,7 +32,12 @@ class TarCompressor extends Compressor
      */
     public function getDecompressCommandLine($outputPath)
     {
-        return 'tar -zxf ' . escapeshellarg($outputPath);
+        return 'tar -zxf '
+            . escapeshellarg($outputPath)
+            . ' --directory=' . escapeshellarg(dirname($outputPath))
+            . ' --transform=' . escapeshellarg('s,.*,' . $this->getDecompressedPath(basename($outputPath)) . ',')
+            . ' && rm -rf ' . escapeshellarg($outputPath);
+
     }
 
     /**

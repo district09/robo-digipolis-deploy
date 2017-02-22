@@ -19,7 +19,7 @@ trait DatabaseBackup
     public function digipolisDatabaseBackup($database = 'default', $opts = [
       'file-system-config|fsconf' => null,
       'database-config|dbconf' => null,
-      'compression|c' => 'tar',
+      'compression|c' => 'gzip',
       'destination|d' => null,
       'destination-type|dtype' => 'local',
       'drupal' => false,
