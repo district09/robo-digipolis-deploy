@@ -32,6 +32,15 @@ trait DatabaseBackup
         $destination = is_null($opts['destination'])
             ? realpath(getcwd()) . '/project.tar.gz'
             : $opts['destination'];
+        if (is_null($opts['file-system-config'])) {
+            $opts['file-system-config'] = [
+                $opts['destination-type'] => [
+                    'type' => ucfirst($opts['destination-type']),
+                    'root' => realpath(dirname($destination)),
+                ],
+            ];
+            $destination = basename($destination);
+        }
         return $this->createDbTask('taskDatabaseBackup', $database, $opts)
             ->destination($destination, $opts['destination-type'])
             ->run();
