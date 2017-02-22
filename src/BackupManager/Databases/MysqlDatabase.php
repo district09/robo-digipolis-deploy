@@ -70,6 +70,21 @@ class MysqlDatabase extends Mysql
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getRestoreCommandLine($inputPath)
+    {
+        return sprintf('mysql --host=%s --port=%s --user=%s --password=%s %s -e "source %s"',
+            escapeshellarg($this->config['host']),
+            escapeshellarg($this->config['port']),
+            escapeshellarg($this->config['user']),
+            escapeshellarg($this->config['pass']),
+            escapeshellarg($this->config['database']),
+            $inputPath
+        );
+    }
+
+    /**
      * Get the credential options for the command.
      *
      * @return string

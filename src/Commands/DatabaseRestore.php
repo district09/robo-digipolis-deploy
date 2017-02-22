@@ -19,12 +19,16 @@ trait DatabaseRestore
     public function digipolisDatabaseRestore($database = 'default', $opts = [
       'file-system-config|fsconf' => null,
       'database-config|dbconf' => null,
-      'compression|c' => 'tar',
+      'compression|c' => 'gzip',
       'source|s' => null,
       'source-type|stype' => 'local',
       'drupal' => false,
     ])
     {
+        if (is_callable([$this, 'readProperties']))
+        {
+            $this->readProperties();
+        }
         $source = is_null($opts['source'])
             ? realpath(getcwd()) . '/project.tar.gz'
             : $opts['source'];
