@@ -59,7 +59,7 @@ trait DatabaseCommand
                 'host' => $config['host'],
                 'port' => isset($config['port']) ? $config['port'] : '3306',
                 'user' => $config['username'],
-                'pass' => $config['pass'],
+                'pass' => $config['password'],
                 'database' => $config['database'],
                 'structureTables' => [
                     'batch',

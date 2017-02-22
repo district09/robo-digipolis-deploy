@@ -28,7 +28,7 @@ trait DatabaseRestore
         $source = is_null($opts['source'])
             ? realpath(getcwd()) . '/project.tar.gz'
             : $opts['source'];
-        $this->createDbTask('taskDatabaseRestore', $database, $opts)
+        return $this->createDbTask('taskDatabaseRestore', $database, $opts)
             ->source($source, $opts['source-type'])
             ->run();
     }

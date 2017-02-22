@@ -147,12 +147,12 @@ class DatabaseBackup extends BaseTask
      */
     public function run()
     {
-        /**
-         * The backup manager
-         * @var \DigipolisGent\Robo\Task\Deploy\BackupManager\Adapter\BackupManagerAdapterInterface
-         */
-        $manager = call_user_func([$this->backupManagerFactory, 'create'], $this->filesystemConfig, $this->dbConfig);
         try {
+            /**
+             * The backup manager
+             * @var \DigipolisGent\Robo\Task\Deploy\BackupManager\Adapter\BackupManagerAdapterInterface
+             */
+            $manager = call_user_func([$this->backupManagerFactory, 'create'], $this->filesystemConfig, $this->dbConfig);
             if (empty($this->destinations)) {
                 $this->destination(getcwd());
             }
