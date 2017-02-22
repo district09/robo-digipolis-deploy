@@ -22,6 +22,6 @@ class BackupManagerFactory implements BackupManagerFactoryInterface
         // Add all default compressors.
         $compressorProvider = CompressorProviderFactory::create();
 
-        return new BackupManagerAdapter(Manager($filesystemProvider, $databaseProvider, $compressorProvider));
+        return new BackupManagerAdapter(new Manager($filesystemProvider, $databaseProvider, $compressorProvider));
     }
 }
