@@ -17,11 +17,11 @@ class TarCompressorTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($compressor->handles('zip'));
         $this->assertFalse($compressor->handles($unique));
         $this->assertEquals(
-            'tar -zcf ' . escapeshellarg($unique),
+            "tar -zcf " . escapeshellarg($unique . '.tar.gz') . " --directory='.' " . escapeshellarg($unique) . " && rm -rf " . escapeshellarg($unique),
             $compressor->getCompressCommandLine($unique)
         );
         $this->assertEquals(
-            'tar -zxf ' . escapeshellarg($unique . '.tar.gz'),
+            "tar -zxf " . escapeshellarg($unique . '.tar.gz') . " --directory='.' --transform=" . escapeshellarg('s,.*,' . $unique . ',') . " && rm -rf " . escapeshellarg($unique . '.tar.gz'),
             $compressor->getDecompressCommandLine($unique . '.tar.gz')
         );
         $this->assertEquals(
