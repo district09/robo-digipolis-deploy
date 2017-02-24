@@ -229,13 +229,16 @@ class Ssh extends BaseTask
             $result = call_user_func_array([$ssh, $command['method']], [$cd . $command['command'], $command['callback']]);
             if ($result !== false && $ssh->getExitStatus() !== 0) {
                 $errorMessage .= sprintf(
-                    'Could not execute %s on %s on port %s in folder %s with message: %s',
+                    'Could not execute %s on %s on port %s in folder %s with message: %s.',
                     $cd . $command['command'],
                     $this->host,
                     $this->port,
                     $this->remoteDir,
                     $ssh->getStdError()
                 );
+                if ($ssh->isTimeout()) {
+                    $errorMessage .= ' Connection timed out.';
+                }
                 if ($this->stopOnFail) {
                     return Result::error($this, $errorMessage);
                 }
