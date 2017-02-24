@@ -19,16 +19,29 @@ trait DatabaseBackup
     public function digipolisDatabaseBackup($database = 'default', $opts = [
       'file-system-config|fsconf' => null,
       'database-config|dbconf' => null,
-      'compression|c' => 'tar',
+      'compression|c' => 'gzip',
       'destination|d' => null,
       'destination-type|dtype' => 'local',
       'drupal' => false,
     ])
     {
+        if (is_callable([$this, 'readProperties']))
+        {
+            $this->readProperties();
+        }
         $destination = is_null($opts['destination'])
             ? realpath(getcwd()) . '/project.tar.gz'
             : $opts['destination'];
-        $this->createDbTask('taskDatabaseBackup', $database, $opts)
+        if (is_null($opts['file-system-config'])) {
+            $opts['file-system-config'] = [
+                $opts['destination-type'] => [
+                    'type' => ucfirst($opts['destination-type']),
+                    'root' => realpath(dirname($destination)),
+                ],
+            ];
+            $destination = basename($destination);
+        }
+        return $this->createDbTask('taskDatabaseBackup', $database, $opts)
             ->destination($destination, $opts['destination-type'])
             ->run();
     }

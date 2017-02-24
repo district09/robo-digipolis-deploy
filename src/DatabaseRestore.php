@@ -154,12 +154,12 @@ class DatabaseRestore extends BaseTask
      */
     public function run()
     {
-        /**
-         * The backup manager
-         * @var \DigipolisGent\Robo\Task\Deploy\BackupManager\Adapter\BackupManagerAdapterInterface
-         */
-        $manager = call_user_func([$this->backupManagerFactory, 'create'], $this->filesystemConfig, $this->dbConfig);
         try {
+            /**
+             * The backup manager
+             * @var \DigipolisGent\Robo\Task\Deploy\BackupManager\Adapter\BackupManagerAdapterInterface
+             */
+            $manager = call_user_func([$this->backupManagerFactory, 'create'], $this->filesystemConfig, $this->dbConfig);
             if (!isset($this->sourcePath)) {
                 $this->source(getcwd());
             }

@@ -11,4 +11,6 @@ trait loadCommands
         DatabaseBackup::createDbTask insteadof DatabaseRestore;
     }
     use PushPackage;
+    use ClearOpCache;
+    use PartialCleanDirs;
 }
