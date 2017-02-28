@@ -213,8 +213,10 @@ class Ssh extends BaseTask
     public function run()
     {
         $ssh = call_user_func([$this->sshFactory, 'create'], $this->host, $this->port, $this->timeout);
+        $this->startTimer();
         $ssh->login($this->auth);
         $errorMessage = '';
+        $message = '';
         $cd = '';
         if ($this->remoteDir) {
             $cd = 'cd ' . ($this->physicalRemoteDir ? '-P ': '') . $this->remoteDir . ' && ';
@@ -227,7 +229,7 @@ class Ssh extends BaseTask
                 $this->remoteDir
             ));
             $result = call_user_func_array([$ssh, $command['method']], [$cd . $command['command'], $command['callback']]);
-            if ($result !== false && $ssh->getExitStatus() !== 0) {
+            if ($result === false || $ssh->getExitStatus() !== 0) {
                 $errorMessage .= sprintf(
                     'Could not execute %s on %s on port %s in folder %s with message: %s.',
                     $cd . $command['command'],
@@ -237,16 +239,18 @@ class Ssh extends BaseTask
                     $ssh->getStdError()
                 );
                 if ($ssh->isTimeout()) {
-                    $errorMessage .= ' Connection timed out.';
+                    $errorMessage .= ' Connection timed out. Execution took ' . $this->getExecutionTime() . ', timeout is set at ' . $this->timeout . '.';
                 }
                 if ($this->stopOnFail) {
                     return Result::error($this, $errorMessage);
                 }
                 $errorMessage .= "\n";
             }
+            $message .= $result;
         }
+        $this->stopTimer();
         return $errorMessage
             ? Result::error($this, $errorMessage)
-            : Result::success($this);
+            : Result::success($this, $message);
     }
 }
