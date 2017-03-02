@@ -89,7 +89,7 @@ class PartialCleanDirs extends BaseTask
     {
         $this->dirs($dirs);
         $this->finder = is_null($finder)
-            ? (new Finder())->files()->ignoreDotFiles(false)->ignoreVCS(false)
+            ? (new Finder())->ignoreDotFiles(false)->ignoreVCS(false)
             : $finder;
         $this->fs = is_null($fs)
             ? new Filesystem()
