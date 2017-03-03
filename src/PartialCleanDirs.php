@@ -240,11 +240,12 @@ class PartialCleanDirs extends BaseTask
                 $finder->sort($this->sort);
                 break;
         }
-        foreach ($finder as $item) {
-            if ($keep) {
-                $keep--;
-                continue;
-            }
+        $items = iterator_to_array($finder->getIterator());
+        if ($keep) {
+            array_splice($items, -$keep);
+        }
+        foreach ($items as $item) {
+            $this->fs->chmod($item, 0777, 0000, true);
             $this->fs->remove($item);
         }
     }

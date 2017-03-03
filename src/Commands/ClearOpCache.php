@@ -23,6 +23,6 @@ trait ClearOpCache
             'host' => null,
         ]
     ) {
-        $this->taskClearOpCache($environment, $opts['host'])->run();
+        return $this->taskClearOpCache($environment, $opts['host'])->run();
     }
 }
