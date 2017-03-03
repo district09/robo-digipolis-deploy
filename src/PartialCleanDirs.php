@@ -3,6 +3,7 @@
 namespace DigipolisGent\Robo\Task\Deploy;
 
 use Robo\Task\BaseTask;
+use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
@@ -245,7 +246,11 @@ class PartialCleanDirs extends BaseTask
             array_splice($items, -$keep);
         }
         foreach ($items as $item) {
-            $this->fs->chmod($item, 0777, 0000, true);
+            try {
+                $this->fs->chmod($item, 0777, 0000, true);
+            } catch (IOException $e) {
+                // If chmod didn't work, try to remove anyway.
+            }
             $this->fs->remove($item);
         }
     }
