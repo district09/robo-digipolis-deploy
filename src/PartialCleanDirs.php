@@ -248,9 +248,6 @@ class PartialCleanDirs extends BaseTask
         while ($items) {
             $item = reset($items);
             try {
-                // To delete a file we must have access rights on the parent
-                // directory.
-                $this->fs->chmod(dirname(realpath($item)), 0777, 0000, true);
                 $this->fs->chmod($item, 0777, 0000, true);
             } catch (IOException $e) {
                 // If chmod didn't work and the exception contains a path, try
