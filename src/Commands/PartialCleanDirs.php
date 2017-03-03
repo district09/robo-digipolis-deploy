@@ -30,7 +30,7 @@ trait PartialCleanDirs
             }
             $dirsArg[] = $dirParts[0];
         }
-        $this->taskPartialCleanDirs($dirsArg)
+        return $this->taskPartialCleanDirs($dirsArg)
             ->sortBy($opts['sort'])
             ->run();
     }
