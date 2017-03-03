@@ -74,98 +74,98 @@ class PartialCleanDirsTest extends \PHPUnit_Framework_TestCase implements Contai
         $fs = $this->getMockBuilder(\Symfony\Component\Filesystem\Filesystem::class)
             ->getMock();
 
-        $fs->expects($this->at(0))
+        $fs->expects($this->at(1))
             ->method('chmod')
             ->with('dir1', 0777, 0000, true);
-        $fs->expects($this->at(1))
+        $fs->expects($this->at(2))
             ->method('remove')
             ->with('dir1');
-        $fs->expects($this->at(2))
-            ->method('chmod')
-            ->with('dir2', 0777, 0000, true);
-        $fs->expects($this->at(3))
-            ->method('remove')
-            ->with('dir2');
         $fs->expects($this->at(4))
             ->method('chmod')
-            ->with('dir3', 0777, 0000, true);
+            ->with('dir2', 0777, 0000, true);
         $fs->expects($this->at(5))
             ->method('remove')
-            ->with('dir3');
-        $fs->expects($this->at(6))
-            ->method('chmod')
-            ->with('dir4', 0777, 0000, true);
+            ->with('dir2');
         $fs->expects($this->at(7))
-            ->method('remove')
-            ->with('dir4');
-        $fs->expects($this->at(8))
             ->method('chmod')
-            ->with('dir5', 0777, 0000, true);
-        $fs->expects($this->at(9))
+            ->with('dir3', 0777, 0000, true);
+        $fs->expects($this->at(8))
             ->method('remove')
-            ->with('dir5');
+            ->with('dir3');
         $fs->expects($this->at(10))
             ->method('chmod')
-            ->with('dir6', 0777, 0000, true);
+            ->with('dir4', 0777, 0000, true);
         $fs->expects($this->at(11))
+            ->method('remove')
+            ->with('dir4');
+        $fs->expects($this->at(13))
+            ->method('chmod')
+            ->with('dir5', 0777, 0000, true);
+        $fs->expects($this->at(14))
+            ->method('remove')
+            ->with('dir5');
+        $fs->expects($this->at(16))
+            ->method('chmod')
+            ->with('dir6', 0777, 0000, true);
+        $fs->expects($this->at(17))
             ->method('remove')
             ->with('dir6');
 
         // Delete items in path/to/dir2.
-        $fs->expects($this->at(12))
+        $fs->expects($this->at(19))
             ->method('chmod')
             ->with('dir1', 0777, 0000, true);
-        $fs->expects($this->at(13))
+        $fs->expects($this->at(20))
             ->method('remove')
             ->with('dir1');
-        $fs->expects($this->at(14))
-            ->method('chmod')
-            ->with('dir2', 0777, 0000, true);
-        $fs->expects($this->at(15))
-            ->method('remove')
-            ->with('dir2');
-        $fs->expects($this->at(16))
-            ->method('chmod')
-            ->with('dir3', 0777, 0000, true);
-        $fs->expects($this->at(17))
-            ->method('remove')
-            ->with('dir3');
-        $fs->expects($this->at(18))
-            ->method('chmod')
-            ->with('dir4', 0777, 0000, true);
-        $fs->expects($this->at(19))
-            ->method('remove')
-            ->with('dir4');
-        $fs->expects($this->at(20))
-            ->method('chmod')
-            ->with('dir5', 0777, 0000, true);
-        $fs->expects($this->at(21))
-            ->method('remove')
-            ->with('dir5');
         $fs->expects($this->at(22))
             ->method('chmod')
-            ->with('dir6', 0777, 0000, true);
+            ->with('dir2', 0777, 0000, true);
         $fs->expects($this->at(23))
             ->method('remove')
+            ->with('dir2');
+        $fs->expects($this->at(25))
+            ->method('chmod')
+            ->with('dir3', 0777, 0000, true);
+        $fs->expects($this->at(26))
+            ->method('remove')
+            ->with('dir3');
+        $fs->expects($this->at(28))
+            ->method('chmod')
+            ->with('dir4', 0777, 0000, true);
+        $fs->expects($this->at(29))
+            ->method('remove')
+            ->with('dir4');
+        $fs->expects($this->at(31))
+            ->method('chmod')
+            ->with('dir5', 0777, 0000, true);
+        $fs->expects($this->at(32))
+            ->method('remove')
+            ->with('dir5');
+        $fs->expects($this->at(34))
+            ->method('chmod')
+            ->with('dir6', 0777, 0000, true);
+        $fs->expects($this->at(35))
+            ->method('remove')
             ->with('dir6');
-        $fs->expects($this->at(24))
+        $fs->expects($this->at(37))
             ->method('chmod')
             ->with('dir7', 0777, 0000, true);
-        $fs->expects($this->at(25))
+        $fs->expects($this->at(38))
             ->method('remove')
             ->with('dir7');
-        $fs->expects($this->at(26))
+        $fs->expects($this->at(40))
             ->method('chmod')
             ->with('dir8', 0777, 0000, true);
-        $fs->expects($this->at(27))
+        $fs->expects($this->at(41))
             ->method('remove')
             ->with('dir8');
 
         // Delete items in path/to/dir3.
-        $fs->expects($this->at(28))
+        $fs->expects($this->at(43))
             ->method('chmod')
             ->with('dir1', 0777, 0000, true);
-        $fs->expects($this->at(29))
+        $fs->expects($this->at(44))
             ->method('remove')
             ->with('dir1');
 
