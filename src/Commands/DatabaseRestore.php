@@ -22,7 +22,6 @@ trait DatabaseRestore
       'compression|c' => 'gzip',
       'source|s' => null,
       'source-type|stype' => 'local',
-      'drupal' => false,
     ])
     {
         if (is_callable([$this, 'readProperties']))
