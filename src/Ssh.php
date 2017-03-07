@@ -282,8 +282,7 @@ class Ssh extends BaseTask
     protected function commandCallback($callback)
     {
         return (
-            function ($output) use ($callback)
-            {
+            function ($output) use ($callback) {
                 $this->printTaskInfo($output);
                 if (is_callable($callback)) {
                     return call_user_func($callback, $output);
