@@ -194,6 +194,13 @@ class PartialCleanDirs extends BaseTask
         try {
             foreach ($this->dirs as $dir => $keep) {
                 if ($dir) {
+                    $this->printTaskInfo(
+                        sprintf(
+                            'Cleaning directory %s while keeping %d items.',
+                            $dir,
+                            $keep
+                        )
+                    );
                     $this->cleanDir($dir, $keep);
                 }
             }

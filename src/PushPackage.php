@@ -211,15 +211,16 @@ class PushPackage extends BaseTask
     {
 
         $ssh = call_user_func([$this->sshFactory, 'create'], $this->host, $this->port, $this->timeout);
+        $this->printTaskInfo(sprintf('Establishing SFTP connection to %s on port %s.', $this->host, $this->port));
         $ssh->login($this->auth);
         $mkdir = 'mkdir -p ' . $this->destinationFolder;
         $this->printTaskInfo(sprintf(
-            'Executing %s on %s on port %s',
-            $mkdir,
+            '%s@%s:~$ %s',
+            $this->auth->getUser(),
             $this->host,
-            $this->port
+            $mkdir
         ));
-        $mkdirResult = $ssh->exec($mkdir);
+        $mkdirResult = $ssh->exec($mkdir, [$this, 'printTaskInfo']);
         if ($mkdirResult !== false && $ssh->getExitStatus() !== 0) {
             $errorMessage = sprintf(
                 'Could not execute %s on %s on port %s with message: %s',
@@ -232,7 +233,7 @@ class PushPackage extends BaseTask
         }
         $scp = call_user_func([$this->scpFactory, 'create'], $this->host, $this->auth, $this->port, $this->timeout);
         $this->printTaskInfo(sprintf(
-            'Uploading file %s on %s on port %s to directory %s',
+            'Uploading file %s on %s on port %s to directory %s.',
             $this->package,
             $this->host,
             $this->port,
@@ -245,7 +246,7 @@ class PushPackage extends BaseTask
         );
         if (!$uploadResult) {
             $errorMessage = sprintf(
-                'Could not %s file %s on %s on port %s to directory %s',
+                'Could not %s file %s on %s on port %s to directory %s.',
                 'upload',
                 $this->package,
                 $this->host,
@@ -258,15 +259,15 @@ class PushPackage extends BaseTask
             ' && tar -xzf ' . basename($this->package) .
             ' && rm -rf ' . basename($this->package);
         $this->printTaskInfo(sprintf(
-            'Executing %s on %s on port %s',
-            $untar,
+            '%s@%s:~$ %s',
+            $this->auth->getUser(),
             $this->host,
-            $this->port
+            $untar
         ));
-        $untarResult = $ssh->exec($untar);
+        $untarResult = $ssh->exec($untar, [$this, 'printTaskInfo']);
         if ($untarResult !== false && $ssh->getExitStatus() !== 0) {
             $errorMessage = sprintf(
-                'Could not execute %s on %s on port %s with message: %s',
+                'Could not execute %s on %s on port %s with message: %s.',
                 $untar,
                 $this->host,
                 $this->port,
