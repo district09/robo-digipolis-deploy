@@ -163,6 +163,15 @@ class DatabaseRestore extends BaseTask
             if (!isset($this->sourcePath)) {
                 $this->source(getcwd());
             }
+            $this->printTaskInfo(
+                sprintf(
+                    'Restoring %s backup from %s to database %s using %s compression.',
+                    $this->sourceType,
+                    $this->sourcePath,
+                    $this->database,
+                    $this->compression
+                )
+            );
             $manager->makeRestore()->run($this->sourceType, $this->sourcePath, $this->database, $this->compression);
         } catch (\Exception $e) {
             return Result::fromException($this, $e);

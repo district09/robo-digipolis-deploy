@@ -156,6 +156,7 @@ class DatabaseBackup extends BaseTask
             if (empty($this->destinations)) {
                 $this->destination(getcwd());
             }
+            $this->printTaskInfo(sprintf('Creating database backup with %s compression.', $this->compression));
             $manager->makeBackup()->run($this->database, $this->destinations, $this->compression);
         } catch (\Exception $e) {
             return Result::fromException($this, $e);

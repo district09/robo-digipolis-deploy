@@ -61,6 +61,7 @@ class ClearOpCache extends BaseTask implements CommandInterface
                 $adapter = new \CacheTool\Adapter\FastCGI($this->host);
                 break;
         }
+        $this->printTaskInfo(sprintf('Resetting opcache for %s.', $this->environment));
         $cachetool = \CacheTool\CacheTool::factory($adapter);
         $cachetool->opcache_reset();
         return Result::success($this);

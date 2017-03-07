@@ -6,8 +6,6 @@ use phpseclib\Net\SSH2;
 
 class None extends AbstractAuth
 {
-    protected $user;
-
     public function __construct($user)
     {
         $this->user = $user;
