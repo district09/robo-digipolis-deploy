@@ -212,13 +212,19 @@ class Ssh extends BaseTask
      */
     public function run()
     {
-        $ssh = call_user_func([$this->sshFactory, 'create'], $this->host, $this->port, $this->timeout);
+        $ssh = call_user_func(
+            [$this->sshFactory, 'create'],
+            $this->host,
+            $this->port,
+            $this->timeout
+        );
         $this->startTimer();
         $ssh->login($this->auth);
         $errorMessage = '';
         $cd = '';
         if ($this->remoteDir) {
-            $cd = 'cd ' . ($this->physicalRemoteDir ? '-P ': '') . $this->remoteDir . ' && ';
+            $opt = $this->physicalRemoteDir ? '-P ': '';
+            $cd = 'cd ' . $opt . $this->remoteDir . ' && ';
         }
         foreach ($this->commandStack as $command) {
             $this->printTaskInfo(sprintf(
@@ -228,7 +234,16 @@ class Ssh extends BaseTask
                 $this->remoteDir,
                 $command['command']
             ));
-            $result = call_user_func_array([$ssh, $command['method']], [$cd . $command['command'], $this->commandCallback($command['callback'])]);
+            $result = call_user_func_array(
+                [
+                    $ssh,
+                    $command['method'],
+                ],
+                [
+                    $cd . $command['command'],
+                    $this->commandCallback($command['callback']),
+                ]
+            );
             if ($result === false || $ssh->getExitStatus() !== 0) {
                 $errorMessage .= sprintf(
                     'Could not execute %s on %s on port %s in folder %s with message: %s.',
@@ -239,7 +254,12 @@ class Ssh extends BaseTask
                     $ssh->getStdError()
                 );
                 if ($ssh->isTimeout()) {
-                    $errorMessage .= ' Connection timed out. Execution took ' . $this->getExecutionTime() . ', timeout is set at ' . $this->timeout . '.';
+                    $errorMessage .= ' ';
+                    $errorMessage .= sprintf(
+                        'Connection timed out. Execution took %s, timeout is set at %s seconds.',
+                        $this->getExecutionTime(),
+                        $this->timeout
+                    );
                 }
                 if ($this->stopOnFail) {
                     return Result::error($this, $errorMessage);

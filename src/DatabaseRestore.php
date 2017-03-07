@@ -159,7 +159,11 @@ class DatabaseRestore extends BaseTask
              * The backup manager
              * @var \DigipolisGent\Robo\Task\Deploy\BackupManager\Adapter\BackupManagerAdapterInterface
              */
-            $manager = call_user_func([$this->backupManagerFactory, 'create'], $this->filesystemConfig, $this->dbConfig);
+            $manager = call_user_func(
+                [$this->backupManagerFactory, 'create'],
+                $this->filesystemConfig,
+                $this->dbConfig
+            );
             if (!isset($this->sourcePath)) {
                 $this->source(getcwd());
             }
@@ -172,7 +176,12 @@ class DatabaseRestore extends BaseTask
                     $this->compression
                 )
             );
-            $manager->makeRestore()->run($this->sourceType, $this->sourcePath, $this->database, $this->compression);
+            $manager->makeRestore()->run(
+                $this->sourceType,
+                $this->sourcePath,
+                $this->database,
+                $this->compression
+            );
         } catch (\Exception $e) {
             return Result::fromException($this, $e);
         }

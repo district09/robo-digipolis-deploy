@@ -210,8 +210,17 @@ class PushPackage extends BaseTask
     public function run()
     {
 
-        $ssh = call_user_func([$this->sshFactory, 'create'], $this->host, $this->port, $this->timeout);
-        $this->printTaskInfo(sprintf('Establishing SFTP connection to %s on port %s.', $this->host, $this->port));
+        $ssh = call_user_func(
+            [$this->sshFactory, 'create'],
+            $this->host,
+            $this->port,
+            $this->timeout
+        );
+        $this->printTaskInfo(sprintf(
+            'Establishing SFTP connection to %s on port %s.',
+            $this->host,
+            $this->port
+        ));
         $ssh->login($this->auth);
         $mkdir = 'mkdir -p ' . $this->destinationFolder;
         $this->printTaskInfo(sprintf(
@@ -231,7 +240,13 @@ class PushPackage extends BaseTask
             );
             return Result::error($this, $errorMessage);
         }
-        $scp = call_user_func([$this->scpFactory, 'create'], $this->host, $this->auth, $this->port, $this->timeout);
+        $scp = call_user_func(
+            [$this->scpFactory, 'create'],
+            $this->host,
+            $this->auth,
+            $this->port,
+            $this->timeout
+        );
         $this->printTaskInfo(sprintf(
             'Uploading file %s on %s on port %s to directory %s.',
             $this->package,
