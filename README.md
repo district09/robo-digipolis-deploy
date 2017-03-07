@@ -284,9 +284,7 @@ directory of the local filesystem.
 Path to a PHP file containing database config as documented at
 <https://github.com/backup-manager/backup-manager>. Defaults to a database with
 the name of the current working directory as database name, on `localhost` port
-`3306`, user `root` and an empty password. If the `--drupal` option is given and
-this option is skipped, the database config will be parsed from Drupal's
-`settings.php`.
+`3306`, user `root` and an empty password.
 
 ##### --compression, -c
 
@@ -300,11 +298,6 @@ current working directory.
 ##### --destination-type, -dtype
 
 The destination type (e.g. `local`, `dropbox`, `ftp`). Defaults to `local`.
-
-##### --drupal
-
-Wether or not to parse the database config from Drupal's `settings.php`. See
-the documentation for `--database-config`.
 
 ### digipolis:database-restore
 
@@ -330,9 +323,7 @@ directory of the local filesystem.
 Path to a PHP file containing database config as documented at
 <https://github.com/backup-manager/backup-manager>. Defaults to a database with
 the name of the current working directory as database name, on `localhost` port
-`3306`, user `root` and an empty password. If the `--drupal` option is given and
-this option is skipped, the database config will be parsed from Drupal's
-`settings.php`.
+`3306`, user `root` and an empty password.
 
 ##### --compression, -c
 
@@ -346,11 +337,6 @@ directory.
 ##### --source-type, -stype
 
 The source type (e.g. `local`, `dropbox`, `ftp`). Defaults to `local`.
-
-##### --drupal
-
-Wether or not to parse the database config from Drupal's `settings.php`. See
-the documentation for `--database-config`.
 
 ### digipolis:push-package
 
