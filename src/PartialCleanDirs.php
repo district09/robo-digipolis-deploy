@@ -256,29 +256,29 @@ class PartialCleanDirs extends BaseTask
     protected function doSort(Finder $finder)
     {
         switch ($this->sort) {
-           case static::SORT_NAME:
-               $finder->sortByName();
-               break;
+            case static::SORT_NAME:
+                $finder->sortByName();
+                break;
 
-           case static::SORT_TYPE:
-               $finder->sortByType();
-               break;
+            case static::SORT_TYPE:
+                $finder->sortByType();
+                break;
 
-           case static::SORT_ACCESS_TIME:
-               $finder->sortByAccessedTime();
-               break;
+            case static::SORT_ACCESS_TIME:
+                $finder->sortByAccessedTime();
+                break;
 
-           case static::SORT_MODIFIED_TIME:
-               $finder->sortByModifiedTime();
-               break;
+            case static::SORT_MODIFIED_TIME:
+                $finder->sortByModifiedTime();
+                break;
 
-           case static::SORT_CHANGED_TIME:
-               $finder->sortByType();
-               break;
+            case static::SORT_CHANGED_TIME:
+                $finder->sortByType();
+                break;
 
-           case $this->sort instanceof \Closure:
-               $finder->sort($this->sort);
-               break;
+            case $this->sort instanceof \Closure:
+                $finder->sort($this->sort);
+                break;
         }
     }
 }
