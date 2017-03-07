@@ -223,31 +223,7 @@ class PartialCleanDirs extends BaseTask
         $finder = clone $this->finder;
         $finder->in($dir);
         $finder->depth(0);
-        switch ($this->sort) {
-            case static::SORT_NAME:
-                $finder->sortByName();
-                break;
-
-            case static::SORT_TYPE:
-                $finder->sortByType();
-                break;
-
-            case static::SORT_ACCESS_TIME:
-                $finder->sortByAccessedTime();
-                break;
-
-            case static::SORT_MODIFIED_TIME:
-                $finder->sortByModifiedTime();
-                break;
-
-            case static::SORT_CHANGED_TIME:
-                $finder->sortByType();
-                break;
-
-            case $this->sort instanceof \Closure:
-                $finder->sort($this->sort);
-                break;
-        }
+        $this->doSort($finder);
         $items = iterator_to_array($finder->getIterator());
         if ($keep) {
             array_splice($items, -$keep);
@@ -268,6 +244,41 @@ class PartialCleanDirs extends BaseTask
             }
             $this->fs->remove($item);
             array_shift($items);
+        }
+    }
+
+    /**
+     * Sort the finder.
+     *
+     * @param Finder $finder
+     *   The finder to sort.
+     */
+    protected function doSort(Finder $finder)
+    {
+        switch ($this->sort) {
+           case static::SORT_NAME:
+               $finder->sortByName();
+               break;
+
+           case static::SORT_TYPE:
+               $finder->sortByType();
+               break;
+
+           case static::SORT_ACCESS_TIME:
+               $finder->sortByAccessedTime();
+               break;
+
+           case static::SORT_MODIFIED_TIME:
+               $finder->sortByModifiedTime();
+               break;
+
+           case static::SORT_CHANGED_TIME:
+               $finder->sortByType();
+               break;
+
+           case $this->sort instanceof \Closure:
+               $finder->sort($this->sort);
+               break;
         }
     }
 }

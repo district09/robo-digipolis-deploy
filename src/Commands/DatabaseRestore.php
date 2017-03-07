@@ -25,8 +25,7 @@ trait DatabaseRestore
       'drupal' => false,
     ])
     {
-        if (is_callable([$this, 'readProperties']))
-        {
+        if (is_callable([$this, 'readProperties'])) {
             $this->readProperties();
         }
         $source = is_null($opts['source'])
