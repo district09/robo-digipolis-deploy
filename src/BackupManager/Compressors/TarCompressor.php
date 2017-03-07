@@ -37,7 +37,6 @@ class TarCompressor extends Compressor
             . ' --directory=' . escapeshellarg(dirname($outputPath))
             . ' --transform=' . escapeshellarg('s,.*,' . $this->getDecompressedPath(basename($outputPath)) . ',')
             . ' && rm -rf ' . escapeshellarg($outputPath);
-
     }
 
     /**

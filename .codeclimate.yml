@@ -23,7 +23,7 @@ engines:
     config:
       languages:
         php:
-          mass_threshold: 50
+          mass_threshold: 80
   fixme:
     enabled: true
   markdownlint:
