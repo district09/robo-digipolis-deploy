@@ -238,7 +238,7 @@ class Ssh extends BaseTask
                 '%s@%s:%s$ %s',
                 $this->auth->getUser(),
                 $this->host,
-                $this->remoteDir,
+                $this->remoteDir ? $this->remoteDir : '~',
                 $command['command']
             ));
             $result = call_user_func_array(
