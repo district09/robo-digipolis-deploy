@@ -24,8 +24,7 @@ trait DatabaseBackup
       'destination-type|dtype' => 'local',
     ])
     {
-        if (is_callable([$this, 'readProperties']))
-        {
+        if (is_callable([$this, 'readProperties'])) {
             $this->readProperties();
         }
         $destination = is_null($opts['destination'])

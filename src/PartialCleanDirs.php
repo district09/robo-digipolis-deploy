@@ -194,6 +194,13 @@ class PartialCleanDirs extends BaseTask
         try {
             foreach ($this->dirs as $dir => $keep) {
                 if ($dir) {
+                    $this->printTaskInfo(
+                        sprintf(
+                            'Cleaning directory %s while keeping %d items.',
+                            $dir,
+                            $keep
+                        )
+                    );
                     $this->cleanDir($dir, $keep);
                 }
             }
@@ -216,6 +223,38 @@ class PartialCleanDirs extends BaseTask
         $finder = clone $this->finder;
         $finder->in($dir);
         $finder->depth(0);
+        $this->doSort($finder);
+        $items = iterator_to_array($finder->getIterator());
+        if ($keep) {
+            array_splice($items, -$keep);
+        }
+        while ($items) {
+            $item = reset($items);
+            try {
+                $this->fs->chmod($item, 0777, 0000, true);
+            } catch (IOException $e) {
+                // If chmod didn't work and the exception contains a path, try
+                // to remove anyway.
+                $path = $e->getPath();
+                if ($path && realpath($path) !== realpath($item)) {
+                    $this->fs->remove($path);
+                    continue;
+                }
+
+            }
+            $this->fs->remove($item);
+            array_shift($items);
+        }
+    }
+
+    /**
+     * Sort the finder.
+     *
+     * @param Finder $finder
+     *   The finder to sort.
+     */
+    protected function doSort(Finder $finder)
+    {
         switch ($this->sort) {
             case static::SORT_NAME:
                 $finder->sortByName();
@@ -240,27 +279,6 @@ class PartialCleanDirs extends BaseTask
             case $this->sort instanceof \Closure:
                 $finder->sort($this->sort);
                 break;
-        }
-        $items = iterator_to_array($finder->getIterator());
-        if ($keep) {
-            array_splice($items, -$keep);
-        }
-        while ($items) {
-            $item = reset($items);
-            try {
-                $this->fs->chmod($item, 0777, 0000, true);
-            } catch (IOException $e) {
-                // If chmod didn't work and the exception contains a path, try
-                // to remove anyway.
-                $path = $e->getPath();
-                if ($path && realpath($path) !== realpath($item)) {
-                    $this->fs->remove($path);
-                    continue;
-                }
-
-            }
-            $this->fs->remove($item);
-            array_shift($items);
         }
     }
 }

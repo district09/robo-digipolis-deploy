@@ -24,8 +24,7 @@ trait DatabaseRestore
       'source-type|stype' => 'local',
     ])
     {
-        if (is_callable([$this, 'readProperties']))
-        {
+        if (is_callable([$this, 'readProperties'])) {
             $this->readProperties();
         }
         $source = is_null($opts['source'])

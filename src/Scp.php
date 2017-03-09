@@ -238,8 +238,7 @@ class Scp extends BaseTask
                 'Executing SCP method %s with arguments %s.',
                 $command['method'],
                 implode(',', array_map(
-                    function($v)
-                    {
+                    function ($v) {
                         return print_r($v, true);
                     },
                     $command['arguments']

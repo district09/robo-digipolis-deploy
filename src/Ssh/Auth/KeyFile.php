@@ -7,8 +7,6 @@ use phpseclib\Crypt\RSA;
 
 class KeyFile extends AbstractAuth
 {
-    protected $user;
-
     protected $publicKeyFile;
 
     protected $privateKeyFile;
