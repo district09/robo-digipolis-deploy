@@ -77,6 +77,13 @@ class Ssh extends BaseTask
     protected $physicalRemoteDir = false;
 
     /**
+     * Stores ssh command output.
+     *
+     * @var string
+     */
+    protected $output = '';
+
+    /**
      * Creates a new Ssh task.
      *
      * @param string $host
@@ -244,6 +251,8 @@ class Ssh extends BaseTask
                     $this->commandCallback($command['callback']),
                 ]
             );
+            $this->printTaskInfo($this->output);
+            $this->output = '';
             if ($result === false || $ssh->getExitStatus() !== 0) {
                 $errorMessage .= sprintf(
                     'Could not execute %s on %s on port %s in folder %s with message: %s.',
@@ -283,7 +292,7 @@ class Ssh extends BaseTask
     {
         return (
             function ($output) use ($callback) {
-                $this->printTaskInfo($output);
+                $this->output .= $output;
                 if (is_callable($callback)) {
                     return call_user_func($callback, $output);
                 }
