@@ -152,11 +152,23 @@ class DatabaseBackup extends BaseTask
              * The backup manager
              * @var \DigipolisGent\Robo\Task\Deploy\BackupManager\Adapter\BackupManagerAdapterInterface
              */
-            $manager = call_user_func([$this->backupManagerFactory, 'create'], $this->filesystemConfig, $this->dbConfig);
+            $manager = call_user_func(
+                [$this->backupManagerFactory, 'create'],
+                $this->filesystemConfig,
+                $this->dbConfig
+            );
             if (empty($this->destinations)) {
                 $this->destination(getcwd());
             }
-            $manager->makeBackup()->run($this->database, $this->destinations, $this->compression);
+            $this->printTaskInfo(sprintf(
+                'Creating database backup with %s compression.',
+                $this->compression
+            ));
+            $manager->makeBackup()->run(
+                $this->database,
+                $this->destinations,
+                $this->compression
+            );
         } catch (\Exception $e) {
             return Result::fromException($this, $e);
         }

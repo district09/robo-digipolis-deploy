@@ -22,11 +22,9 @@ trait DatabaseRestore
       'compression|c' => 'gzip',
       'source|s' => null,
       'source-type|stype' => 'local',
-      'drupal' => false,
     ])
     {
-        if (is_callable([$this, 'readProperties']))
-        {
+        if (is_callable([$this, 'readProperties'])) {
             $this->readProperties();
         }
         $source = is_null($opts['source'])

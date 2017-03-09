@@ -212,23 +212,38 @@ class Ssh extends BaseTask
      */
     public function run()
     {
-        $ssh = call_user_func([$this->sshFactory, 'create'], $this->host, $this->port, $this->timeout);
+        $ssh = call_user_func(
+            [$this->sshFactory, 'create'],
+            $this->host,
+            $this->port,
+            $this->timeout
+        );
         $this->startTimer();
         $ssh->login($this->auth);
         $errorMessage = '';
-        $message = '';
         $cd = '';
         if ($this->remoteDir) {
-            $cd = 'cd ' . ($this->physicalRemoteDir ? '-P ': '') . $this->remoteDir . ' && ';
+            $opt = $this->physicalRemoteDir ? '-P ': '';
+            $cd = 'cd ' . $opt . $this->remoteDir . ' && ';
         }
         foreach ($this->commandStack as $command) {
             $this->printTaskInfo(sprintf(
-                'Executing SSH method %s with arguments %s in folder %s.',
-                $command['method'],
-                $command['command'],
-                $this->remoteDir
+                '%s@%s:%s$ %s',
+                $this->auth->getUser(),
+                $this->host,
+                $this->remoteDir,
+                $command['command']
             ));
-            $result = call_user_func_array([$ssh, $command['method']], [$cd . $command['command'], $command['callback']]);
+            $result = call_user_func_array(
+                [
+                    $ssh,
+                    $command['method'],
+                ],
+                [
+                    $cd . $command['command'],
+                    $this->commandCallback($command['callback']),
+                ]
+            );
             if ($result === false || $ssh->getExitStatus() !== 0) {
                 $errorMessage .= sprintf(
                     'Could not execute %s on %s on port %s in folder %s with message: %s.',
@@ -239,18 +254,40 @@ class Ssh extends BaseTask
                     $ssh->getStdError()
                 );
                 if ($ssh->isTimeout()) {
-                    $errorMessage .= ' Connection timed out. Execution took ' . $this->getExecutionTime() . ', timeout is set at ' . $this->timeout . '.';
+                    $errorMessage .= ' ';
+                    $errorMessage .= sprintf(
+                        'Connection timed out. Execution took %s, timeout is set at %s seconds.',
+                        $this->getExecutionTime(),
+                        $this->timeout
+                    );
                 }
                 if ($this->stopOnFail) {
                     return Result::error($this, $errorMessage);
                 }
                 $errorMessage .= "\n";
             }
-            $message .= $result;
         }
         $this->stopTimer();
         return $errorMessage
             ? Result::error($this, $errorMessage)
-            : Result::success($this, $message);
+            : Result::success($this);
+    }
+
+    /**
+     * Wrap the callback so we can print the output.
+     *
+     * @param callable $callback
+     *   The callback to wrap.
+     */
+    protected function commandCallback($callback)
+    {
+        return (
+            function ($output) use ($callback) {
+                $this->printTaskInfo($output);
+                if (is_callable($callback)) {
+                    return call_user_func($callback, $output);
+                }
+            }
+        );
     }
 }
