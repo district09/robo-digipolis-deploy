@@ -22,7 +22,6 @@ trait DatabaseBackup
       'compression|c' => 'gzip',
       'destination|d' => null,
       'destination-type|dtype' => 'local',
-      'drupal' => false,
     ])
     {
         if (is_callable([$this, 'readProperties']))
