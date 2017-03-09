@@ -6,8 +6,6 @@ use phpseclib\Net\SSH2;
 
 class Password extends AbstractAuth
 {
-    protected $user;
-
     protected $password;
 
     public function __construct($user, $password = null)

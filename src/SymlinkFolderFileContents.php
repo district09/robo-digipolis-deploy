@@ -67,7 +67,7 @@ class SymlinkFolderFileContents extends BaseTask implements BuilderAwareInterfac
         foreach ($this->finder as $item) {
             $relativePath = $item->getRelativePathname();
             $pathParts = array_filter(explode('/', $relativePath));
-            // We don't neet to create the last item in the path, as that will
+            // We don't need to create the last item in the path, as that will
             // be the symlink.
             array_pop($pathParts);
             $this->ensureDestinationPath($pathParts, $task);

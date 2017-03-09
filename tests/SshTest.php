@@ -82,7 +82,7 @@ class SshTest extends \PHPUnit_Framework_TestCase implements ContainerAwareInter
         $adapter
             ->expects($this->exactly(1))
             ->method('exec')
-            ->with('cd ' . $dir . ' && ' . $command, null)
+            ->with('cd ' . $dir . ' && ' . $command, $this->callback('is_callable'))
             ->willReturn('');
         $adapter->expects($this->exactly(1))
             ->method('getExitStatus')
@@ -121,7 +121,7 @@ class SshTest extends \PHPUnit_Framework_TestCase implements ContainerAwareInter
         $adapter
             ->expects($this->exactly(1))
             ->method('exec')
-             ->with('cd -P ' . $dir . ' && ' . $command, null)
+             ->with('cd -P ' . $dir . ' && ' . $command, $this->callback('is_callable'))
             ->willReturn('');
         $adapter->expects($this->exactly(1))
             ->method('getExitStatus')
@@ -163,7 +163,7 @@ class SshTest extends \PHPUnit_Framework_TestCase implements ContainerAwareInter
         $adapter
             ->expects($this->exactly(1))
             ->method('exec')
-             ->with('cd ' . $dir . ' && ' . $command, null)
+             ->with('cd ' . $dir . ' && ' . $command, $this->callback('is_callable'))
             ->willReturn('');
         $adapter->expects($this->exactly(1))
             ->method('getExitStatus')
@@ -220,7 +220,7 @@ class SshTest extends \PHPUnit_Framework_TestCase implements ContainerAwareInter
         $adapter
             ->expects($this->exactly(1))
             ->method('exec')
-             ->with('cd ' . $dir . ' && ' . $command, null)
+             ->with('cd ' . $dir . ' && ' . $command, $this->callback('is_callable'))
             ->willReturn('');
         $adapter->expects($this->exactly(1))
             ->method('getExitStatus')
