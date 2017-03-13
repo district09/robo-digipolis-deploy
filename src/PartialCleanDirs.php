@@ -240,7 +240,6 @@ class PartialCleanDirs extends BaseTask
                     $this->fs->remove($path);
                     continue;
                 }
-
             }
             $this->fs->remove($item);
             array_shift($items);
