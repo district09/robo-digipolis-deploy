@@ -3,8 +3,9 @@
 namespace DigipolisGent\Robo\Task\Deploy;
 
 use DigipolisGent\Robo\Task\Deploy\Ssh\Auth\AbstractAuth;
-use DigipolisGent\Robo\Task\Deploy\Ssh\Factory\SshPhpseclibFactory;
+use DigipolisGent\Robo\Task\Deploy\Ssh\Command;
 use DigipolisGent\Robo\Task\Deploy\Ssh\Factory\SshFactoryInterface;
+use DigipolisGent\Robo\Task\Deploy\Ssh\Factory\SshPhpseclibFactory;
 use Robo\Result;
 use Robo\Task\BaseTask;
 
@@ -136,8 +137,7 @@ class Ssh extends BaseTask
     public function exec($command, $callback = null)
     {
         $this->commandStack[] = [
-            'method' => 'exec',
-            'command' => $this->receiveCommand($command),
+            'command' => new Command($this->receiveCommand($command)),
             'callback' => $callback,
         ];
 
@@ -228,26 +228,25 @@ class Ssh extends BaseTask
         $this->startTimer();
         $ssh->login($this->auth);
         $errorMessage = '';
-        $cd = '';
-        if ($this->remoteDir) {
-            $opt = $this->physicalRemoteDir ? '-P ': '';
-            $cd = 'cd ' . $opt . $this->remoteDir . ' && ';
-        }
         foreach ($this->commandStack as $command) {
+            $command['command']
+                ->setDirectory($this->remoteDir)
+                ->setPhysicalDirectory($this->physicalRemoteDir);
+
             $this->printTaskInfo(sprintf(
                 '%s@%s:%s$ %s',
                 $this->auth->getUser(),
                 $this->host,
                 $this->remoteDir ? $this->remoteDir : '~',
-                $command['command']
+                $command['command']->getCommand()
             ));
             $result = call_user_func_array(
                 [
                     $ssh,
-                    $command['method'],
+                    'exec',
                 ],
                 [
-                    $cd . $command['command'],
+                    (string) $command['command'],
                     $this->commandCallback($command['callback']),
                 ]
             );
@@ -256,7 +255,7 @@ class Ssh extends BaseTask
             if ($result === false || $ssh->getExitStatus() !== 0) {
                 $errorMessage .= sprintf(
                     'Could not execute %s on %s on port %s in folder %s with message: %s.',
-                    $cd . $command['command'],
+                    $command['command']->getCommand(),
                     $this->host,
                     $this->port,
                     $this->remoteDir,
