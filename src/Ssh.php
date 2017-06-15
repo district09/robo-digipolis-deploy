@@ -3,8 +3,9 @@
 namespace DigipolisGent\Robo\Task\Deploy;
 
 use DigipolisGent\Robo\Task\Deploy\Ssh\Auth\AbstractAuth;
-use DigipolisGent\Robo\Task\Deploy\Ssh\Factory\SshPhpseclibFactory;
+use DigipolisGent\Robo\Task\Deploy\Ssh\Command;
 use DigipolisGent\Robo\Task\Deploy\Ssh\Factory\SshFactoryInterface;
+use DigipolisGent\Robo\Task\Deploy\Ssh\Factory\SshPhpseclibFactory;
 use Robo\Result;
 use Robo\Task\BaseTask;
 
@@ -84,6 +85,13 @@ class Ssh extends BaseTask
     protected $output = '';
 
     /**
+     * Enables or disables verbose output.
+     *
+     * @var bool
+     */
+    protected $verbose = false;
+
+    /**
      * Creates a new Ssh task.
      *
      * @param string $host
@@ -136,8 +144,7 @@ class Ssh extends BaseTask
     public function exec($command, $callback = null)
     {
         $this->commandStack[] = [
-            'method' => 'exec',
-            'command' => $this->receiveCommand($command),
+            'command' => new Command($this->receiveCommand($command)),
             'callback' => $callback,
         ];
 
@@ -214,72 +221,80 @@ class Ssh extends BaseTask
         return $this;
     }
 
+    public function verbose($verbose = true)
+    {
+        $this->verbose = $verbose;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function run()
     {
-        $ssh = call_user_func(
-            [$this->sshFactory, 'create'],
-            $this->host,
-            $this->port,
-            $this->timeout
-        );
-        $this->startTimer();
-        $ssh->login($this->auth);
-        $errorMessage = '';
-        $cd = '';
-        if ($this->remoteDir) {
-            $opt = $this->physicalRemoteDir ? '-P ': '';
-            $cd = 'cd ' . $opt . $this->remoteDir . ' && ';
-        }
-        foreach ($this->commandStack as $command) {
-            $this->printTaskInfo(sprintf(
-                '%s@%s:%s$ %s',
-                $this->auth->getUser(),
+        try {
+            $ssh = call_user_func(
+                [$this->sshFactory, 'create'],
                 $this->host,
-                $this->remoteDir,
-                $command['command']
-            ));
-            $result = call_user_func_array(
-                [
-                    $ssh,
-                    $command['method'],
-                ],
-                [
-                    $cd . $command['command'],
-                    $this->commandCallback($command['callback']),
-                ]
+                $this->port,
+                $this->timeout
             );
-            $this->printTaskInfo($this->output);
-            $this->output = '';
-            if ($result === false || $ssh->getExitStatus() !== 0) {
-                $errorMessage .= sprintf(
-                    'Could not execute %s on %s on port %s in folder %s with message: %s.',
-                    $cd . $command['command'],
+            $this->startTimer();
+            $ssh->login($this->auth);
+            $errorMessage = '';
+            foreach ($this->commandStack as $command) {
+                $command['command']
+                    ->setDirectory($this->remoteDir)
+                    ->setPhysicalDirectory($this->physicalRemoteDir);
+
+                $this->printTaskInfo(sprintf(
+                    '%s@%s:%s$ %s',
+                    $this->auth->getUser(),
                     $this->host,
-                    $this->port,
-                    $this->remoteDir,
-                    $ssh->getStdError()
+                    $this->remoteDir ? $this->remoteDir : '~',
+                    $command['command']->getCommand()
+                ));
+                $result = call_user_func_array(
+                    [
+                        $ssh,
+                        'exec',
+                    ],
+                    [
+                        (string) $command['command'],
+                        $this->commandCallback($command['callback']),
+                    ]
                 );
-                if ($ssh->isTimeout()) {
-                    $errorMessage .= ' ';
+                $this->printTaskInfo($this->output);
+                $this->output = '';
+                if ($result === false || $ssh->getExitStatus() !== 0) {
                     $errorMessage .= sprintf(
-                        'Connection timed out. Execution took %s, timeout is set at %s seconds.',
-                        $this->getExecutionTime(),
-                        $this->timeout
+                        'Could not execute %s on %s on port %s in folder %s with message: %s.',
+                        $command['command']->getCommand(),
+                        $this->host,
+                        $this->port,
+                        $this->remoteDir,
+                        $ssh->getStdError()
                     );
+                    if ($ssh->isTimeout()) {
+                        $errorMessage .= ' ';
+                        $errorMessage .= sprintf(
+                            'Connection timed out. Execution took %s, timeout is set at %s seconds.',
+                            $this->getExecutionTime(),
+                            $this->timeout
+                        );
+                    }
+                    if ($this->stopOnFail) {
+                        return Result::error($this, $errorMessage);
+                    }
+                    $errorMessage .= "\n";
                 }
-                if ($this->stopOnFail) {
-                    return Result::error($this, $errorMessage);
-                }
-                $errorMessage .= "\n";
             }
+        } catch (\Exception $e) {
+            $errorMessage = $e->getMessage();
         }
         $this->stopTimer();
         return $errorMessage
-            ? Result::error($this, $errorMessage)
-            : Result::success($this);
+            ? Result::error($this, $errorMessage . ($this->verbose ?  "\nVerbose log:\n" . $ssh->getLog() : ''))
+            : Result::success($this, ($this->verbose ?  "Verbose log:\n" . $ssh->getLog() : ''));
     }
 
     /**

@@ -189,7 +189,7 @@ class SshTest extends \PHPUnit_Framework_TestCase implements ContainerAwareInter
         $this->assertEquals(
             sprintf(
                 'Could not execute %s on %s on port %s in folder %s with message: %s.',
-                'cd ' . $dir . ' && ' . $command,
+                $command,
                 $host,
                 $port,
                 $dir,
@@ -247,7 +247,7 @@ class SshTest extends \PHPUnit_Framework_TestCase implements ContainerAwareInter
         $this->assertEquals(
             sprintf(
                 'Could not execute %s on %s on port %s in folder %s with message: %s.',
-                'cd ' . $dir . ' && ' . $command,
+                $command,
                 $host,
                 $port,
                 $dir,
