@@ -27,10 +27,10 @@ trait DatabaseBackup
         if (is_callable([$this, 'readProperties'])) {
             $this->readProperties();
         }
-        $destination = is_null($opts['destination'])
-            ? realpath(getcwd()) . '/project.tar.gz'
-            : $opts['destination'];
-        if (is_null($opts['file-system-config'])) {
+        $destination = $opts['destination']
+            ? $opts['destination']
+            : realpath(getcwd()) . '/project.tar.gz';
+        if (!$opts['file-system-config']) {
             $opts['file-system-config'] = [
                 $opts['destination-type'] => [
                     'type' => ucfirst($opts['destination-type']),
