@@ -27,10 +27,10 @@ trait DatabaseRestore
         if (is_callable([$this, 'readProperties'])) {
             $this->readProperties();
         }
-        $source = is_null($opts['source'])
-            ? realpath(getcwd()) . '/project.tar.gz'
-            : $opts['source'];
-        if (is_null($opts['file-system-config'])) {
+        $source = $opts['source']
+            ? $opts['source']
+            : realpath(getcwd()) . '/project.tar.gz';
+        if (!$opts['file-system-config']) {
             $opts['file-system-config'] = [
                 $opts['source-type'] => [
                     'type' => ucfirst($opts['source-type']),
