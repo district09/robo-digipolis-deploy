@@ -2,6 +2,16 @@
 
 Deploy tasks for Robo Task Runner
 
+[![Latest Stable Version](https://poser.pugx.org/digipolisgent/robo-digipolis-deploy/v/stable)](https://packagist.org/packages/digipolisgent/robo-digipolis-deploy)
+[![Latest Unstable Version](https://poser.pugx.org/digipolisgent/robo-digipolis-deploy/v/unstable)](https://packagist.org/packages/digipolisgent/robo-digipolis-deploy)
+[![Total Downloads](https://poser.pugx.org/digipolisgent/robo-digipolis-deploy/downloads)](https://packagist.org/packages/digipolisgent/robo-digipolis-deploy)
+[![License](https://poser.pugx.org/digipolisgent/robo-digipolis-deploy/license)](https://packagist.org/packages/digipolisgent/robo-digipolis-deploy)
+
+[![Build Status](https://travis-ci.org/digipolisgent/robo-digipolis-deploy.svg?branch=develop)](https://travis-ci.org/digipolisgent/robo-digipolis-deploy)
+[![Maintainability](https://api.codeclimate.com/v1/badges/eced33c8f045644486cb/maintainability)](https://codeclimate.com/github/digipolisgent/robo-digipolis-deploy/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/eced33c8f045644486cb/test_coverage)](https://codeclimate.com/github/digipolisgent/robo-digipolis-deploy/test_coverage)
+[![PHP 7 ready](https://php7ready.timesplinter.ch/digipolisgent/robo-digipolis-deploy/develop/badge.svg)](https://travis-ci.org/digipolisgent/robo-digipolis-deploy)
+
 ## Tasks in this package
 
 ### PushPackage
