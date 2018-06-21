@@ -271,7 +271,7 @@ class PushPackage extends BaseTask
             return Result::error($this, $errorMessage);
         }
         $untar = 'cd ' . $this->destinationFolder .
-            ' && tar -xzf ' . basename($this->package) .
+            ' && tar -xzvf ' . basename($this->package) .
             ' && rm -rf ' . basename($this->package);
         $this->printTaskInfo(sprintf(
             '%s@%s:~$ %s',
@@ -280,7 +280,7 @@ class PushPackage extends BaseTask
             $untar
         ));
         $untarResult = $ssh->exec($untar, [$this, 'printTaskInfo']);
-        if ($untarResult !== false && $ssh->getExitStatus() !== 0) {
+        if ($untarResult === false || $ssh->getExitStatus() !== 0) {
             $errorMessage = sprintf(
                 'Could not execute %s on %s on port %s with message: %s.',
                 $untar,
