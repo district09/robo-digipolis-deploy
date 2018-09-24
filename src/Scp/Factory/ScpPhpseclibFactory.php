@@ -3,8 +3,8 @@
 namespace DigipolisGent\Robo\Task\Deploy\Scp\Factory;
 
 use DigipolisGent\Robo\Task\Deploy\Scp\Adapter\ScpPhpseclibAdapter;
+use DigipolisGent\Robo\Task\Deploy\Scp\Net\SCP;
 use DigipolisGent\Robo\Task\Deploy\Ssh\Auth\AbstractAuth;
-use phpseclib\Net\SCP;
 use phpseclib\Net\SSH2;
 
 class ScpPhpseclibFactory implements ScpFactoryInterface
