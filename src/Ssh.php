@@ -2,6 +2,7 @@
 
 namespace DigipolisGent\Robo\Task\Deploy;
 
+use DigipolisGent\CommandBuilder\CommandBuilder;
 use DigipolisGent\Robo\Task\Deploy\Ssh\Auth\AbstractAuth;
 use DigipolisGent\Robo\Task\Deploy\Ssh\Command;
 use DigipolisGent\Robo\Task\Deploy\Ssh\Factory\SshFactoryInterface;
@@ -136,7 +137,7 @@ class Ssh extends BaseTask
     }
 
     /**
-     * @param string|CommandInterface $command
+     * @param string|CommandInterface|CommandBuilder $command
      * @param callable $callback
      *
      * @return $this
@@ -144,7 +145,13 @@ class Ssh extends BaseTask
     public function exec($command, $callback = null)
     {
         $this->commandStack[] = [
-            'command' => new Command($this->receiveCommand($command)),
+            'command' => new Command(
+                $this->receiveCommand(
+                    $command instanceof CommandBuilder
+                    ? (string) $command
+                    : $command
+                )
+            ),
             'callback' => $callback,
         ];
 
