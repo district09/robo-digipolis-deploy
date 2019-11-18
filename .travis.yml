@@ -3,6 +3,7 @@ env:
     - CC_TEST_REPORTER_ID=bdf841c244075ca1d4fa73178451ff4cf751f09583580334637b0fbb53696b9f
 language: php
 php:
+  - 7.3
   - 7.2
   - 7.1
 before_script:
