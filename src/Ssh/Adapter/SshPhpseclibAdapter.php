@@ -2,7 +2,7 @@
 
 namespace DigipolisGent\Robo\Task\Deploy\Ssh\Adapter;
 
-use phpseclib\Net\SSH2;
+use phpseclib3\Net\SSH2;
 use DigipolisGent\Robo\Task\Deploy\Ssh\Auth\AbstractAuth;
 
 class SshPhpseclibAdapter implements SshAdapterInterface
@@ -11,7 +11,7 @@ class SshPhpseclibAdapter implements SshAdapterInterface
     /**
      * The phpseclib ssh client.
      *
-     * @var \phpseclib\Net\SSH2
+     * @var \phpseclib3\Net\SSH2
      */
     protected $ssh;
 

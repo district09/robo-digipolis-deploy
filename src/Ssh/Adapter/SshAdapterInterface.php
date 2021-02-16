@@ -3,7 +3,7 @@
 namespace DigipolisGent\Robo\Task\Deploy\Ssh\Adapter;
 
 use DigipolisGent\Robo\Task\Deploy\Ssh\Auth\AbstractAuth;
-use phpseclib\Net\SSH2;
+use phpseclib3\Net\SSH2;
 
 interface SshAdapterInterface
 {
@@ -147,7 +147,7 @@ interface SshAdapterInterface
      * Execute Command
      *
      * If $callback is set to false then
-     * \phpseclib\Net\SSH2::_get_channel_packet(self::CHANNEL_EXEC) will need to
+     * \phpseclib3\Net\SSH2::_get_channel_packet(self::CHANNEL_EXEC) will need to
      * be called manually. In all likelihood, this is not a feature you want to
      * be taking advantage of.
      *

@@ -2,10 +2,10 @@
 
 namespace DigipolisGent\Robo\Task\Deploy\Traits;
 
-use DigipolisGent\Robo\Task\Deploy\Scp;
+use DigipolisGent\Robo\Task\Deploy\SFTP;
 use DigipolisGent\Robo\Task\Deploy\Ssh\Auth\AbstractAuth;
 
-trait ScpTrait
+trait SFTPTrait
 {
 
     /**
@@ -14,10 +14,10 @@ trait ScpTrait
      * @param \DigipolisGent\Robo\Task\Deploy\Ssh\Auth\AbstractAuth $auth
      *   Authentication data.
      *
-     * @return \DigipolisGent\Robo\Task\Deploy\Scp
+     * @return \DigipolisGent\Robo\Task\Deploy\SFTP
      */
-    protected function taskScp($host, AbstractAuth $auth)
+    protected function taskSFTP($host, AbstractAuth $auth)
     {
-        return $this->task(Scp::class, $host, $auth);
+        return $this->task(SFTP::class, $host, $auth);
     }
 }

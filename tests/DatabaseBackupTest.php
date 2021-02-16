@@ -73,7 +73,7 @@ class DatabaseBackupTest extends \PHPUnit_Framework_TestCase implements Containe
     protected function mockManagerAdapter()
     {
 
-        // Mock the scp adapter.
+        // Mock the backup manager adapter.
         $adapter = $this->getMockBuilder(BackupManagerAdapterInterface::class)
             ->getMock();
 
