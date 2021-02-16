@@ -2,9 +2,9 @@
 
 namespace DigipolisGent\Tests\Robo\Task\Deploy;
 
-use DigipolisGent\Robo\Task\Deploy\Scp\Adapter\ScpAdapterInterface;
+use DigipolisGent\Robo\Task\Deploy\SFTP\Adapter\SFTPAdapterInterface;
 use DigipolisGent\Robo\Task\Deploy\Ssh\Auth\None;
-use DigipolisGent\Tests\Robo\Task\Deploy\Mock\ScpFactoryMock;
+use DigipolisGent\Tests\Robo\Task\Deploy\Mock\SFTPFactoryMock;
 use League\Container\ContainerAwareInterface;
 use League\Container\ContainerAwareTrait;
 use Robo\Common\CommandArguments;
@@ -13,7 +13,7 @@ use Robo\Robo;
 use Robo\TaskAccessor;
 use Symfony\Component\Console\Output\NullOutput;
 
-class ScpTest extends \PHPUnit_Framework_TestCase implements ContainerAwareInterface, ConfigAwareInterface
+class SFTPTest extends \PHPUnit_Framework_TestCase implements ContainerAwareInterface, ConfigAwareInterface
 {
 
     use \DigipolisGent\Robo\Task\Deploy\loadTasks;
@@ -33,18 +33,18 @@ class ScpTest extends \PHPUnit_Framework_TestCase implements ContainerAwareInter
         $this->setConfig(Robo::config());
     }
 
-    protected function mockScpAdapter($host, $auth, $port, $timeout)
+    protected function mockSFTPAdapter($host, $auth, $port, $timeout)
     {
-        // Mock the scp adapter.
-        $adapter = $this->getMockBuilder(ScpAdapterInterface::class)
+        // Mock the SFTP adapter.
+        $adapter = $this->getMockBuilder(SFTPAdapterInterface::class)
             ->getMock();
 
         // Mock the factory.
-        ScpFactoryMock::setHost($host);
-        ScpFactoryMock::setAuth($auth);
-        ScpFactoryMock::setPort($port);
-        ScpFactoryMock::setTimeout($timeout);
-        ScpFactoryMock::setMock($adapter);
+        SFTPFactoryMock::setHost($host);
+        SFTPFactoryMock::setAuth($auth);
+        SFTPFactoryMock::setPort($port);
+        SFTPFactoryMock::setTimeout($timeout);
+        SFTPFactoryMock::setMock($adapter);
         return $adapter;
     }
 
@@ -75,8 +75,8 @@ class ScpTest extends \PHPUnit_Framework_TestCase implements ContainerAwareInter
         $remoteFile = 'path/to/remote.txt';
         $localFile = 'path/to/local.txt';
 
-        // Mock the scp adapter.
-        $adapter = $this->mockScpAdapter($host, $auth, $port, $timeout);
+        // Mock the SFTP adapter.
+        $adapter = $this->mockSFTPAdapter($host, $auth, $port, $timeout);
         $adapter
             ->expects($this->once())
             ->method('get')
@@ -89,8 +89,8 @@ class ScpTest extends \PHPUnit_Framework_TestCase implements ContainerAwareInter
             ->willReturn(true);
         // Run the task.
         $result = $this
-            ->taskScp($host, $auth)
-            ->scpFactory(ScpFactoryMock::class)
+            ->taskSFTP($host, $auth)
+            ->SFTPFactory(SFTPFactoryMock::class)
             ->port($port)
             ->timeout($timeout)
             ->get($remoteFile, $localFile)
@@ -114,8 +114,8 @@ class ScpTest extends \PHPUnit_Framework_TestCase implements ContainerAwareInter
         $remoteFile = 'path/to/remote.txt';
         $localFile = 'path/to/local.txt';
 
-        // Mock the scp adapter.
-        $adapter = $this->mockScpAdapter($host, $auth, $port, $timeout);
+        // Mock the SFTP adapter.
+        $adapter = $this->mockSFTPAdapter($host, $auth, $port, $timeout);
         $adapter
             ->expects($this->once())
             ->method('get')
@@ -129,8 +129,8 @@ class ScpTest extends \PHPUnit_Framework_TestCase implements ContainerAwareInter
 
         // Run the task.
         $result = $this
-            ->taskScp($host, $auth)
-            ->scpFactory(ScpFactoryMock::class)
+            ->taskSFTP($host, $auth)
+            ->SFTPFactory(SFTPFactoryMock::class)
             ->port($port)
             ->timeout($timeout)
             ->get($remoteFile, $localFile)
@@ -163,8 +163,8 @@ class ScpTest extends \PHPUnit_Framework_TestCase implements ContainerAwareInter
         $remoteFile = 'path/to/remote.txt';
         $localFile = 'path/to/local.txt';
 
-        // Mock the scp adapter.
-        $adapter = $this->mockScpAdapter($host, $auth, $port, $timeout);
+        // Mock the SFTP adapter.
+        $adapter = $this->mockSFTPAdapter($host, $auth, $port, $timeout);
         $adapter
             ->expects($this->once())
             ->method('get')
@@ -178,8 +178,8 @@ class ScpTest extends \PHPUnit_Framework_TestCase implements ContainerAwareInter
 
         // Run the task.
         $result = $this
-            ->taskScp($host, $auth)
-            ->scpFactory(ScpFactoryMock::class)
+            ->taskSFTP($host, $auth)
+            ->SFTPFactory(SFTPFactoryMock::class)
             ->port($port)
             ->timeout($timeout)
             ->get($remoteFile, $localFile)
@@ -212,8 +212,8 @@ class ScpTest extends \PHPUnit_Framework_TestCase implements ContainerAwareInter
         $remoteFile = 'path/to/remote.txt';
         $localFile = 'path/to/local.txt';
 
-        // Mock the scp adapter.
-        $adapter = $this->mockScpAdapter($host, $auth, $port, $timeout);
+        // Mock the SFTP adapter.
+        $adapter = $this->mockSFTPAdapter($host, $auth, $port, $timeout);
         $adapter
             ->expects($this->once())
             ->method('get')
@@ -225,8 +225,8 @@ class ScpTest extends \PHPUnit_Framework_TestCase implements ContainerAwareInter
 
         // Run the task.
         $result = $this
-            ->taskScp($host, $auth)
-            ->scpFactory(ScpFactoryMock::class)
+            ->taskSFTP($host, $auth)
+            ->SFTPFactory(SFTPFactoryMock::class)
             ->stopOnFail()
             ->port($port)
             ->timeout($timeout)

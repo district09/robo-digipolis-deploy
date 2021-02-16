@@ -2,10 +2,10 @@
 
 namespace DigipolisGent\Tests\Robo\Task\Deploy\Mock;
 
-use DigipolisGent\Robo\Task\Deploy\Scp\Factory\ScpFactoryInterface;
+use DigipolisGent\Robo\Task\Deploy\SFTP\Factory\SFTPFactoryInterface;
 use DigipolisGent\Robo\Task\Deploy\Ssh\Auth\AbstractAuth;
 
-class ScpFactoryMock implements ScpFactoryInterface
+class SFTPFactoryMock implements SFTPFactoryInterface
 {
     protected static $mock;
     protected static $host;
