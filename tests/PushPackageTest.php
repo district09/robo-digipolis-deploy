@@ -2,10 +2,10 @@
 
 namespace DigipolisGent\Tests\Robo\Task\Deploy;
 
-use DigipolisGent\Robo\Task\Deploy\Scp\Adapter\ScpAdapterInterface;
+use DigipolisGent\Robo\Task\Deploy\SFTP\Adapter\SFTPAdapterInterface;
 use DigipolisGent\Robo\Task\Deploy\Ssh\Adapter\SshAdapterInterface;
 use DigipolisGent\Robo\Task\Deploy\Ssh\Auth\None;
-use DigipolisGent\Tests\Robo\Task\Deploy\Mock\ScpFactoryMock;
+use DigipolisGent\Tests\Robo\Task\Deploy\Mock\SFTPFactoryMock;
 use DigipolisGent\Tests\Robo\Task\Deploy\Mock\SshFactoryMock;
 use League\Container\ContainerAwareInterface;
 use League\Container\ContainerAwareTrait;
@@ -37,7 +37,7 @@ class PushPackageTest extends \PHPUnit_Framework_TestCase implements ContainerAw
 
     protected function mockSshAdapter($host, $port, $timeout)
     {
-        // Mock the scp adapter.
+        // Mock the ssh adapter.
         $adapter = $this->getMockBuilder(SshAdapterInterface::class)
             ->getMock();
 
@@ -49,18 +49,18 @@ class PushPackageTest extends \PHPUnit_Framework_TestCase implements ContainerAw
         return $adapter;
     }
 
-    protected function mockScpAdapter($host, $auth, $port, $timeout)
+    protected function mockSFTPAdapter($host, $auth, $port, $timeout)
     {
-        // Mock the scp adapter.
-        $adapter = $this->getMockBuilder(ScpAdapterInterface::class)
+        // Mock the sftp adapter.
+        $adapter = $this->getMockBuilder(SFTPAdapterInterface::class)
             ->getMock();
 
         // Mock the factory.
-        ScpFactoryMock::setHost($host);
-        ScpFactoryMock::setAuth($auth);
-        ScpFactoryMock::setPort($port);
-        ScpFactoryMock::setTimeout($timeout);
-        ScpFactoryMock::setMock($adapter);
+        SFTPFactoryMock::setHost($host);
+        SFTPFactoryMock::setAuth($auth);
+        SFTPFactoryMock::setPort($port);
+        SFTPFactoryMock::setTimeout($timeout);
+        SFTPFactoryMock::setMock($adapter);
         return $adapter;
     }
 
@@ -111,8 +111,8 @@ class PushPackageTest extends \PHPUnit_Framework_TestCase implements ContainerAw
             ->method('getExitStatus')
             ->willReturn(0);
 
-        // Mock the SCP adapter.
-        $adapter = $this->mockScpAdapter($host, $auth, $port, $timeout);
+        // Mock the SFTP adapter.
+        $adapter = $this->mockSFTPAdapter($host, $auth, $port, $timeout);
         $adapter
             ->expects($this->once())
             ->method('put')
@@ -123,7 +123,7 @@ class PushPackageTest extends \PHPUnit_Framework_TestCase implements ContainerAw
         $result = $this
             ->taskPushPackage($host, $auth)
             ->sshFactory(SshFactoryMock::class)
-            ->scpFactory(ScpFactoryMock::class)
+            ->SFTPFactory(SFTPFactoryMock::class)
             ->port($port)
             ->timeout($timeout)
             ->destinationFolder($destinationFolder)

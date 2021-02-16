@@ -35,7 +35,7 @@ class SshTest extends \PHPUnit_Framework_TestCase implements ContainerAwareInter
 
     protected function mockSshAdapter($host, $port, $timeout)
     {
-        // Mock the scp adapter.
+        // Mock the ssh adapter.
         $adapter = $this->getMockBuilder(SshAdapterInterface::class)
             ->getMock();
 

@@ -26,11 +26,11 @@ $result = $this->taskPushPackage('192.168.1.1', $auth)
     ->run();
 ```
 
-### Scp
+### SFTP
 
 ```php
 $auth = new \DigipolisGent\Robo\Task\Deploy\Ssh\Auth\KeyFile('user', '/home/myuser/.ssh/id_dsa');
-$result = $this->taskScp('192.168.1.1', $auth)
+$result = $this->taskSFTP('192.168.1.1', $auth)
     ->port(8022)
     ->timeout(15)
     // Download file from server.

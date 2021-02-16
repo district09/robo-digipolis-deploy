@@ -2,9 +2,9 @@
 
 namespace DigipolisGent\Robo\Task\Deploy;
 
-use DigipolisGent\Robo\Task\Deploy\Scp\Adapter\ScpAdapterInterface;
-use DigipolisGent\Robo\Task\Deploy\Scp\Factory\ScpFactoryInterface;
-use DigipolisGent\Robo\Task\Deploy\Scp\Factory\ScpPhpseclibFactory;
+use DigipolisGent\Robo\Task\Deploy\SFTP\Adapter\SFTPAdapterInterface;
+use DigipolisGent\Robo\Task\Deploy\SFTP\Factory\SFTPFactoryInterface;
+use DigipolisGent\Robo\Task\Deploy\SFTP\Factory\SFTPPhpseclibFactory;
 use DigipolisGent\Robo\Task\Deploy\Ssh\Auth\AbstractAuth;
 use DigipolisGent\Robo\Task\Deploy\Ssh\Factory\SshFactoryInterface;
 use DigipolisGent\Robo\Task\Deploy\Ssh\Factory\SshPhpseclibFactory;
@@ -18,7 +18,7 @@ class PushPackage extends BaseTask
     use \Robo\Task\Remote\loadTasks;
 
     /**
-     * The server to scp to.
+     * The server to sftp to.
      *
      * @var string
      */
@@ -60,11 +60,11 @@ class PushPackage extends BaseTask
     protected $auth;
 
     /**
-     * The fully qualified classname of the scp factory.
+     * The fully qualified classname of the sftp factory.
      *
      * @var string
      */
-    protected $scpFactory = ScpPhpseclibFactory::class;
+    protected $SFTPFactory = SFTPPhpseclibFactory::class;
 
 
     /**
@@ -149,29 +149,29 @@ class PushPackage extends BaseTask
     }
 
     /**
-     * Set the ScpFactory.
+     * Set the SFTPFactory.
      *
-     * @param string|ScpFactoryInterface $class
-     *   A factory instance or the fully qualified classname of the scp factory.
+     * @param string|SFTPFactoryInterface $class
+     *   A factory instance or the fully qualified classname of the sftp factory.
      *   The given class (whether it's a classname or instance) must implement
-     *   \DigipolisGent\Robo\Task\Deploy\Scp\Factory\ScpFactoryInterface.
+     *   \DigipolisGent\Robo\Task\Deploy\SFTP\Factory\SFTPFactoryInterface.
      *
      * @throws InvalidArgumentException
      *   If the class is not an instance of
-     *   \DigipolisGent\Robo\Task\Deploy\Scp\Factory\ScpFactoryInterface.
+     *   \DigipolisGent\Robo\Task\Deploy\SFTP\Factory\SFTPFactoryInterface.
      *
      * @return $this
      */
-    public function scpFactory($class)
+    public function SFTPFactory($class)
     {
-        if (!is_subclass_of($class, ScpFactoryInterface::class)) {
+        if (!is_subclass_of($class, SFTPFactoryInterface::class)) {
             throw new InvalidArgumentException(sprintf(
-                'SCP Factory %s does not implement %s.',
+                'SFTP Factory %s does not implement %s.',
                 $class,
-                ScpFactoryInterface::class
+                SFTPFactoryInterface::class
             ));
         }
-        $this->scpFactory = $class;
+        $this->SFTPFactory = $class;
 
         return $this;
     }
@@ -180,7 +180,7 @@ class PushPackage extends BaseTask
      * Set the SshFactory.
      *
      * @param string|\DigipolisGent\Robo\Task\Deploy\Ssh\Factory\SshFactoryInterface $class
-     *   A factory instance or the fully qualified classname of the scp factory.
+     *   A factory instance or the fully qualified classname of the ssh factory.
      *   The given class (whether it's a classname or instance) must implement
      *   \DigipolisGent\Robo\Task\Deploy\Ssh\Factory\SshFactoryInterface.
      *
@@ -217,7 +217,7 @@ class PushPackage extends BaseTask
             $this->timeout
         );
         $this->printTaskInfo(sprintf(
-            'Establishing SFTP connection to %s on port %s.',
+            'Establishing SSH connection to %s on port %s.',
             $this->host,
             $this->port
         ));
@@ -240,8 +240,8 @@ class PushPackage extends BaseTask
             );
             return Result::error($this, $errorMessage);
         }
-        $scp = call_user_func(
-            [$this->scpFactory, 'create'],
+        $sftp = call_user_func(
+            [$this->SFTPFactory, 'create'],
             $this->host,
             $this->auth,
             $this->port,
@@ -254,10 +254,10 @@ class PushPackage extends BaseTask
             $this->port,
             $this->destinationFolder
         ));
-        $uploadResult = $scp->put(
+        $uploadResult = $sftp->put(
             $this->destinationFolder . DIRECTORY_SEPARATOR . basename($this->package),
             $this->package,
-            ScpAdapterInterface::SOURCE_LOCAL_FILE
+            SFTPAdapterInterface::SOURCE_LOCAL_FILE
         );
         if (!$uploadResult) {
             $errorMessage = sprintf(

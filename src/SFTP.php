@@ -2,18 +2,18 @@
 
 namespace DigipolisGent\Robo\Task\Deploy;
 
-use DigipolisGent\Robo\Task\Deploy\Scp\Adapter\ScpAdapterInterface;
-use DigipolisGent\Robo\Task\Deploy\Scp\Factory\ScpFactoryInterface;
-use DigipolisGent\Robo\Task\Deploy\Scp\Factory\ScpPhpseclibFactory;
+use DigipolisGent\Robo\Task\Deploy\SFTP\Adapter\SFTPAdapterInterface;
+use DigipolisGent\Robo\Task\Deploy\SFTP\Factory\SFTPFactoryInterface;
+use DigipolisGent\Robo\Task\Deploy\SFTP\Factory\SFTPPhpseclibFactory;
 use DigipolisGent\Robo\Task\Deploy\Ssh\Auth\AbstractAuth;
 use InvalidArgumentException;
 use Robo\Result;
 use Robo\Task\BaseTask;
 
-class Scp extends BaseTask
+class SFTP extends BaseTask
 {
     /**
-     * The server to scp to/from.
+     * The server to SFTP to/from.
      *
      * @var string
      */
@@ -55,14 +55,14 @@ class Scp extends BaseTask
     protected $auth;
 
     /**
-     * The fully qualified classname of the scp factory.
+     * The fully qualified classname of the sftp factory.
      *
      * @var string
      */
-    protected $scpFactory = ScpPhpseclibFactory::class;
+    protected $SFTPFactory = SFTPPhpseclibFactory::class;
 
     /**
-     * Creates a new Scp task.
+     * Creates a new SFTP task.
      *
      * @param string $host
      *   The host.
@@ -106,10 +106,10 @@ class Scp extends BaseTask
     }
 
     /**
-     * Downloads a file from the SCP server.
+     * Downloads a file from the SFTP server.
      *
      * @param string $remoteFile
-     *   The path to the remote file on the scp server.
+     *   The path to the remote file on the sftp server.
      * @param string $localFile
      *   The path to download the local file to.
      *
@@ -129,30 +129,30 @@ class Scp extends BaseTask
     }
 
     /**
-     * Uploads a file to the SCP server.
+     * Uploads a file to the SFTP server.
      *
      * By default, we assume $data is a filename. This means $remote_file will
      * contain as many bytes as the fileon your local filesystem.  If the file
      * is 1MB then that is how large $remote_file will be, as well.
      *
-     * Setting $mode to ScpAdapterInterface::SOURCE_STRING will change the above
-     * behavior. With ScpAdapterInterface::SOURCE_STRING, we do not read from
+     * Setting $mode to SFTPAdapterInterface::SOURCE_STRING will change the above
+     * behavior. With SFTPAdapterInterface::SOURCE_STRING, we do not read from
      * the local filesystem.  $data is dumped directly into $remote_file. So,
      * for example, if you set $data to 'filename.ext' and set $mode to
-     * \phpseclib\Net\SCP::SOURCE_STRING then you will upload a file, twelve
+     * \phpseclib3\Net\SFTP::SOURCE_STRING then you will upload a file, twelve
      * bytes long, containing 'filename.ext' as its contents.
      *
      * Currently, only binary mode is supported.  As such, if the line endings
      * need to be adjusted, you will need to take care of that, yourself.
      *
      * @param string $remoteFile
-     *   The path on the scp server to put the file.
+     *   The path on the SFTP server to put the file.
      * @param string $data
      *   The data or local filename of the file containing the data for the
      *   remote file.
      * @param int $mode
-     *   One of ScpAdapterInterface::SOURCE_LOCAL_FILE or
-     *   ScpAdapterInterface::SOURCE_STRING.
+     *   One of SFTPAdapterInterface::SOURCE_LOCAL_FILE or
+     *   SFTPAdapterInterface::SOURCE_STRING.
      * @param null|callable $callback
      *   A function to call each time a chunk of the file has been uploaded. The
      *   function takes one parameter: the size of the data that has already
@@ -160,7 +160,7 @@ class Scp extends BaseTask
      *
      * @return $this
      */
-    public function put($remoteFile, $data, $mode = ScpAdapterInterface::SOURCE_LOCAL_FILE, $callback = null)
+    public function put($remoteFile, $data, $mode = SFTPAdapterInterface::SOURCE_LOCAL_FILE, $callback = null)
     {
         $this->commandStack[] = [
             'method' => 'put',
@@ -199,29 +199,29 @@ class Scp extends BaseTask
     }
 
     /**
-     * Set the ScpFactory.
+     * Set the SFTPFactory.
      *
-     * @param string|\DigipolisGent\Robo\Task\Deploy\Scp\Factory\ScpFactoryInterface $class
-     *   A factory instance or the fully qualified classname of the scp factory.
+     * @param string|\DigipolisGent\Robo\Task\Deploy\SFTP\Factory\SFTPFactoryInterface $class
+     *   A factory instance or the fully qualified classname of the SFTP factory.
      *   The given class (whether it's a classname or instance) must implement
-     *   \DigipolisGent\Robo\Task\Deploy\Scp\Factory\ScpFactoryInterface.
+     *   \DigipolisGent\Robo\Task\Deploy\SFTP\Factory\SFTPFactoryInterface.
      *
      * @throws InvalidArgumentException
      *   If the class is not an instance of
-     *   \DigipolisGent\Robo\Task\Deploy\Scp\Factory\ScpFactoryInterface.
+     *   \DigipolisGent\Robo\Task\Deploy\SFTP\Factory\SFTPFactoryInterface.
      *
      * @return $this
      */
-    public function scpFactory($class)
+    public function SFTPFactory($class)
     {
-        if (!is_subclass_of($class, ScpFactoryInterface::class)) {
+        if (!is_subclass_of($class, SFTPFactoryInterface::class)) {
             throw new InvalidArgumentException(sprintf(
-                'SCP Factory %s does not implement %s.',
+                'SFTP Factory %s does not implement %s.',
                 $class,
-                ScpFactoryInterface::class
+                SFTPFactoryInterface::class
             ));
         }
-        $this->scpFactory = $class;
+        $this->SFTPFactory = $class;
 
         return $this;
     }
@@ -231,11 +231,11 @@ class Scp extends BaseTask
      */
     public function run()
     {
-        $scp = call_user_func([$this->scpFactory, 'create'], $this->host, $this->auth, $this->port, $this->timeout);
+        $sftp = call_user_func([$this->SFTPFactory, 'create'], $this->host, $this->auth, $this->port, $this->timeout);
         $errorMessage = '';
         foreach ($this->commandStack as $command) {
             $this->printTaskInfo(sprintf(
-                'Executing SCP method %s with arguments %s.',
+                'Executing SFTP method %s with arguments %s.',
                 $command['method'],
                 implode(',', array_map(
                     function ($v) {
@@ -244,7 +244,7 @@ class Scp extends BaseTask
                     $command['arguments']
                 ))
             ));
-            $result = call_user_func_array([$scp, $command['method']], $command['arguments']);
+            $result = call_user_func_array([$sftp, $command['method']], $command['arguments']);
             if (!$result) {
                 $errorMessage .= sprintf(
                     'Could not %s file %s on %s on port %s',

@@ -15,7 +15,7 @@ class Ssh extends BaseTask
     use \Robo\Common\CommandReceiver;
 
     /**
-     * The server to scp to/from.
+     * The server to ssh to/from.
      *
      * @var string
      */
@@ -57,7 +57,7 @@ class Ssh extends BaseTask
     protected $auth;
 
     /**
-     * The fully qualified classname of the scp factory.
+     * The fully qualified classname of the ssh factory.
      *
      * @var string
      */
@@ -204,7 +204,7 @@ class Ssh extends BaseTask
      * Set the SshFactory.
      *
      * @param string|\DigipolisGent\Robo\Task\Deploy\Ssh\Factory\SshFactoryInterface $class
-     *   A factory instance or the fully qualified classname of the scp factory.
+     *   A factory instance or the fully qualified classname of the ssh factory.
      *   The given class (whether it's a classname or instance) must implement
      *   \DigipolisGent\Robo\Task\Deploy\Ssh\Factory\SshFactoryInterface.
      *
