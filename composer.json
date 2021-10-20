@@ -8,7 +8,7 @@
         "consolidation/robo": "^1.0|^2.0",
         "phpseclib/phpseclib": "^3.0",
         "phpseclib/phpseclib2_compat": "^1.0.1",
-        "backup-manager/backup-manager": "^3|^2|^1.1",
+        "backup-manager/backup-manager": "^3|^2",
         "gordalina/cachetool": "^6|^5|^4|^3|^2.1|^1.11",
         "digipolisgent/command-builder": "^1.2"
     },
