@@ -279,7 +279,7 @@ class PushPackage extends BaseTask
             $this->host,
             $untar
         ));
-        $untarResult = $ssh->exec($untar, \Closure::fromCallable([$this, 'printTaskInfo']));
+        $untarResult = $ssh->exec($untar);
         if ($untarResult === false || $ssh->getExitStatus() !== 0) {
             $errorMessage = sprintf(
                 'Could not execute %s on %s on port %s with message: %s.',
