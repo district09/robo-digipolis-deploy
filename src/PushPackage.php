@@ -229,7 +229,7 @@ class PushPackage extends BaseTask
             $this->host,
             $mkdir
         ));
-        $mkdirResult = $ssh->exec($mkdir, [$this, 'printTaskInfo']);
+        $mkdirResult = $ssh->exec($mkdir, \Closure::fromCallable([$this, 'printTaskInfo']));
         if ($mkdirResult !== false && $ssh->getExitStatus() !== 0) {
             $errorMessage = sprintf(
                 'Could not execute %s on %s on port %s with message: %s',
@@ -279,7 +279,7 @@ class PushPackage extends BaseTask
             $this->host,
             $untar
         ));
-        $untarResult = $ssh->exec($untar, [$this, 'printTaskInfo']);
+        $untarResult = $ssh->exec($untar, \Closure::fromCallable([$this, 'printTaskInfo']));
         if ($untarResult === false || $ssh->getExitStatus() !== 0) {
             $errorMessage = sprintf(
                 'Could not execute %s on %s on port %s with message: %s.',
