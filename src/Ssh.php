@@ -83,7 +83,7 @@ class Ssh extends BaseTask
      *
      * @var string
      */
-    protected $output = '';
+    protected $sshOutput = '';
 
     /**
      * Enables or disables verbose output.
@@ -270,8 +270,8 @@ class Ssh extends BaseTask
                         $this->commandCallback($command['callback']),
                     ]
                 );
-                $this->printTaskInfo($this->output);
-                $this->output = '';
+                $this->printTaskInfo($this->sshOutput);
+                $this->sshOutput = '';
                 if ($result === false || $ssh->getExitStatus() !== 0) {
                     $errorMessage .= sprintf(
                         'Could not execute %s on %s on port %s in folder %s with message: %s.',
@@ -314,7 +314,7 @@ class Ssh extends BaseTask
     {
         return (
             function ($output) use ($callback) {
-                $this->output .= $output;
+                $this->sshOutput .= $output;
                 if (is_callable($callback)) {
                     return call_user_func($callback, $output);
                 }

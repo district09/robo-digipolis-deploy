@@ -3,8 +3,9 @@
 namespace DigipolisGent\Tests\Robo\Task\Deploy\BackupManager\Databases;
 
 use DigipolisGent\Robo\Task\Deploy\BackupManager\Databases\MysqlDatabase;
+use PHPUnit\Framework\TestCase;
 
-class MysqlDatabaseTest extends \PHPUnit_Framework_TestCase
+class MysqlDatabaseTest extends TestCase
 {
     /**
      * Tests MysqlDatabase normal run.
