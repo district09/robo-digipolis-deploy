@@ -14,8 +14,8 @@ use Robo\Task\BaseTask;
 
 class PushPackage extends BaseTask
 {
-    use loadTasks;
-    use \Robo\Task\Remote\loadTasks;
+    use Tasks;
+    use \Robo\Task\Remote\Tasks;
 
     /**
      * The server to sftp to.

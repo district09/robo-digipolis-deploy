@@ -2,7 +2,7 @@
 
 namespace DigipolisGent\Robo\Task\Deploy;
 
-trait loadTasks
+trait Tasks
 {
     use Traits\SymlinkFolderFileContentsTrait;
     use Traits\SFTPTrait;
