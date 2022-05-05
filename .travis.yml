@@ -3,9 +3,7 @@ env:
     - CC_TEST_REPORTER_ID=bdf841c244075ca1d4fa73178451ff4cf751f09583580334637b0fbb53696b9f
 language: php
 php:
-  - 7.3
-  - 7.2
-  - 7.1
+  - 8.1
 before_script:
   - composer global require hirak/prestissimo
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
