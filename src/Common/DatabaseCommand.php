@@ -6,10 +6,24 @@ use Robo\Contract\TaskInterface;
 
 trait DatabaseCommand
 {
+    protected $fileSystemConfig;
+
+    protected $dbConfig;
+
+    public function setFileSystemConfig($fileSystemConfig)
+    {
+        $this->fileSystemConfig = $fileSystemConfig;
+    }
+
+    public function setDbConfig($dbConfig)
+    {
+        $this->dbConfig = $dbConfig;
+    }
+
 
     protected function defaultFileSystemConfig()
     {
-        return [
+        return $this->fileSystemConfig ?? [
             'local' => [
                 'type' => 'Local',
                 'root' => '/',
@@ -19,7 +33,7 @@ trait DatabaseCommand
 
     protected function defaultDbConfig()
     {
-        return [
+        return $this->dbConfig ?? [
             'default' => [
                 'type' => 'mysql',
                 'host' => 'localhost',
