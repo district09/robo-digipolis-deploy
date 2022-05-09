@@ -2,19 +2,22 @@
 
 namespace DigipolisGent\Robo\Task\Deploy\Robo\Plugin\Commands;
 
+use Consolidation\AnnotatedCommand\Events\CustomEventAwareInterface;
 use DigipolisGent\Robo\Task\Deploy\ClearOpCache as ClearOpCacheTask;
 use DigipolisGent\Robo\Task\Deploy\PartialCleanDirs as PartialCleanDirsTask;
 use DigipolisGent\Robo\Task\Deploy\Ssh\Auth\KeyFile;
 use DigipolisGent\Robo\Task\Deploy\Ssh\Auth\Password;
 use DigipolisGent\Robo\Task\General\Common\DigipolisPropertiesAwareInterface;
+use Robo\Contract\ConfigAwareInterface;
 use Robo\Symfony\ConsoleIO;
 
-class DigipolisDeployCommands extends \Robo\Tasks implements DigipolisPropertiesAwareInterface, \Robo\Contract\ConfigAwareInterface
+class DigipolisDeployCommands extends \Robo\Tasks implements DigipolisPropertiesAwareInterface, ConfigAwareInterface, CustomEventAwareInterface
 {
     use \DigipolisGent\Robo\Task\Deploy\Common\DatabaseCommand;
     use \DigipolisGent\Robo\Task\Deploy\Tasks;
     use \DigipolisGent\Robo\Task\General\Common\DigipolisPropertiesAware;
     use \Consolidation\Config\ConfigAwareTrait;
+    use Consolidation\AnnotatedCommand\Events\CustomEventAwareTrait;
 
     /**
      * @command digipolis:clear-op-cache
@@ -55,6 +58,7 @@ class DigipolisDeployCommands extends \Robo\Tasks implements DigipolisProperties
             ];
             $destination = basename($destination);
         }
+
         return $this->createDbTask('taskDatabaseBackup', $database, $opts)
             ->destination($destination, $opts['destination-type'])
             ->run();
@@ -83,6 +87,10 @@ class DigipolisDeployCommands extends \Robo\Tasks implements DigipolisProperties
                 ],
             ];
             $source = basename($source);
+        }
+        foreach ($this->getCustomEventHandlers('digipolis-db-config') as $handler) {
+            $dbConfig = $handler($this);
+            $this->setDbConfig($dbConfig);
         }
         return $this->createDbTask('taskDatabaseRestore', $database, $opts)
             ->source($source, $opts['source-type'])
