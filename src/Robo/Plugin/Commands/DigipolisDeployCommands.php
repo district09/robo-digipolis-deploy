@@ -17,7 +17,7 @@ class DigipolisDeployCommands extends \Robo\Tasks implements DigipolisProperties
     use \DigipolisGent\Robo\Task\Deploy\Tasks;
     use \DigipolisGent\Robo\Task\General\Common\DigipolisPropertiesAware;
     use \Consolidation\Config\ConfigAwareTrait;
-    use Consolidation\AnnotatedCommand\Events\CustomEventAwareTrait;
+    use \Consolidation\AnnotatedCommand\Events\CustomEventAwareTrait;
 
     /**
      * @command digipolis:clear-op-cache
