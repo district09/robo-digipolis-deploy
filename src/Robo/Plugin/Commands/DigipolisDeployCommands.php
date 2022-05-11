@@ -18,6 +18,7 @@ class DigipolisDeployCommands extends \Robo\Tasks implements DigipolisProperties
     use \DigipolisGent\Robo\Task\General\Common\DigipolisPropertiesAware;
     use \Consolidation\Config\ConfigAwareTrait;
     use \Consolidation\AnnotatedCommand\Events\CustomEventAwareTrait;
+    use \DigipolisGent\Robo\Task\General\Tasks;
 
     /**
      * @command digipolis:clear-op-cache
@@ -88,10 +89,7 @@ class DigipolisDeployCommands extends \Robo\Tasks implements DigipolisProperties
             ];
             $source = basename($source);
         }
-        foreach ($this->getCustomEventHandlers('digipolis-db-config') as $handler) {
-            $dbConfig = $handler($this);
-            $this->setDbConfig($dbConfig);
-        }
+
         return $this->createDbTask('taskDatabaseRestore', $database, $opts)
             ->source($source, $opts['source-type'])
             ->run();
