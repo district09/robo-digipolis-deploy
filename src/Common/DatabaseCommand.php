@@ -2,7 +2,7 @@
 
 namespace DigipolisGent\Robo\Task\Deploy\Common;
 
-use Robo\Contract\TaskInterface;
+use Consolidation\AnnotatedCommand\Events\CustomEventAwareInterface;
 
 trait DatabaseCommand
 {
@@ -47,6 +47,7 @@ trait DatabaseCommand
 
     /**
      * Apply the database argument and the correct options to the database task.
+     *
      * @param string $task
      *   The task method to call.
      * @param string $database
@@ -59,6 +60,12 @@ trait DatabaseCommand
      */
     protected function createDbTask($task, $database, $opts)
     {
+        if ($this instanceof CustomEventAwareInterface) {
+            foreach ($this->getCustomEventHandlers('digipolis-db-config') as $handler) {
+                $dbConfig = $handler($this);
+                $this->setDbConfig($dbConfig);
+            }
+        }
         $filesystemConfig = $opts['file-system-config']
             ?
             : $this->defaultFileSystemConfig();
