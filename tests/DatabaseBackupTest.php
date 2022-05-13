@@ -7,20 +7,22 @@ use DigipolisGent\Robo\Task\Deploy\BackupManager\Adapter\BackupProcedureAdapterI
 use DigipolisGent\Tests\Robo\Task\Deploy\Mock\BackupManagerFactoryMock;
 use League\Container\ContainerAwareInterface;
 use League\Container\ContainerAwareTrait;
+use PHPUnit\Framework\TestCase;
+use Robo\Collection\CollectionBuilder;
 use Robo\Common\CommandArguments;
 use Robo\Contract\ConfigAwareInterface;
 use Robo\Robo;
 use Robo\TaskAccessor;
 use Symfony\Component\Console\Output\NullOutput;
 
-class DatabaseBackupTest extends \PHPUnit_Framework_TestCase implements ContainerAwareInterface, ConfigAwareInterface
+class DatabaseBackupTest extends TestCase implements ContainerAwareInterface, ConfigAwareInterface
 {
 
-    use \DigipolisGent\Robo\Task\Deploy\loadTasks;
+    use \DigipolisGent\Robo\Task\Deploy\Tasks;
     use TaskAccessor;
     use ContainerAwareTrait;
     use CommandArguments;
-    use \Robo\Task\Base\loadTasks;
+    use \Robo\Task\Base\Tasks;
     use \Robo\Common\ConfigAwareTrait;
 
     protected $filesystemConfig;
@@ -29,7 +31,7 @@ class DatabaseBackupTest extends \PHPUnit_Framework_TestCase implements Containe
     /**
      * Set up the Robo container so that we can create tasks in our tests.
      */
-    public function setUp()
+    public function setUp(): void
     {
         $container = Robo::createDefaultContainer(null, new NullOutput());
         $this->setContainer($container);
@@ -94,8 +96,7 @@ class DatabaseBackupTest extends \PHPUnit_Framework_TestCase implements Containe
     {
         $emptyRobofile = new \Robo\Tasks();
 
-        return $this->getContainer()
-            ->get('collectionBuilder', [$emptyRobofile]);
+        return CollectionBuilder::create($this->getContainer(), $emptyRobofile);
     }
 
     /**

@@ -9,26 +9,28 @@ use DigipolisGent\Tests\Robo\Task\Deploy\Mock\SFTPFactoryMock;
 use DigipolisGent\Tests\Robo\Task\Deploy\Mock\SshFactoryMock;
 use League\Container\ContainerAwareInterface;
 use League\Container\ContainerAwareTrait;
+use PHPUnit\Framework\TestCase;
+use Robo\Collection\CollectionBuilder;
 use Robo\Common\CommandArguments;
 use Robo\Contract\ConfigAwareInterface;
 use Robo\Robo;
 use Robo\TaskAccessor;
 use Symfony\Component\Console\Output\NullOutput;
 
-class PushPackageTest extends \PHPUnit_Framework_TestCase implements ContainerAwareInterface, ConfigAwareInterface
+class PushPackageTest extends TestCase implements ContainerAwareInterface, ConfigAwareInterface
 {
 
-    use \DigipolisGent\Robo\Task\Deploy\loadTasks;
+    use \DigipolisGent\Robo\Task\Deploy\Tasks;
     use TaskAccessor;
     use ContainerAwareTrait;
     use CommandArguments;
-    use \Robo\Task\Base\loadTasks;
+    use \Robo\Task\Base\Tasks;
     use \Robo\Common\ConfigAwareTrait;
 
     /**
      * Set up the Robo container so that we can create tasks in our tests.
      */
-    public function setUp()
+    public function setUp(): void
     {
         $container = Robo::createDefaultContainer(null, new NullOutput());
         $this->setContainer($container);
@@ -39,6 +41,7 @@ class PushPackageTest extends \PHPUnit_Framework_TestCase implements ContainerAw
     {
         // Mock the ssh adapter.
         $adapter = $this->getMockBuilder(SshAdapterInterface::class)
+            ->disableOriginalConstructor()
             ->getMock();
 
         // Mock the factory.
@@ -74,8 +77,7 @@ class PushPackageTest extends \PHPUnit_Framework_TestCase implements ContainerAw
     {
         $emptyRobofile = new \Robo\Tasks();
 
-        return $this->getContainer()
-            ->get('collectionBuilder', [$emptyRobofile]);
+        return CollectionBuilder::create($this->getContainer(), $emptyRobofile);
     }
 
     /**
@@ -101,7 +103,7 @@ class PushPackageTest extends \PHPUnit_Framework_TestCase implements ContainerAw
         // Mock the ssh adapter.
         $sshAdapter = $this->mockSshAdapter($host, $port, $timeout);
         $sshAdapter
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('login');
         $sshAdapter
             ->expects($this->exactly(2))
