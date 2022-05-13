@@ -3,8 +3,9 @@
 namespace DigipolisGent\Tests\Robo\Task\Deploy\BackupManager\Compressors;
 
 use DigipolisGent\Robo\Task\Deploy\BackupManager\Compressors\TarCompressor;
+use PHPUnit\Framework\TestCase;
 
-class TarCompressorTest extends \PHPUnit_Framework_TestCase
+class TarCompressorTest extends TestCase
 {
     /**
      * Tests TarCompressor.
