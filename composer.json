@@ -10,7 +10,7 @@
         "backup-manager/backup-manager": "^3",
         "gordalina/cachetool": "^8",
         "digipolisgent/command-builder": "^1.2",
-        "digipolisgent/robo-digipolis-general": "dev-develop"
+        "digipolisgent/robo-digipolis-general": "^2.0.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5.20"
