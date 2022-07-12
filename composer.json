@@ -10,7 +10,8 @@
         "phpseclib/phpseclib2_compat": "^1.0.1",
         "backup-manager/backup-manager": "^3|^2",
         "gordalina/cachetool": "^8|^7|^6|^5|^4|^3|^2.1|^1.11",
-        "digipolisgent/command-builder": "^1.2"
+        "digipolisgent/command-builder": "^1.2",
+        "league/flysystem": "^1"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.4"
