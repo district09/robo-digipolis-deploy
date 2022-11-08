@@ -274,6 +274,35 @@ class RoboFile extends \Robo\Tasks
 
 `vendor/bin/robo digipolis:database-backup [DATABASE] [OPTIONS]`
 
+#### Use events for default configuration
+
+Implement an [on-event hook](https://github.com/consolidation/annotated-command#on-event-hook)
+for the digipolis-db-config event to return the datbase config
+[as specified above](#database-configuration-options) used by this command. For
+example:
+
+```php
+/**
+ * @hook on-event digipolis-db-config
+ */
+public function defaultDbConfig()
+{
+    $dbConfig = [];
+    $dbConfig['default'] = [
+        'type' => 'mysql',
+        'host' => 'localhost',
+        'port' => '3306',
+        'user' => 'root',
+        'pass' => '$up3r$3cr3tP@$$w0rD',
+        'database' => 'my_database',
+        'structureTables' => [],
+        'extra' => '--skip-add-locks --no-tablespaces',
+    ];
+
+    return $dbConfig;
+}
+```
+
 #### Arguments
 
 ##### DATABASE
@@ -312,6 +341,35 @@ The destination type (e.g. `local`, `dropbox`, `ftp`). Defaults to `local`.
 ### digipolis:database-restore
 
 `vendor/bin/robo digipolis:database-restore [DATABASE] [OPTIONS]`
+
+#### Use events for default configuration
+
+Implement an [on-event hook](https://github.com/consolidation/annotated-command#on-event-hook)
+for the digipolis-db-config event to return the datbase config
+[as specified above](#database-configuration-options) used by this command. For
+example:
+
+```php
+/**
+ * @hook on-event digipolis-db-config
+ */
+public function defaultDbConfig()
+{
+    $dbConfig = [];
+    $dbConfig['default'] = [
+        'type' => 'mysql',
+        'host' => 'localhost',
+        'port' => '3306',
+        'user' => 'root',
+        'pass' => '$up3r$3cr3tP@$$w0rD',
+        'database' => 'my_database',
+        'structureTables' => [],
+        'extra' => '--skip-add-locks --no-tablespaces',
+    ];
+
+    return $dbConfig;
+}
+```
 
 #### Arguments
 
