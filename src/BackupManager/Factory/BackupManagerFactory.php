@@ -2,7 +2,7 @@
 
 namespace DigipolisGent\Robo\Task\Deploy\BackupManager\Factory;
 
-use BackupManager\Manager;
+use District09\BackupManager\Manager;
 use DigipolisGent\Robo\Task\Deploy\BackupManager\Adapter\BackupManagerAdapter;
 
 class BackupManagerFactory implements BackupManagerFactoryInterface

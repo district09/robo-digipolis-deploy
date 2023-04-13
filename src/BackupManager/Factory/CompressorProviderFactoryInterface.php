@@ -7,7 +7,7 @@ interface CompressorProviderFactoryInterface
     /**
      * Creates a CompressorProvider.
      *
-     * @return \BackupManager\Compressors\CompressorProvider
+     * @return \District09\BackupManager\Compressors\CompressorProvider
      */
     public static function create();
 }

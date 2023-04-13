@@ -7,8 +7,7 @@
     "require": {
         "consolidation/robo": "^3.0",
         "phpseclib/phpseclib": "^3.0",
-        "backup-manager/backup-manager": "^3",
-        "league/flysystem": "^1",
+        "district09/backup-manager": "^4.0",
         "gordalina/cachetool": "^8",
         "digipolisgent/command-builder": "^1.2",
         "digipolisgent/robo-digipolis-general": "^2.0.0"
