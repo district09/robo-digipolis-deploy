@@ -10,7 +10,7 @@ interface BackupProcedureAdapterInterface
      *
      * @param string $database
      *   The database name to backup.
-     * @param \BackupManager\Filesystems\Destination[] $destinations
+     * @param \District09\BackupManager\Filesystems\Destination[] $destinations
      *   The destinations to backup to.
      * @param string $compression
      *   The compression to use for the backup.

@@ -2,9 +2,9 @@
 
 namespace DigipolisGent\Robo\Task\Deploy\BackupManager\Factory;
 
-use BackupManager\Compressors\CompressorProvider;
-use BackupManager\Compressors\GzipCompressor;
-use BackupManager\Compressors\NullCompressor;
+use District09\BackupManager\Compressors\CompressorProvider;
+use District09\BackupManager\Compressors\GzipCompressor;
+use District09\BackupManager\Compressors\NullCompressor;
 use DigipolisGent\Robo\Task\Deploy\BackupManager\Compressors\TarCompressor;
 
 class CompressorProviderFactory implements CompressorProviderFactoryInterface

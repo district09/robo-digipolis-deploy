@@ -2,7 +2,7 @@
 
 namespace DigipolisGent\Robo\Task\Deploy\BackupManager\Compressors;
 
-use BackupManager\Compressors\Compressor;
+use District09\BackupManager\Compressors\Compressor;
 
 class TarCompressor implements Compressor
 {

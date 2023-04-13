@@ -2,7 +2,7 @@
 
 namespace DigipolisGent\Robo\Task\Deploy\BackupManager\Databases;
 
-use BackupManager\Databases\MysqlDatabase as Mysql;
+use District09\BackupManager\Databases\MysqlDatabase as Mysql;
 
 class MysqlDatabase extends Mysql
 {

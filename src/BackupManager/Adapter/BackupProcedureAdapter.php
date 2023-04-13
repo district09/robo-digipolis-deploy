@@ -2,7 +2,7 @@
 
 namespace DigipolisGent\Robo\Task\Deploy\BackupManager\Adapter;
 
-use BackupManager\Procedures\BackupProcedure;
+use District09\BackupManager\Procedures\BackupProcedure;
 
 class BackupProcedureAdapter implements BackupProcedureAdapterInterface
 {
