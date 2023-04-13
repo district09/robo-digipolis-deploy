@@ -2,7 +2,7 @@
 
 namespace DigipolisGent\Robo\Task\Deploy;
 
-use BackupManager\Filesystems\Destination;
+use District09\BackupManager\Filesystems\Destination;
 use DigipolisGent\Robo\Task\Deploy\BackupManager\Factory\BackupManagerFactory;
 use DigipolisGent\Robo\Task\Deploy\BackupManager\Factory\BackupManagerFactoryInterface;
 use Robo\Result;
@@ -34,7 +34,7 @@ class DatabaseBackup extends BaseTask
     /**
      * The destinations to backup to.
      *
-     * @var \BackupManager\Filesystems\Destination[]
+     * @var \District09\BackupManager\Filesystems\Destination[]
      */
     protected $destinations;
 

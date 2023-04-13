@@ -2,15 +2,15 @@
 
 namespace DigipolisGent\Robo\Task\Deploy\BackupManager\Factory;
 
-use BackupManager\Config\Config;
-use BackupManager\Filesystems\Awss3Filesystem;
-use BackupManager\Filesystems\DropboxFilesystem;
-use BackupManager\Filesystems\FilesystemProvider;
-use BackupManager\Filesystems\FtpFilesystem;
-use BackupManager\Filesystems\GcsFilesystem;
-use BackupManager\Filesystems\LocalFilesystem;
-use BackupManager\Filesystems\RackspaceFilesystem;
-use BackupManager\Filesystems\SftpFilesystem;
+use District09\BackupManager\Config\Config;
+use District09\BackupManager\Filesystems\Awss3Filesystem;
+use District09\BackupManager\Filesystems\DropboxFilesystem;
+use District09\BackupManager\Filesystems\FilesystemProvider;
+use District09\BackupManager\Filesystems\FtpFilesystem;
+use District09\BackupManager\Filesystems\GcsFilesystem;
+use District09\BackupManager\Filesystems\LocalFilesystem;
+use District09\BackupManager\Filesystems\RackspaceFilesystem;
+use District09\BackupManager\Filesystems\SftpFilesystem;
 
 class FilesystemProviderFactory implements FilesystemProviderFactoryInterface
 {
