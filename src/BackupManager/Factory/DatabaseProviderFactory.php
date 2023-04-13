@@ -2,9 +2,9 @@
 
 namespace DigipolisGent\Robo\Task\Deploy\BackupManager\Factory;
 
-use BackupManager\Config\Config;
-use BackupManager\Databases\DatabaseProvider;
-use BackupManager\Databases\PostgresqlDatabase;
+use District09\BackupManager\Config\Config;
+use District09\BackupManager\Databases\DatabaseProvider;
+use District09\BackupManager\Databases\PostgresqlDatabase;
 use DigipolisGent\Robo\Task\Deploy\BackupManager\Databases\MysqlDatabase;
 
 class DatabaseProviderFactory implements DatabaseProviderFactoryInterface
