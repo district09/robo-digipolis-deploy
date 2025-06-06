@@ -24,7 +24,7 @@ trait PartialCleanDirsTrait
      * @return \DigipolisGent\Robo\Task\Deploy\PartialCleanDirs
      *   The partial clean directory task.
      */
-    protected function taskPartialCleanDirs($dirs, Finder $finder = null, Filesystem $fs = null)
+    protected function taskPartialCleanDirs($dirs, ?Finder $finder = null, ?Filesystem $fs = null)
     {
         return $this->task(PartialCleanDirs::class, $dirs, $finder, $fs);
     }
