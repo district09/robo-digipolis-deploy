@@ -21,7 +21,7 @@ trait SymlinkFolderFileContentsTrait
      * @return \DigipolisGent\Robo\Task\Package\Deploy\SymlinkFolderFileContents
      *   The package project task.
      */
-    protected function taskSymlinkFolderFileContents($source, $destination, Finder $finder = null)
+    protected function taskSymlinkFolderFileContents($source, $destination, ?Finder $finder = null)
     {
         return $this->task(SymlinkFolderFileContents::class, $source, $destination, $finder);
     }
