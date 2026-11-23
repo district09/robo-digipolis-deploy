@@ -2,6 +2,7 @@
 
 namespace DigipolisGent\Tests\Robo\Task\Deploy\Mock;
 
+use BackupManager\Manager;
 use DigipolisGent\Robo\Task\Deploy\BackupManager\Factory\BackupManagerFactoryInterface;
 
 class BackupManagerFactoryMock implements BackupManagerFactoryInterface
@@ -12,7 +13,7 @@ class BackupManagerFactoryMock implements BackupManagerFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public static function create($filesystemConfig, $dbConfig)
+    public static function create($filesystemConfig, $dbConfig): Manager
     {
         if ($filesystemConfig != static::$filesystemConfig || $dbConfig != static::$dbConfig) {
             throw new \Exception('Factory called with invalid arguments');
