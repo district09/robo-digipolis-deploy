@@ -182,7 +182,7 @@ class DatabaseRestore extends BaseTask
                 $this->database,
                 $this->compression
             );
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return Result::fromException($this, $e);
         }
         return Result::success($this);

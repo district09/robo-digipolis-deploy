@@ -2,9 +2,9 @@
 
 namespace DigipolisGent\Robo\Task\Deploy\BackupManager\Databases;
 
-use District09\BackupManager\Databases\MysqlDatabase as Mysql;
+use BackupManager\Databases\Database;
 
-class MysqlDatabase extends Mysql
+class MysqlDatabase implements Database
 {
     protected $tableList = [];
     /**
@@ -17,15 +17,15 @@ class MysqlDatabase extends Mysql
     /**
      * {@inheritdoc}
      */
-    public function handles($type)
+    public function handles(?string $type): bool
     {
-        return strtolower($type) == 'mysql';
+        return strtolower($type ?? '') == 'mysql';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setConfig(array $config)
+    public function setConfig(array $config): void
     {
         $this->config = $config;
     }
@@ -33,7 +33,7 @@ class MysqlDatabase extends Mysql
     /**
      * {@inheritdoc}
      */
-    public function getDumpCommandLine($outputPath)
+    public function getDumpCommandLine(string $outputPath): string
     {
         $this->config += [
             'ignoreTables' => [],
@@ -72,7 +72,7 @@ class MysqlDatabase extends Mysql
     /**
      * {@inheritdoc}
      */
-    public function getRestoreCommandLine($inputPath)
+    public function getRestoreCommandLine(string $inputPath): string
     {
         return sprintf(
             'mysql --host=%s --port=%s --user=%s --password=%s %s -e "source %s"',

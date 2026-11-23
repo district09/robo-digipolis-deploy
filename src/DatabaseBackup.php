@@ -2,7 +2,7 @@
 
 namespace DigipolisGent\Robo\Task\Deploy;
 
-use District09\BackupManager\Filesystems\Destination;
+use BackupManager\Filesystems\Destination;
 use DigipolisGent\Robo\Task\Deploy\BackupManager\Factory\BackupManagerFactory;
 use DigipolisGent\Robo\Task\Deploy\BackupManager\Factory\BackupManagerFactoryInterface;
 use Robo\Result;
@@ -34,7 +34,7 @@ class DatabaseBackup extends BaseTask
     /**
      * The destinations to backup to.
      *
-     * @var \District09\BackupManager\Filesystems\Destination[]
+     * @var \BackupManager\Filesystems\Destination[]
      */
     protected $destinations;
 
@@ -169,7 +169,7 @@ class DatabaseBackup extends BaseTask
                 $this->destinations,
                 $this->compression
             );
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return Result::fromException($this, $e);
         }
         return Result::success($this);

@@ -2,14 +2,14 @@
 
 namespace DigipolisGent\Robo\Task\Deploy\BackupManager\Adapter;
 
-use District09\BackupManager\Manager;
+use BackupManager\Manager;
 
 class BackupManagerAdapter implements BackupManagerAdapterInterface
 {
     /**
      * The backup manager.
      *
-     * @var \District09\BackupManager\Manager
+     * @var \BackupManager\Manager
      */
     protected $manager;
 

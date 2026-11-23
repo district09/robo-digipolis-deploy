@@ -10,7 +10,7 @@ interface DatabaseProviderFactoryInterface
      * @param string|array $dbConfig
      *   Config for the DatabaseProvider. A path to a PHP file or an array.
      *
-     * @return \District09\BackupManager\Databases\DatabaseProvider
+     * @return \BackupManager\Databases\DatabaseProvider
      */
     public static function create($dbConfig);
 }
