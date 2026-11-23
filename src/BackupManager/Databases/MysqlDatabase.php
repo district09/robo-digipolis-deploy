@@ -3,7 +3,15 @@
 namespace DigipolisGent\Robo\Task\Deploy\BackupManager\Databases;
 
 use BackupManager\Databases\Database;
+use BackupManager\Databases\MysqlDatabase as UpstreamMysqlDatabase;
 
+/**
+ * MySQL database with our own dump options.
+ *
+ * Dumps support table wildcards, structure-only tables and a few extra
+ * options upstream doesn't have. Restores are delegated to the decorated
+ * upstream database so we get its fixes for free.
+ */
 class MysqlDatabase implements Database
 {
     protected $tableList = [];
@@ -13,6 +21,25 @@ class MysqlDatabase implements Database
      * @var array
      */
     protected $config;
+
+    /**
+     * The decorated upstream database.
+     *
+     * @var \BackupManager\Databases\Database
+     */
+    protected $inner;
+
+    /**
+     * Creates a MysqlDatabase.
+     *
+     * @param \BackupManager\Databases\Database|null $inner
+     *   The database to delegate restores to. Defaults to upstream's
+     *   MysqlDatabase.
+     */
+    public function __construct(?Database $inner = null)
+    {
+        $this->inner = $inner ?? new UpstreamMysqlDatabase();
+    }
 
     /**
      * {@inheritdoc}
@@ -28,6 +55,7 @@ class MysqlDatabase implements Database
     public function setConfig(array $config): void
     {
         $this->config = $config;
+        $this->inner->setConfig($config);
     }
 
     /**
@@ -74,15 +102,7 @@ class MysqlDatabase implements Database
      */
     public function getRestoreCommandLine(string $inputPath): string
     {
-        return sprintf(
-            'mysql --host=%s --port=%s --user=%s --password=%s %s -e "source %s"',
-            escapeshellarg($this->config['host']),
-            escapeshellarg($this->config['port']),
-            escapeshellarg($this->config['user']),
-            escapeshellarg($this->config['pass']),
-            escapeshellarg($this->config['database']),
-            $inputPath
-        );
+        return $this->inner->getRestoreCommandLine($inputPath);
     }
 
     /**
