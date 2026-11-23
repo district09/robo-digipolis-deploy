@@ -2,7 +2,7 @@
 
 namespace DigipolisGent\Robo\Task\Deploy;
 
-use District09\BackupManager\Filesystems\Destination;
+use BackupManager\Filesystems\Destination;
 use DigipolisGent\Robo\Task\Deploy\BackupManager\Factory\BackupManagerFactory;
 use DigipolisGent\Robo\Task\Deploy\BackupManager\Factory\BackupManagerFactoryInterface;
 use Robo\Result;
@@ -34,7 +34,7 @@ class DatabaseBackup extends BaseTask
     /**
      * The destinations to backup to.
      *
-     * @var \District09\BackupManager\Filesystems\Destination[]
+     * @var \BackupManager\Filesystems\Destination[]
      */
     protected $destinations;
 
@@ -53,14 +53,12 @@ class DatabaseBackup extends BaseTask
     protected $backupManagerFactory = BackupManagerFactory::class;
 
     /**
-     * Creates a BackupManagerAdapter.
+     * Creates the task.
      *
      * @param string|array $filesystemConfig
      *   Config for the FilesystemProvider. A path to a PHP file or an array.
      * @param string|array $dbConfig
      *   Config for the DatabaseProvider. A path to a PHP file or an array.
-     *
-     * @return \DigipolisGent\Robo\Task\Deploy\BackupManager\Adapter\BackupManagerAdapterInterface
      */
     public function __construct($filesystemConfig, $dbConfig)
     {
@@ -150,7 +148,7 @@ class DatabaseBackup extends BaseTask
         try {
             /**
              * The backup manager
-             * @var \DigipolisGent\Robo\Task\Deploy\BackupManager\Adapter\BackupManagerAdapterInterface
+             * @var \BackupManager\Manager
              */
             $manager = call_user_func(
                 [$this->backupManagerFactory, 'create'],
@@ -169,7 +167,7 @@ class DatabaseBackup extends BaseTask
                 $this->destinations,
                 $this->compression
             );
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return Result::fromException($this, $e);
         }
         return Result::success($this);

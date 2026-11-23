@@ -2,8 +2,8 @@
 
 namespace DigipolisGent\Tests\Robo\Task\Deploy;
 
-use DigipolisGent\Robo\Task\Deploy\BackupManager\Adapter\BackupManagerAdapterInterface;
-use DigipolisGent\Robo\Task\Deploy\BackupManager\Adapter\BackupProcedureAdapterInterface;
+use BackupManager\Manager;
+use BackupManager\Procedures\BackupProcedure;
 use DigipolisGent\Tests\Robo\Task\Deploy\Mock\BackupManagerFactoryMock;
 use League\Container\ContainerAwareInterface;
 use League\Container\ContainerAwareTrait;
@@ -72,18 +72,17 @@ class DatabaseBackupTest extends TestCase implements ContainerAwareInterface, Co
         ];
     }
 
-    protected function mockManagerAdapter()
+    protected function mockManager()
     {
 
-        // Mock the backup manager adapter.
-        $adapter = $this->getMockBuilder(BackupManagerAdapterInterface::class)
-            ->getMock();
+        // Mock the backup manager.
+        $manager = $this->createMock(Manager::class);
 
         // Mock the factory.
         BackupManagerFactoryMock::setFilesystemConfig($this->filesystemConfig);
         BackupManagerFactoryMock::setDbConfig($this->dbConfig);
-        BackupManagerFactoryMock::setMock($adapter);
-        return $adapter;
+        BackupManagerFactoryMock::setMock($manager);
+        return $manager;
     }
 
     /**
@@ -104,14 +103,12 @@ class DatabaseBackupTest extends TestCase implements ContainerAwareInterface, Co
      */
     public function testRun()
     {
-        $manager = $this->mockManagerAdapter();
-        $procedure = $this->getMockBuilder(BackupProcedureAdapterInterface::class)
-            ->getMock();
+        $manager = $this->mockManager();
+        $procedure = $this->createMock(BackupProcedure::class);
 
         $procedure
             ->expects($this->once())
-            ->method('run')
-            ->willReturn(null);
+            ->method('run');
         $manager
             ->expects($this->once())
             ->method('makeBackup')
@@ -133,9 +130,8 @@ class DatabaseBackupTest extends TestCase implements ContainerAwareInterface, Co
      */
     public function testFailedRun()
     {
-        $manager = $this->mockManagerAdapter();
-        $procedure = $this->getMockBuilder(BackupProcedureAdapterInterface::class)
-            ->getMock();
+        $manager = $this->mockManager();
+        $procedure = $this->createMock(BackupProcedure::class);
 
         $procedure
             ->expects($this->once())

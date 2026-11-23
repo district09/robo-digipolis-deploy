@@ -2,9 +2,8 @@
 
 namespace DigipolisGent\Tests\Robo\Task\Deploy;
 
-use DigipolisGent\Robo\Task\Deploy\BackupManager\Adapter\BackupManagerAdapterInterface;
-use DigipolisGent\Robo\Task\Deploy\BackupManager\Adapter\BackupProcedureAdapterInterface;
-use DigipolisGent\Robo\Task\Deploy\BackupManager\Adapter\RestoreProcedureAdapterInterface;
+use BackupManager\Manager;
+use BackupManager\Procedures\RestoreProcedure;
 use DigipolisGent\Robo\Task\Deploy\Tasks;
 use DigipolisGent\Tests\Robo\Task\Deploy\Mock\BackupManagerFactoryMock;
 use League\Container\ContainerAwareInterface;
@@ -74,18 +73,17 @@ class DatabaseRestoreTest extends TestCase implements ContainerAwareInterface, C
         ];
     }
 
-    protected function mockManagerAdapter()
+    protected function mockManager()
     {
 
-        // Mock the backup manager adapter.
-        $adapter = $this->getMockBuilder(BackupManagerAdapterInterface::class)
-            ->getMock();
+        // Mock the backup manager.
+        $manager = $this->createMock(Manager::class);
 
         // Mock the factory.
         BackupManagerFactoryMock::setFilesystemConfig($this->filesystemConfig);
         BackupManagerFactoryMock::setDbConfig($this->dbConfig);
-        BackupManagerFactoryMock::setMock($adapter);
-        return $adapter;
+        BackupManagerFactoryMock::setMock($manager);
+        return $manager;
     }
 
     /**
@@ -106,14 +104,12 @@ class DatabaseRestoreTest extends TestCase implements ContainerAwareInterface, C
      */
     public function testRun()
     {
-        $manager = $this->mockManagerAdapter();
-        $procedure = $this->getMockBuilder(RestoreProcedureAdapterInterface::class)
-            ->getMock();
+        $manager = $this->mockManager();
+        $procedure = $this->createMock(RestoreProcedure::class);
 
         $procedure
             ->expects($this->once())
-            ->method('run')
-            ->willReturn(null);
+            ->method('run');
         $manager
             ->expects($this->once())
             ->method('makeRestore')
@@ -135,9 +131,8 @@ class DatabaseRestoreTest extends TestCase implements ContainerAwareInterface, C
      */
     public function testFailedRun()
     {
-        $manager = $this->mockManagerAdapter();
-        $procedure = $this->getMockBuilder(RestoreProcedureAdapterInterface::class)
-            ->getMock();
+        $manager = $this->mockManager();
+        $procedure = $this->createMock(RestoreProcedure::class);
 
         $procedure
             ->expects($this->once())

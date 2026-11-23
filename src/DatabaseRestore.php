@@ -59,14 +59,12 @@ class DatabaseRestore extends BaseTask
     protected $backupManagerFactory = BackupManagerFactory::class;
 
     /**
-     * Creates a BackupManagerAdapter.
+     * Creates the task.
      *
      * @param string|array $filesystemConfig
      *   Config for the FilesystemProvider. A path to a PHP file or an array.
      * @param string|array $dbConfig
      *   Config for the DatabaseProvider. A path to a PHP file or an array.
-     *
-     * @return \DigipolisGent\Robo\Task\Deploy\BackupManager\Adapter\BackupManagerAdapterInterface
      */
     public function __construct($filesystemConfig, $dbConfig)
     {
@@ -157,7 +155,7 @@ class DatabaseRestore extends BaseTask
         try {
             /**
              * The backup manager
-             * @var \DigipolisGent\Robo\Task\Deploy\BackupManager\Adapter\BackupManagerAdapterInterface
+             * @var \BackupManager\Manager
              */
             $manager = call_user_func(
                 [$this->backupManagerFactory, 'create'],
@@ -182,7 +180,7 @@ class DatabaseRestore extends BaseTask
                 $this->database,
                 $this->compression
             );
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return Result::fromException($this, $e);
         }
         return Result::success($this);

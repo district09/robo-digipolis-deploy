@@ -2,10 +2,12 @@
 
 namespace DigipolisGent\Robo\Task\Deploy\BackupManager\Factory;
 
+use BackupManager\Manager;
+
 interface BackupManagerFactoryInterface
 {
     /**
-     * Creates a BackupManagerAdapter.
+     * Creates a backup manager.
      *
      * @param string|array $filesystemConfig
      *   Config for the FilesystemProvider. A path to a PHP file or an array.
@@ -13,7 +15,7 @@ interface BackupManagerFactoryInterface
      * @param string|array $dbConfig
      *   Config for the DatabaseProvider. A path to a PHP file or an array.
      *
-     * @return \DigipolisGent\Robo\Task\Deploy\BackupManager\Adapter\BackupManagerAdapterInterface
+     * @return \BackupManager\Manager
      */
-    public static function create($filesystemConfig, $dbConfig);
+    public static function create($filesystemConfig, $dbConfig): Manager;
 }
