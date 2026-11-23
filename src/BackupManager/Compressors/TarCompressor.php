@@ -2,7 +2,7 @@
 
 namespace DigipolisGent\Robo\Task\Deploy\BackupManager\Compressors;
 
-use District09\BackupManager\Compressors\Compressor;
+use BackupManager\Compressors\Compressor;
 
 class TarCompressor implements Compressor
 {
@@ -10,15 +10,15 @@ class TarCompressor implements Compressor
     /**
      * {@inheritdoc}
      */
-    public function handles($type)
+    public function handles(?string $type): bool
     {
-        return strtolower($type) == 'tar';
+        return strtolower($type ?? '') == 'tar';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getCompressCommandLine($inputPath)
+    public function getCompressCommandLine(string $inputPath): string
     {
         return 'tar -zcf '
             . escapeshellarg($this->getCompressedPath($inputPath))
@@ -30,7 +30,7 @@ class TarCompressor implements Compressor
     /**
      * {@inheritdoc}
      */
-    public function getDecompressCommandLine($outputPath)
+    public function getDecompressCommandLine(string $outputPath): string
     {
         return 'tar -zxf '
             . escapeshellarg($outputPath)
@@ -42,7 +42,7 @@ class TarCompressor implements Compressor
     /**
      * {@inheritdoc}
      */
-    public function getCompressedPath($inputPath)
+    public function getCompressedPath(string $inputPath): string
     {
         return $inputPath . '.tar.gz';
     }
@@ -50,7 +50,7 @@ class TarCompressor implements Compressor
     /**
      * {@inheritdoc}
      */
-    public function getDecompressedPath($inputPath)
+    public function getDecompressedPath(string $inputPath): string
     {
         return preg_replace('/\.tar\.gz$/', '', $inputPath);
     }

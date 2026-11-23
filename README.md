@@ -210,11 +210,24 @@ $result = $this->taskDatabaseRestore($filesystemConfig, $dbConfig)
 More information on the configuration options for the file systems can be found
 at <https://github.com/backup-manager/backup-manager>.
 
+Only the `local` file system works out of the box. The other file system types
+need their Flysystem adapter package in your project:
+
+| Type      | Package                                    |
+|-----------|--------------------------------------------|
+| `local`   | (included)                                 |
+| `awss3`   | `league/flysystem-aws-s3-v3`               |
+| `gcs`     | `league/flysystem-google-cloud-storage`    |
+| `dropbox` | `spatie/flysystem-dropbox`                 |
+| `ftp`     | `league/flysystem-ftp`                     |
+| `sftp`    | `league/flysystem-sftp-v3`                 |
+
 #### Database configuration options
 
 More information on the configuration options for the databases can be found
 at <https://github.com/backup-manager/backup-manager>. However, we provide our
-own MySql database handler. The configuration options are explained below:
+own MySql database handler for dumps; restores are handled by
+backup-manager's MySql database. The configuration options are explained below:
 
 ```php
 $dbConfig = [
@@ -257,6 +270,23 @@ $dbConfig = [
     ],
 ];
 ```
+
+#### Upgrading from 3.x
+
+Version 4 uses [backup-manager/backup-manager](https://github.com/backup-manager/backup-manager)
+4.x instead of the `district09/backup-manager` fork. This requires PHP 8.2.
+
+- Classes from the backup manager moved from the `District09\BackupManager`
+  namespace to `BackupManager`.
+- The adapter classes in `DigipolisGent\Robo\Task\Deploy\BackupManager\Adapter`
+  are removed. A custom factory passed to `backupManagerFactory()` must now
+  return a `BackupManager\Manager` from `create()`.
+- `DigipolisGent\Robo\Task\Deploy\BackupManager\Databases\MysqlDatabase` no
+  longer extends backup-manager's `MysqlDatabase`, which is final now.
+- MySQL restores read the dump from stdin (`mysql ... < dump.sql`) instead of
+  using the mysql client's `source` command.
+- The `ftp` file system type used an SFTP connection in the fork. It now really
+  uses FTP and needs `league/flysystem-ftp`. Use the `sftp` type for SFTP.
 
 ## Commands in this package
 
